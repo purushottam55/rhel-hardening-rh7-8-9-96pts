@@ -1,0 +1,476 @@
+#############################################Hardening V3.2 => 77 points ########################################################
+
+#RHEL 7,8,9	(1.1.2.1.1)	Ensure /tmp is a separate partition 
+
+- name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a seperate partition"
+  vars:
+      warn_control_id: '1.1.2.1.1'
+      required_mount: '/tmp'
+  block:
+      - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+#-----------
+#OS = RHEL 7,8,9	(1.1.2.2.1)	Ensure /dev/shm is a separate partition 
+- name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition"
+  vars:
+      warn_control_id: '1.1.2.2.1'
+      required_mount: '/dev/shm'
+  block:
+      - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.1) 9(1.2.1.1)	Ensure GPG keys are configured 
+- name: "1.2.1 | AUDIT | Ensure GPG keys are configured" 
+  ansible.builtin.shell: "PKG=`rpm -qf {{ rpm_gpg_key }}` && rpm -q --queryformat \"%{PACKAGER} %{SIGPGP:pgpsig}\\n\" \"${PKG}\" | grep \"^{{ rpm_packager }}.*Key.ID.{{ rpm_key }}\""
+  changed_when: false
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.4) 9(1.2.1.4)	Ensure package manager repositories are configured 
+- name: "1.2.4 | AUDIT | Ensure package manager repositories are configured"
+  vars:
+      warn_control_id: '1.2.4'
+  block:
+      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"
+        ansible.builtin.shell: yum repolist
+        changed_when: false
+        failed_when: false
+        register: dnf_configured
+        check_mode: false
+
+      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Display repo list"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the configured repos. Please review and make sure all align with site policy"
+                - "{{ dnf_configured.stdout_lines }}"
+
+      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.5) 9(1.2.2.1)	Ensure updates, patches, and additional security software are installed 
+- name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed"
+  notify: Change_requires_reboot
+  block:
+      - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | Patch"
+        ansible.builtin.package:
+            name: "*"
+            state: latest
+
+      - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | update_facts"
+        ansible.builtin.package_facts:
+            manager: auto
+
+- name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | limit kernels"
+
+  ansible.builtin.lineinfile:
+      path: /etc/yum.conf
+      regexp: ^installonly_limit=
+      line: installonly_limit={{ rhel7cis_installed_kernel_limit }}
+
+#-------------------------------------------------
+#OS = RHEL 7	(1.3.3)	Ensure authentication required for single user mode 
+
+- name: "1.3.3 | PATCH | Ensure authentication required for single user mode"
+  block:
+      - name: "1.3.3 | PATCH | Ensure authentication required for single user mode | Emergency service"
+        ansible.builtin.lineinfile:
+            path: /usr/lib/systemd/system/emergency.service
+            regexp: '/sbin/sulogin'
+            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+
+      - name: "1.3.3 | PATCH | Ensure authentication required for single user mode | Rescue service"
+        ansible.builtin.lineinfile:
+            path: /usr/lib/systemd/system/rescue.service
+            regexp: '/sbin/sulogin'
+            line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.4.2) 9(1.5.2)	Ensure ptrace_scope is restricted 
+- name: "1.4.2 | PATCH | Ensure ptrace_scope is restricted"
+
+  ansible.posix.sysctl:
+      name: kernel.yama.ptrace_scope
+      value: '1'
+      state: present
+      reload: true
+      sysctl_set: true
+      ignoreerrors: true
+      sysctl_file: "{{ rhel7cis_kernel_sysctl_file }}"
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.5.1.7) 9(1.3.1.7)	Ensure the MCS Translation Service (mcstrans) is not installed 
+- name: "1.5.1.7 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
+
+  ansible.builtin.package:
+      name: mcstrans
+      state: absent
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7(1.6.1) 8,9(1.7.1)	Ensure message of the day is configured properly 
+- name: "1.6.1 | PATCH | Ensure message of the day is configured properly"
+
+  ansible.builtin.template:
+      src: etc/motd.j2  #put mssg inside this template
+      dest: /etc/motd
+      owner: root
+      group: root
+      mode: go-rx
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7(1.6.3) 8,9(1.7.3)	Ensure remote login warning banner is configured properly 
+- name: "1.6.3 | PATCH | Ensure remote login warning banner is configured properly"
+  ansible.builtin.template:
+      src: etc/issue.net.j2    #put mssg inside this template
+      dest: /etc/issue.net
+      owner: root
+      group: root
+      mode: go-wx
+
+----------#
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.5) 9(2.1.5)	Ensure dnsmasq services are not in use 
+
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.8) 9(2.1.8)	Ensure message access server services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.9) 9(2.1.9)	Ensure network file system services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.10) 9(2.1.10)	Ensure nis server services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.11) 9(2.1.11)	Ensure print server services are not in use
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.13) 9(2.1.13)	Ensure rsync services are not in use
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.14) 9(2.1.14)	Ensure snmp services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.17) 9(2.1.17)	Ensure web proxy server services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.18) 9(2.1.18)	Ensure web server services are not in use 
+
+
+#-------------------------------------------------
+#OS RHEL 7,8,9	7,8(2.2.21) 9(2.1.21)	Ensure mail transfer agents are configured for local-only mode
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.2.22) 9(2.1.22)	Ensure only approved services are listening on a network interface
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(2.3.3) 9(2.2.3)	Ensure nis client is not installed 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	(3.1.3)	Ensure bluetooth services are not in use 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	(3.3.9)	Ensure suspicious packets are logged 
+
+
+#-------------------------------------------------
+#OS = RHEL 7	(3.4.2.4)	Ensure network interfaces are assigned to appropriate zone
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(4.2.4) 9(5.1.7)	Ensure sshd access is configured 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(4.2.6) 9(5.1.4)	Ensure sshd Ciphers are configured 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(4.2.7) 9(5.1.9)	Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,9	7(4.2.9) 9(5.1.11)	Ensure sshd GSSAPIAuthentication is disabled 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7(4.2.12) 8(4.2.11) 9(5.1.5)	Ensure sshd KexAlgorithms is configured 
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7(4.2.15) 8(4.2.14) 9(5.1.6)	Ensure sshd MACs are configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(4.4.1.1) 9(5.3.1.1)	Ensure la-test version of pam is installed 
+#OS=RHEL 7	(4.4.1.2)	Ensure libpwquality is installed 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.1.1) 8(4.4.2.2) 9(5.3.2.2)	Ensure pam_faillock module is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.1.3) 8(4.4.3.1.2) 9(5.3.3.1.2)	Ensure password unlock time is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.1) 8(4.4.2.3) 9(5.3.2.3)	Ensure pam_pwquality module is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.2) 8(4.4.3.2.1) 9(5.3.3.2.1)	Ensure password number of changed characters is configured
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.3) 8(4.4.3.2.2) 9(5.3.3.2.2)	Ensure password length is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.4) 8(4.4.3.2.3) 9(5.3.3.2.3)	Ensure password complexity is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.5) 8(4.4.3.2.4) 9(5.3.3.2.4)	Ensure password same consecutive characters is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.6) 8(4.4.3.2.5) 9(5.3.3.2.5)	Ensure password maximum sequential characters is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.2.7) 8(4.4.3.2.6) 9(5.3.3.2.6)	Ensure password dictionary check is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.3.1) 8(4.4.2.4) 9(5.3.2.4)	Ensure pam_pwhistory module is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.3.2) 8(4.4.3.3.1) 9(5.3.3.3.1)	Ensure password history remember is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.3.3) 8(4.4.3.3.2) 9(5.3.3.3.2)	Ensure password history is enforced for the root user 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.3.4) 8(4.4.3.3.3) 9(5.3.3.3.3)	Ensure pam_pwhistory includes use_authtok 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.4.1) 8(4.4.3.4.1) 9(5.3.3.4.1)	Ensure pam_unix does not include nullok
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.4.2) 8(4.4.3.4.2) 9(5.3.3.4.2)	Ensure pam_unix does not include remember 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.4.3) 8(4.4.3.4.3) 9(5.3.3.4.3)	Ensure pam_unix includes a strong password hashing algorithm
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(4.4.2.4.4) 8(4.4.3.4.4) 9(5.3.3.4.4)	Ensure pam_unix includes use_authtok 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(4.5.1.1) 9(5.4.1.4)	Ensure strong password hashing algorithm is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(4.5.1.5) 9(5.4.1.6)	Ensure all users last password change date is in the past 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(4.5.2.2) 9(5.4.2.6)	Ensure root user umask is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(4.5.2.3)	Ensure system accounts are secured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(4.5.2.4)	Ensure root password is set 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(4.5.3.3) 9(5.4.3.3)	Ensure default user umask is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(5.1.1.7) 9(6.2.3.7)	Ensure rsyslog is not configured to receive logs from a remote client 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(5.1.2.1.1) 9(6.2.2.1.1)	Ensure systemd remote is installed 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(5.1.2.1.2)	Ensure systemd remote is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(5.1.2.1.3)	Ensure systemd remote is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(5.1.2.1.4)	Ensure journald is not configured to receive logs from a remote client 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(5.1.2.2) 9(6.2.1.1)	Ensure journald service is enabled 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(5.1.2.6)	Ensure journald log rotation is configured per site policy 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8	(5.1.3)	Ensure logrotate is configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(5.3.2) 9(6.1.2)	Ensure filesystem integrity is regularly checked 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7(6.1.9) 8(6.1.10) 9(7.1.9)	Ensure permissions on /etc/shells are configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,9	7(6.1.10) 9(7.1.10)	Ensure permissions on /etc/security/opasswd are configured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(6.1.11) 9(7.1.11)	Ensure world writable files and directories are secured 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(6.1.12) 9(7.1.12)	Ensure no unowned or ungrouped files or directories exist 
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(6.1.13) 9(7.1.13)	Ensure SUID and SGID files are reviewed
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(6.2.1) 9(7.2.1)	Ensure accounts in /etc/passwd use shadowed passwords
+
+
+#-------------------------------------------------
+#OS=RHEL 7,8,9	7,8(6.2.8) 9(5.4.2.5)	Ensure root path integrity 
+
+
+#------------------------------------------------
+
+
+
+
+
+
+############################################# Configuration Audit => 19 points ########################################################
+
+#------------------------------------------------
+#OS = rhel9	6.2.3.8 Ensure rsyslog logrotate is configured
+
+
+#------------------------------------------------
+#OS = rhel9	6.2.2.2 Ensure journald ForwardToSyslog is disabled
+
+
+#------------------------------------------------
+#OS = rhel9	6.2.2.1.2 Ensure systemd-journal-upload authentication is configured
+
+
+#------------------------------------------------
+#OS = rhel9	6.2.1.3 Ensure journald log file rotation is configured
+
+
+#------------------------------------------------
+#OS = rhel9	6.1.3 Ensure cryptographic mechanisms are used to protect the integrity of audit tools
+
+
+#------------------------------------------------
+#OS = rhel8	5.3.3 Ensure cryptographic mechanisms are used to protect the integrity of audit tools
+
+
+#------------------------------------------------
+#OS = rhel9	5.4.2.4 Ensure root account access is controlled
+
+
+#------------------------------------------------
+#OS = rhel9	5.3.3.3.2 Ensure password history is enforced for the root user
+
+
+#------------------------------------------------
+#OS = rhel8	4.4.3.3.2 Ensure password history is enforced for the root user
+
+
+#------------------------------------------------
+#OS = rhel7	4.4.2.3.3 Ensure password history is enforced for the root user
+
+
+#------------------------------------------------
+#OS = rhel9	1.6.6 Ensure system wide crypto policy disables chacha20-poly1305 for ssh
+
+
+#------------------------------------------------
+#OS = rhel9	1.6.2 Ensure system wide crypto policy is not set in sshd configuration
+
+
+#------------------------------------------------
+#OS = rhel8	1.6.2 Ensure system wide crypto policy disables sha1 hash and signature support
+
+
+#------------------------------------------------
+#OS = rhel8	1.6.3 Ensure system wide crypto policy disables cbc for ssh
+
+
+#------------------------------------------------
+#OS = rhel8	4.2.22 Ensure sshd crypto_policy is not set
+
+
+#------------------------------------------------
+#OS = rhel9	1.1.1.9 Ensure unused filesystems kernel modules are not available
+
+
+#------------------------------------------------
+#OS = rhel9	1.4.1 Ensure bootloader password is set
+
+
+#------------------------------------------------
+#OS = rhel8	4.4.2.1 Ensure active authselect profile includes pam modules
+
+
+#------------------------------------------------
+#OS = rhel9	6.2.2.1.3 Ensure systemd-journal-upload is enabled and active
+
+
+#------------------------------------------------
