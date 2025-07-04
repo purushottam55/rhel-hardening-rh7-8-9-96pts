@@ -167,8 +167,11 @@
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.5) 9(2.1.5)	Ensure dnsmasq services are not in use 
-- name: "2.2.5 "
-
+- name: "2.2.5 Ensure dnsmasq service are not in use"
+  ansible.builtin.service:
+    name: dnsmasq
+    enabled: no
+    state: absent
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.8) 9(2.1.8)	Ensure message access server services are not in use 
