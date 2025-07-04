@@ -237,18 +237,60 @@
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.13) 9(2.1.13)	Ensure rsync services are not in use
 
+- name: "2.2.13 Ensure rsync services are not in use"
+  ansible.builtin.service:
+    name: rsyncd
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+- name: Remove rsync package (optional)
+  ansible.builtin.package:
+    name: rsync
+    state: absent
+  ignore_errors: yes
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.14) 9(2.1.14)	Ensure snmp services are not in use 
 
+- name: "2.2.14 Ensure snmp service are not in use"
+  ansibe.builtin.service:
+    name: snmpd
+    state: stopped
+    enabled: not
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.17) 9(2.1.17)	Ensure web proxy server services are not in use 
+- name: "2.2.17	Ensure web proxy server services are not in use"
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop:
+    - squid
+    - tinyproxy
+  ignore_errors: yes
 
+- name: Remove proxy server packages (optional)
+  ansible.builtin.package:
+    name:
+      - squid
+      - tinyproxy
+    state: absent
+  ignore_errors: yes
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.18) 9(2.1.18)	Ensure web server services are not in use 
 
+- name: Stop and disable web server services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop:
+    - httpd
+    - nginx
+  ignore_errors: yes
 
 #-------------------------------------------------
 #OS RHEL 7,8,9	7,8(2.2.21) 9(2.1.21)	Ensure mail transfer agents are configured for local-only mode
