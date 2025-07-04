@@ -167,36 +167,34 @@
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.5) 9(2.1.5)	Ensure dnsmasq services are not in use 
-- name: 2.2.5 Gather service facts
-  ansible.builtin.service_facts:
 
-- name: 2.2.5 Ensure dnsmasq service is not running and disabled
+- name: "7.8.9 Ensure dnsmasq services are not in use" 
   ansible.builtin.service:
     name: dnsmasq
     state: stopped
-    enabled: no
-  when: "'dnsmasq.service' in ansible_facts.services"
-
+  ignore_errors: yes
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.8) 9(2.1.8)	Ensure message access server services are not in use 
 
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.9) 9(2.1.9)	Ensure network file system services are not in use 
-- name: 2.2.9 Gather service facts
-  ansible.builtin.service_facts:
 
 - name: 2.2.9 Ensure nfs service is not running and disabled
   ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
-    enabled: no
-    loop:
-      - nfs-server
-      - rpcbind
-      - nfs-idmapd
-      - rpc-statd
-    when: "'{{ item }}.service' in ansible_facts.services"
+  loop:
+    - nfs-server
+    - rpcbind
+    - nfs-idmapd
+    - rpc-statd
+    
+- name: Ensure nfs-utils package is removed
+  ansible.builtin.package:
+    name: nfs-utils
+    state: absent
+  ignore_errors: yes 
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.10) 9(2.1.10)	Ensure nis server services are not in use 
