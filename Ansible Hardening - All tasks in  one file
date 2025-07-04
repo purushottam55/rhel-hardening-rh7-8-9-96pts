@@ -180,55 +180,60 @@
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.9) 9(2.1.9)	Ensure network file system services are not in use 
 
-- name: "2.2.9 Ensure network file system services are not in use  "
-  hosts: all
-  become: yes
-  tasks:
-    - name: Stop and disable NFS-related services
-      ansible.builtin.service:
-        name: "{{ item }}"
-        state: stopped
-        enabled: no
-      loop:
-        - nfs-server
-        - rpcbind
-      ignore_errors: yes
+- name: "2.2.9 Ensure network file system services are not in use "
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop:
+    - nfs-server
+    - rpcbind
+  ignore_errors: yes
 
-    - name: Ensure nfs-utils package is removed
-      ansible.builtin.package:
-        name: nfs-utils
-        state: absent
-      ignore_errors: yes
+- name: " 2.2.9 Ensure nfs-utils package is removed"
+  ansible.builtin.package:
+    name: nfs-utils
+    state: absent
+  ignore_errors: yes
 
 #-------------------------------------------------
-#OS = RHEL 7,8,9	7,8(2.2.10) 9(2.1.10)	Ensure nis server services are not in use 
-- name: "2.2.10 Ensure NIS server services are not in use" 
-  hosts: all
-  become: yes
-  tasks:
-    - name: Stop and disable NIS-related services
-      ansible.builtin.service:
-        name: "{{ item }}"
-        state: stopped
-        enabled: no
-      loop:
-        - ypserv
-        - yppasswdd
-        - ypbind
-      ignore_errors: yes
 
-    - name: Remove NIS server packages
-      ansible.builtin.package:
-        name:
-          - ypserv
-          - ypbind
-        state: absent
-      ignore_errors: yes
+#OS = RHEL 7,8,9	7,8(2.2.10) 9(2.1.10)	Ensure nis server services are not in use 
+- name: "2.2.10 Ensure nis server services are not in use"
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop:
+    - ypserv
+    - yppasswdd
+    - ypbind
+  ignore_errors: yes
+
+- name: Remove NIS server packages
+  ansible.builtin.package:
+    name:
+      - ypserv
+      - ypbind
+    state: absent
+  ignore_errors: yes
 
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.11) 9(2.1.11)	Ensure print server services are not in use
-
-
+- name: "2.2.11 Ensure print server services are not in use"
+  ansible.builtin.service:
+    name: "{{ items }}"
+    state: stopped
+    enabled: no
+  loop: 
+    - cups.service
+    - cups.socket
+    
+- name: Remove service
+  ansibe.builtin.package:
+    name: cups
+    state: absent
+  ignore_errors: yes
 #-------------------------------------------------
 #OS = RHEL 7,8,9	7,8(2.2.13) 9(2.1.13)	Ensure rsync services are not in use
 
