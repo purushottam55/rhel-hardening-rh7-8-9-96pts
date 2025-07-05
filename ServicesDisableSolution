@@ -1,0 +1,42 @@
+NOTE: Task for services to be disabled/stopped.
+
+# mcx_hardening_role_1/tasks/main.yml
+
+- name: Disable and stop unnecessary services
+  block:
+    - name: "Check if '{{ item }}' service exists"
+      command: "systemctl status {{ item }}"
+      register: svc_status
+      ignore_errors: true
+      changed_when: false
+
+    - name: "Disable, stop, and mask '{{ item }}' if service exists"
+      systemd:
+        name: "{{ item }}"
+        enabled: no
+        state: stopped
+        masked: yes
+      when: svc_status.rc == 0
+  loop:
+    - dnsmasq
+    - cups
+    - avahi-daemon
+    - bluetooth
+    - rpcbind
+    - slapd
+    - xinetd
+    - telnet
+    - rsh
+    - vsftpd
+    - tftp
+    - nfs
+    - nfs-server
+    - rpc-statd
+    - ypserv
+    - snmpd
+    - bind
+    - squid
+    - dovecot
+    - samba
+  loop_control:
+    label: "{{ item }}"
