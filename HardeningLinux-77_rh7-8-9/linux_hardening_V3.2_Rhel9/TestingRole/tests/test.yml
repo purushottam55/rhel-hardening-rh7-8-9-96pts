@@ -1,5 +1,0 @@
----
-- hosts: localhost
-  remote_user: root
-  roles:
-    - ../linux_hardening_V3.2_testing/TestingRole
