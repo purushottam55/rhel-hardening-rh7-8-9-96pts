@@ -1,3 +1,4 @@
+git push origin main
 Using /root/HardeningDevelopement96/linux_hardening_V3.2_testing/ansible.cfg as config file
 
 PLAY [CIS Linux Hardening V3.2] ************************************************
