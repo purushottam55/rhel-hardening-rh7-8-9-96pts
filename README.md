@@ -13,7 +13,7 @@ This repository provides Ansible playbooks and roles to automate CIS hardening f
     - `mcx_hardening_role_1/` ... `mcx_hardening_role_6/`: Modular roles implementing CIS controls.
 - `ref/`: Reference documentation and previously developed scripts.
 
-## Usage
+## Usage & installation
 
 1. **Install Ansible**  
    Ensure Ansible is installed on your control node:
