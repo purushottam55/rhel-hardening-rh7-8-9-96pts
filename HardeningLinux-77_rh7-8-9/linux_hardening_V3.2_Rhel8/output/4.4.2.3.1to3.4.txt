@@ -1,0 +1,57 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before enabling pam_pwhistory] **********
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before enabling pam_pwhistory] ********
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before configuring password history remember] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.2 | Ensure password history remember is configured in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before configuring password history remember] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.2 | Ensure password history remember is configured in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before enforcing password history for root] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.3 | Ensure password history is enforced for the root user in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before enforcing password history for root] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before ensuring use_authtok] ************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before ensuring use_authtok] **********
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth] ***
+ok: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=17   changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

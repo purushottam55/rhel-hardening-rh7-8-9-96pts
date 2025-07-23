@@ -1,0 +1,31 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 2.2.4 to 2.2.16 Ensure servers are not installed] **********
+ok: [192.168.91.233] => (item=dnsmasq)
+ok: [192.168.91.233] => (item=cups)
+ok: [192.168.91.233] => (item=avahi-daemon)
+ok: [192.168.91.233] => (item=bluetooth)
+changed: [192.168.91.233] => (item=rpcbind)
+ok: [192.168.91.233] => (item=slapd)
+ok: [192.168.91.233] => (item=xinetd)
+ok: [192.168.91.233] => (item=telnet)
+ok: [192.168.91.233] => (item=rsh)
+ok: [192.168.91.233] => (item=vsftpd)
+ok: [192.168.91.233] => (item=tftp)
+ok: [192.168.91.233] => (item=nfs)
+ok: [192.168.91.233] => (item=nfs-server)
+ok: [192.168.91.233] => (item=rpc-statd)
+ok: [192.168.91.233] => (item=ypserv)
+ok: [192.168.91.233] => (item=snmpd)
+ok: [192.168.91.233] => (item=bind)
+ok: [192.168.91.233] => (item=squid)
+ok: [192.168.91.233] => (item=dovecot)
+ok: [192.168.91.233] => (item=samba)
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

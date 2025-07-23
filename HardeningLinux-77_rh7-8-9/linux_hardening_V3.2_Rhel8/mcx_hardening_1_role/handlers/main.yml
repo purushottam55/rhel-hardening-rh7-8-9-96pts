@@ -1,0 +1,15 @@
+---
+# handlers file for ../linux_hardening_V3.2_testing/TestingRole
+- name: Restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
+
+- name: Reload_sysctl
+  ansible.builtin.command: sysctl --system
+  changed_when: true
+
+- name: Reload sshd
+  systemd:
+    name: sshd
+    state: reloaded

@@ -1,0 +1,497 @@
+Using /root/Linux_Hardening_FINAL_NFR/Hardening_Playbook_3.2_77pts/linux_hardening_V3.2_Rhel8/ansible.cfg as config file
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.171]
+
+TASK [mcx_hardening_1_role :  1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk] ***
+ok: [192.168.91.171] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}
+
+TASK [mcx_hardening_1_role : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.171] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "freevxfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/freevxfs.ko"}}, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfs.ko"}}, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfsplus", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfsplus.ko"}}, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "jffs2", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/jffs2.ko"}}, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "usb_storage", "type": "drivers"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/drivers/usb_storage.ko"}}, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Get list of loaded kernel modules] ****************
+ok: [192.168.91.171] => {"changed": false, "cmd": "lsmod | awk '{print $1}' | tail -n +2", "delta": "0:00:00.007580", "end": "2025-07-22 05:51:56.051899", "msg": "", "rc": 0, "start": "2025-07-22 05:51:56.044319", "stderr": "", "stderr_lines": [], "stdout": "crct10dif_pclmul\ncrc32_pclmul\nghash_clmulni_intel\npcspkr\ni2c_piix4\njoydev\nvirtio_balloon\nxfs\nlibcrc32c\nsr_mod\nsd_mod\ncdrom\nt10_pi\nsg\nata_generic\nbochs\ndrm_vram_helper\ndrm_kms_helper\nsyscopyarea\nsysfillrect\nsysimgblt\ndrm_ttm_helper\nttm\ndrm\nata_piix\ncrc32c_intel\nlibata\nvirtio_net\nnet_failover\nserio_raw\nvirtio_scsi\nfailover\ndm_mirror\ndm_region_hash\ndm_log\ndm_mod", "stdout_lines": ["crct10dif_pclmul", "crc32_pclmul", "ghash_clmulni_intel", "pcspkr", "i2c_piix4", "joydev", "virtio_balloon", "xfs", "libcrc32c", "sr_mod", "sd_mod", "cdrom", "t10_pi", "sg", "ata_generic", "bochs", "drm_vram_helper", "drm_kms_helper", "syscopyarea", "sysfillrect", "sysimgblt", "drm_ttm_helper", "ttm", "drm", "ata_piix", "crc32c_intel", "libata", "virtio_net", "net_failover", "serio_raw", "virtio_scsi", "failover", "dm_mirror", "dm_region_hash", "dm_log", "dm_mod"]}
+
+TASK [mcx_hardening_1_role : Unload module '{{ item.name }}' if loaded] ********
+skipping: [192.168.91.171] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "freevxfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfsplus", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "jffs2", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "usb_storage", "type": "drivers"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Verify module '{{ item.name }}' is not loaded] ****
+ok: [192.168.91.171] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q freevxfs", "delta": "0:00:00.006930", "end": "2025-07-22 05:51:56.462737", "failed_when_result": false, "item": {"name": "freevxfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:51:56.455807", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfs", "delta": "0:00:00.006635", "end": "2025-07-22 05:51:56.779860", "failed_when_result": false, "item": {"name": "hfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:51:56.773225", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfsplus", "delta": "0:00:00.008275", "end": "2025-07-22 05:51:57.087532", "failed_when_result": false, "item": {"name": "hfsplus", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:51:57.079257", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q jffs2", "delta": "0:00:00.007322", "end": "2025-07-22 05:51:57.396005", "failed_when_result": false, "item": {"name": "jffs2", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:51:57.388683", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q usb_storage", "delta": "0:00:00.006728", "end": "2025-07-22 05:51:57.689966", "failed_when_result": false, "item": {"name": "usb_storage", "type": "drivers"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:51:57.683238", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent] ***
+ok: [192.168.91.171] => {
+    "msg": "Warning!! /tmp doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.171] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent] ***
+ok: [192.168.91.171] => {
+    "msg": "Warning!! /dev/shm doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.171] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1]", "warn_count": "2"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.2.2 Ensure GPG keys are configured] *************
+changed: [192.168.91.171] => {"changed": true, "cmd": "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\\n'", "delta": "0:00:00.017668", "end": "2025-07-22 05:51:58.137348", "msg": "", "rc": 0, "start": "2025-07-22 05:51:58.119680", "stderr": "", "stderr_lines": [], "stdout": "gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)\ngpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)\ngpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)\ngpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)\ngpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)\ngpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)\ngpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))", "stdout_lines": ["gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)", "gpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)", "gpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)", "gpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)", "gpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)", "gpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)", "gpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))"]}
+
+TASK [mcx_hardening_1_role : 1.2.3 Ensure gpgcheck is globally activated] ******
+changed: [192.168.91.171] => {"changed": true, "cmd": "sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/yum.conf", "delta": "0:00:00.005305", "end": "2025-07-22 05:51:58.438695", "msg": "", "rc": 0, "start": "2025-07-22 05:51:58.433390", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : shell] ********************************************
+changed: [192.168.91.171] => {"changed": true, "cmd": "find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\;", "delta": "0:00:00.042313", "end": "2025-07-22 05:51:58.784075", "msg": "", "rc": 0, "start": "2025-07-22 05:51:58.741762", "stderr": "", "stderr_lines": [], "stdout": "Checking: /etc/yum.repos.d/old/redhat.repo\nChecking: /etc/yum.repos.d/old/sbalinux.repo\nChecking: /etc/yum.repos.d/old/server-dc.repo\nChecking: /etc/yum.repos.d/old/rhel8.repo\nChecking: /etc/yum.repos.d/old/epel-modular.repo\nChecking: /etc/yum.repos.d/old/epel-playground.repo\nChecking: /etc/yum.repos.d/old/epel-testing-modular.repo\nChecking: /etc/yum.repos.d/old/epel-testing.repo\nChecking: /etc/yum.repos.d/old/epel.repo\nChecking: /etc/yum.repos.d/repo_backup/server-dc.repo\nChecking: /etc/yum.repos.d/bkp/redhat.repo\nChecking: /etc/yum.repos.d/bkp/server-dc.repo\nChecking: /etc/yum.repos.d/redhat.repo\nChecking: /etc/yum.repos.d/server-dc.repo", "stdout_lines": ["Checking: /etc/yum.repos.d/old/redhat.repo", "Checking: /etc/yum.repos.d/old/sbalinux.repo", "Checking: /etc/yum.repos.d/old/server-dc.repo", "Checking: /etc/yum.repos.d/old/rhel8.repo", "Checking: /etc/yum.repos.d/old/epel-modular.repo", "Checking: /etc/yum.repos.d/old/epel-playground.repo", "Checking: /etc/yum.repos.d/old/epel-testing-modular.repo", "Checking: /etc/yum.repos.d/old/epel-testing.repo", "Checking: /etc/yum.repos.d/old/epel.repo", "Checking: /etc/yum.repos.d/repo_backup/server-dc.repo", "Checking: /etc/yum.repos.d/bkp/redhat.repo", "Checking: /etc/yum.repos.d/bkp/server-dc.repo", "Checking: /etc/yum.repos.d/redhat.repo", "Checking: /etc/yum.repos.d/server-dc.repo"]}
+
+TASK [mcx_hardening_1_role : 1.2.4 Ensure package manager repositories are configured] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "yum repolist", "delta": "0:00:00.705605", "end": "2025-07-22 05:51:59.787346", "msg": "", "rc": 0, "start": "2025-07-22 05:51:59.081741", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nrepo id                          repo name\nrhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\nrhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)", "stdout_lines": ["Updating Subscription Management repositories.", "repo id                          repo name", "rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)", "rhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"]}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": ["yum", "check-update"], "delta": "0:00:05.207266", "end": "2025-07-22 05:52:11.685718", "msg": "", "rc": 0, "start": "2025-07-22 05:52:06.478452", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nRed Hat Enterprise Linux 8 for x86_64 - AppStre 119 kB/s | 4.5 kB     00:00    \nRed Hat Enterprise Linux 8 for x86_64 - BaseOS  108 kB/s | 4.1 kB     00:00    ", "stdout_lines": ["Updating Subscription Management repositories.", "Red Hat Enterprise Linux 8 for x86_64 - AppStre 119 kB/s | 4.5 kB     00:00    ", "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  108 kB/s | 4.1 kB     00:00    "]}
+
+TASK [mcx_hardening_1_role : 1.2.5.1 Show available updates] *******************
+ok: [192.168.91.171] => {
+    "yum_updates.stdout_lines": [
+        "Updating Subscription Management repositories.",
+        "Red Hat Enterprise Linux 8 for x86_64 - AppStre 119 kB/s | 4.5 kB     00:00    ",
+        "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  108 kB/s | 4.1 kB     00:00    "
+    ]
+}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | Set file] *****
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | comment out other entry] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : (1.6.1 Ensure message of the day is configured properly] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.6.3  Ensure remote login warning banner is configured properly] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure SSHD config uses /etc/issue.net as Banner] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+ok: [192.168.91.171] => (item=ypbind) => {"ansible_loop_var": "item", "changed": false, "item": "ypbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=dnsmasq) => {"ansible_loop_var": "item", "changed": false, "item": "dnsmasq", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=cups) => {"ansible_loop_var": "item", "changed": false, "item": "cups", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=avahi-daemon) => {"ansible_loop_var": "item", "changed": false, "item": "avahi-daemon", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=bluetooth) => {"ansible_loop_var": "item", "changed": false, "item": "bluetooth", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=rpcbind) => {"ansible_loop_var": "item", "changed": false, "item": "rpcbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=xinetd) => {"ansible_loop_var": "item", "changed": false, "item": "xinetd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=telnet) => {"ansible_loop_var": "item", "changed": false, "item": "telnet", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=rsh) => {"ansible_loop_var": "item", "changed": false, "item": "rsh", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=vsftpd) => {"ansible_loop_var": "item", "changed": false, "item": "vsftpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=tftp) => {"ansible_loop_var": "item", "changed": false, "item": "tftp", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=nfs) => {"ansible_loop_var": "item", "changed": false, "item": "nfs", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=nfs-server) => {"ansible_loop_var": "item", "changed": false, "item": "nfs-server", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=rpc-statd) => {"ansible_loop_var": "item", "changed": false, "item": "rpc-statd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=ypserv) => {"ansible_loop_var": "item", "changed": false, "item": "ypserv", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=snmpd) => {"ansible_loop_var": "item", "changed": false, "item": "snmpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=bind) => {"ansible_loop_var": "item", "changed": false, "item": "bind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=squid) => {"ansible_loop_var": "item", "changed": false, "item": "squid", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=dovecot) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=samba) => {"ansible_loop_var": "item", "changed": false, "item": "samba", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=blez) => {"ansible_loop_var": "item", "changed": false, "item": "blez", "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_2_role : 2.2.22 Ensure only approved services are listening on a network interface] ***
+ok: [192.168.91.171] => {
+    "msg": "We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra"
+}
+
+TASK [mcx_hardening_3_role : 3.3.9  Ensure suspicious packets are logged] ******
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_3_role :  3.3.9.1 Ensure net.ipv4.conf.default.log_martians is set to 1 in sysctl.conf] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_3_role :  3.3.9.2 Reload sysctl settings to apply changes] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": ["sysctl", "-p", "/etc/sysctl.conf"], "delta": "0:00:00.008881", "end": "2025-07-22 05:54:31.339007", "msg": "", "rc": 0, "start": "2025-07-22 05:54:31.330126", "stderr": "", "stderr_lines": [], "stdout": "net.ipv4.conf.all.log_martians = 1\nnet.ipv4.conf.default.log_martians = 1", "stdout_lines": ["net.ipv4.conf.all.log_martians = 1", "net.ipv4.conf.default.log_martians = 1"]}
+
+TASK [mcx_hardening_4_role : 4.2.4.1 Add line to sshd_config for allowusers] ***
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.2 Add line to sshd_config for allowgroups] ***
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.3 Add line to sshd_config for denyusers] ****
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.4 Add line to sshd_config for denygroups] ***
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.6  Ensure only strong Ciphers are used] *******
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.171] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Sat 2025-07-19 04:10:28 EDT", "ActiveEnterTimestampMonotonic": "5735730", "ActiveExitTimestampMonotonic": "0", "ActiveState": "active", "After": "network.target system.slice basic.target systemd-journald.socket sysinit.target sshd-keygen.target", "AllowIsolate": "no", "AllowedCPUs": "", "AllowedMemoryNodes": "", "AmbientCapabilities": "", "AssertResult": "yes", "AssertTimestamp": "Sat 2025-07-19 04:10:28 EDT", "AssertTimestampMonotonic": "5686692", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "no", "CPUAffinity": "", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "[not set]", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Sat 2025-07-19 04:10:28 EDT", "ConditionTimestampMonotonic": "5686688", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlPID": "0", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "man:sshd(8) man:sshd_config(5)", "DynamicUser": "no", "EffectiveCPUs": "", "EffectiveMemoryNodes": "", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "980", "ExecMainStartTimestamp": "Sat 2025-07-19 04:10:28 EDT", "ExecMainStartTimestampMonotonic": "5695533", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY ; ignore_errors=no ; start_time=[Sat 2025-07-19 04:10:28 EDT] ; stop_time=[n/a] ; pid=980 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOSchedulingClass": "0", "IOSchedulingPriority": "0", "IOWeight": "[not set]", "IPAccounting": "no", "IPEgressBytes": "18446744073709551615", "IPEgressPackets": "18446744073709551615", "IPIngressBytes": "18446744073709551615", "IPIngressPackets": "18446744073709551615", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestamp": "Sat 2025-07-19 04:10:28 EDT", "InactiveExitTimestampMonotonic": "5695564", "InvocationID": "f36f69f4ff1c44e4937589e12d678e46", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "0", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "65536", "LimitMEMLOCKSoft": "65536", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "262144", "LimitNOFILESoft": "1024", "LimitNPROC": "128212", "LimitNPROCSoft": "128212", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "128212", "LimitSIGPENDINGSoft": "128212", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "980", "MemoryAccounting": "yes", "MemoryCurrent": "6205440", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "MountFlags": "", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAMask": "", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "Perpetual": "no", "PrivateDevices": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "system.slice sysinit.target", "Restart": "on-failure", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardInputData": "", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Sat 2025-07-19 04:10:28 EDT", "StateChangeTimestampMonotonic": "5735730", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "205139", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogTimestamp": "Sat 2025-07-19 04:10:28 EDT", "WatchdogTimestampMonotonic": "5735729", "WatchdogUSec": "0"}}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.171] => {"changed": true, "cmd": ["systemctl", "restart", "sshd.service"], "delta": "0:00:00.023782", "end": "2025-07-22 05:54:33.540293", "msg": "", "rc": 0, "start": "2025-07-22 05:54:33.516511", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.2.11 | PATCH | Ensure only strong Key Exchange algorithms are used] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : 4.2.14 | PATCH | Ensure sshd MACs are configured] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : 4.4.1.1 Ensure pam is installed and up to date] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_4_role :  4.4.2.2.2 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "item": "system-auth", "msg": "Block inserted"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "item": "password-auth", "msg": "Block inserted"}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line added"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line added"}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock is configured in account section] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup system-auth and password-auth before changes] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "f7d87865025bf571c44fc58a36acd8667c5a94b5", "dest": "/etc/pam.d/system-auth.bak_2025-07-22T09:51:53Z", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "43a1543c198eae3ab5a596af52764715", "mode": "0640", "owner": "root", "size": 2503, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753178083.4295182-590151-117172725918181/source", "state": "file", "uid": 0}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "b4f2801440cde53042fe63d0e38b5c47342a3f62", "dest": "/etc/pam.d/password-auth.bak_2025-07-22T09:51:53Z", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "3a231e7b3eaa920efd3f9a2091c77903", "mode": "0640", "owner": "root", "size": 2491, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753178084.1255767-590151-227765912228915/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "/etc/pam.d/system-auth.163135.2025-07-22@05:54:43~", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "/etc/pam.d/password-auth.163157.2025-07-22@05:54:44~", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's authfail line with proper params after last password validation module] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "item": "system-auth", "msg": "Block inserted"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "item": "password-auth", "msg": "Block inserted"}
+
+TASK [mcx_hardening_4_role :  4.4.2.3 Ensure backup of PAM files before modification] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "dcae8ac842d9055d568ead74bade8ade63ac740e", "dest": "/etc/pam.d/system-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "b221d29d91782dac3030acba8e92f061", "mode": "0600", "owner": "root", "size": 2917, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "2bc495b451918d0d5cee0b0527769ec4fbf69237", "dest": "/etc/pam.d/password-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "27e18af870bea5a8d47bd5b2ed11a25d", "mode": "0600", "owner": "root", "size": 2855, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwquality module is enabled] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "item": "system-auth", "msg": "Block inserted"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "item": "password-auth", "msg": "Block inserted"}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_unix.so is present with use_authtok] ***
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_deny.so is present] **********
+changed: [192.168.91.171] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : 4.4.2.4 Backup system-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "e01d618045c03b1e9dd9fc61e4d0c08e7f380fd2", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "b8ca94ffe03662a2d9e701ec17d6f7b4", "mode": "0600", "owner": "root", "size": 3040, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup password-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "42a0c276f9b7b9e8053e2bab4fc879782e8716d1", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "4c492ebd8a508673ffc1b097c4152e93", "mode": "0600", "owner": "root", "size": 2989, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup system-auth before configuring password history remember] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "ccbb0ccc6cdb9c0f7bf022e1a78c16aa612cd3d5", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "459d0565f8feb37725c05261a0ffdb77", "mode": "0600", "owner": "root", "size": 3023, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in system-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before configuring password history remember] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "363748055ab83332f494298c37f9df9f891aa87b", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "11dd44d85002f56c55057d96fbc68e0d", "mode": "0600", "owner": "root", "size": 2972, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in password-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.2 Backup system-auth before enforcing password history for root] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "ccbb0ccc6cdb9c0f7bf022e1a78c16aa612cd3d5", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "459d0565f8feb37725c05261a0ffdb77", "mode": "0600", "owner": "root", "size": 3023, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.3 | Ensure password history is enforced for the root user in system-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role :  4.4.2.3.3 Backup password-auth before enforcing password history for root] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "363748055ab83332f494298c37f9df9f891aa87b", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "11dd44d85002f56c55057d96fbc68e0d", "mode": "0600", "owner": "root", "size": 2972, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 Backup system-auth before ensuring use_authtok] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "ccbb0ccc6cdb9c0f7bf022e1a78c16aa612cd3d5", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "459d0565f8feb37725c05261a0ffdb77", "mode": "0600", "owner": "root", "size": 3023, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4.1 Backup password-auth before ensuring use_authtok] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "363748055ab83332f494298c37f9df9f891aa87b", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "11dd44d85002f56c55057d96fbc68e0d", "mode": "0600", "owner": "root", "size": 2972, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.1 Backup system-auth before any changes] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "ccbb0ccc6cdb9c0f7bf022e1a78c16aa612cd3d5", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "459d0565f8feb37725c05261a0ffdb77", "mode": "0600", "owner": "root", "size": 3023, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.2 to 4.4 Backup password-auth before any changes] ***
+ok: [192.168.91.171] => {"changed": false, "checksum": "363748055ab83332f494298c37f9df9f891aa87b", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "11dd44d85002f56c55057d96fbc68e0d", "mode": "0600", "owner": "root", "size": 2972, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.3 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.4 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Backup system-auth before any changes] ************
+ok: [192.168.91.171] => {"changed": false, "checksum": "ccbb0ccc6cdb9c0f7bf022e1a78c16aa612cd3d5", "dest": "/etc/pam.d/system-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "459d0565f8feb37725c05261a0ffdb77", "mode": "0600", "owner": "root", "size": 3023, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before any changes] **********
+ok: [192.168.91.171] => {"changed": false, "checksum": "363748055ab83332f494298c37f9df9f891aa87b", "dest": "/etc/pam.d/password-auth.bak.20250722T055153840939", "gid": 0, "group": "root", "md5sum": "11dd44d85002f56c55057d96fbc68e0d", "mode": "0600", "owner": "root", "size": 2972, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.5.1.5  Ensure inactive password lock is 30 days or less | set fact days since_epoch] ***
+ok: [192.168.91.171] => {"ansible_facts": {"days_since_epoch": "20291.411030092593"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | capture users date in future] ***
+ok: [192.168.91.171] => {"changed": false, "cmd": "awk -F: '{ if ($3 > \"20291.411030092593\") { print $1 }  }' /etc/shadow\n", "delta": "0:00:00.005458", "end": "2025-07-22 05:54:59.590612", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 05:54:59.585154", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future] ***
+ok: [192.168.91.171] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.171] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1] [4.5.1.5]", "warn_count": "3"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.2.2 | Ensure root user umask is configured] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | set system account to non login shell] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "awk -F: '($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"' && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 }' /etc/passwd | while read user; do\n  usermod -s $(which nologin) $user\ndone\n", "delta": "0:00:00.009597", "end": "2025-07-22 05:55:00.281079", "msg": "", "rc": 0, "start": "2025-07-22 05:55:00.271482", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | lock not root system accounts] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "awk -F ':' '($1!=\"root\" && $1!~/^\\+/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!=\"L\" && $2!=\"LK\") {print $1}' | while read user; do\n  usermod -L $user\ndone\n", "delta": "0:00:00.189816", "end": "2025-07-22 05:55:00.792535", "msg": "", "rc": 0, "start": "2025-07-22 05:55:00.602719", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set] *************
+changed: [192.168.91.171] => {"changed": true, "cmd": "grep -i '^root:' /etc/shadow", "delta": "0:00:00.004943", "end": "2025-07-22 05:55:01.152877", "msg": "", "rc": 0, "start": "2025-07-22 05:55:01.147934", "stderr": "", "stderr_lines": [], "stdout": "root:$6$pth.ozxU2YWm4kvb$1MGohEwBqQTAIWwYNlI4FQwwH/4dcDhEGR6bVtFEuxcuHSvV8sIp/yoery0El1APWhmYc2WomfUgeTdc0hSY/1:20164:0:99999:7:::", "stdout_lines": ["root:$6$pth.ozxU2YWm4kvb$1MGohEwBqQTAIWwYNlI4FQwwH/4dcDhEGR6bVtFEuxcuHSvV8sIp/yoery0El1APWhmYc2WomfUgeTdc0hSY/1:20164:0:99999:7:::"]}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set MSG] *********
+ok: [192.168.91.171] => {
+    "msg": "rhel8repo 192.168.91.171 Root password status {'changed': True, 'stdout': 'root:$6$pth.ozxU2YWm4kvb$1MGohEwBqQTAIWwYNlI4FQwwH/4dcDhEGR6bVtFEuxcuHSvV8sIp/yoery0El1APWhmYc2WomfUgeTdc0hSY/1:20164:0:99999:7:::', 'stderr': '', 'rc': 0, 'cmd': \"grep -i '^root:' /etc/shadow\", 'start': '2025-07-22 05:55:01.147934', 'end': '2025-07-22 05:55:01.152877', 'delta': '0:00:00.004943', 'msg': '', 'stdout_lines': ['root:$6$pth.ozxU2YWm4kvb$1MGohEwBqQTAIWwYNlI4FQwwH/4dcDhEGR6bVtFEuxcuHSvV8sIp/yoery0El1APWhmYc2WomfUgeTdc0hSY/1:20164:0:99999:7:::'], 'stderr_lines': [], 'failed': False}"
+}
+
+TASK [mcx_hardening_4_role : 4.5.3.3 | PATCH | Ensure default user umask is configured] ***
+ok: [192.168.91.171] => (item={'path': '/etc/bashrc', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/bashrc"}, "msg": "", "rc": 0}
+ok: [192.168.91.171] => (item={'path': '/etc/profile', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/profile"}, "msg": "", "rc": 0}
+changed: [192.168.91.171] => (item={'path': '/etc/login.defs', 'line': 'UMASK'}) => {"ansible_loop_var": "item", "changed": true, "item": {"line": "UMASK", "path": "/etc/login.defs"}, "msg": "1 replacements made", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host] ***
+ok: [192.168.91.171] => (item=^(\$ModLoad imtcp)) => {"ansible_loop_var": "item", "changed": false, "item": "^(\\$ModLoad imtcp)", "msg": "", "rc": 0}
+ok: [192.168.91.171] => (item=^(\$InputTCPServerRun)) => {"ansible_loop_var": "item", "changed": false, "item": "^(\\$InputTCPServerRun)", "msg": "", "rc": 0}
+ok: [192.168.91.171] => (item=^(module\(load="imtcp"\))) => {"ansible_loop_var": "item", "changed": false, "item": "^(module\\(load=\"imtcp\"\\))", "msg": "", "rc": 0}
+ok: [192.168.91.171] => (item=^(input\(type="imtcp")) => {"ansible_loop_var": "item", "changed": false, "item": "^(input\\(type=\"imtcp\")", "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host] ***
+ok: [192.168.91.171] => (item=ModLoad imtcp) => {"ansible_loop_var": "item", "changed": false, "item": "ModLoad imtcp", "msg": "", "rc": 0}
+ok: [192.168.91.171] => (item=InputTCPServerRun) => {"ansible_loop_var": "item", "changed": false, "item": "InputTCPServerRun", "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Backup of /etc/logrotate.conf file] *********
+changed: [192.168.91.171] => {"changed": true, "checksum": "af68de4e50f46a643fa11d6e2e93cef399197bf5", "dest": "/etc/logrotate.conf.backup-20250722152504", "gid": 0, "group": "root", "md5sum": "4283e38e912049e6bfbdb78f59b54b9d", "mode": "0640", "owner": "root", "size": 438, "src": "/etc/logrotate.conf", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Ensure logrotate package is installed] ******
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_5_role : 5.1.3.1 Ensure /etc/logrotate.conf exists] ********
+changed: [192.168.91.171] => {"changed": true, "checksum": "5ab85c8a14e400d9fa645e672093709cf00cb047", "dest": "/etc/logrotate.conf", "gid": 0, "group": "root", "md5sum": "018de12a6ecae90443ad87161efe2a76", "mode": "0644", "owner": "root", "size": 92, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753178111.5642302-591362-125725808333242/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3.2 Ensure logrotate is scheduled via cron.daily] ***
+ok: [192.168.91.171] => {"changed": false, "stat": {"atime": 1753170301.6997256, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "us-ascii", "checksum": "e6ebba94d8b62b1d7d2e4fdacc74a129b24fe208", "ctime": 1710222274.235818, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 587226, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "text/x-shellscript", "mode": "0755", "mtime": 1515067126.0, "nlink": 1, "path": "/etc/cron.daily/logrotate", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 189, "uid": 0, "version": "2528289772", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+
+TASK [mcx_hardening_5_role : 5.1.3.3 Warn if logrotate cron job is missing] ****
+skipping: [192.168.91.171] => {"false_condition": "not logrotate_cron.stat.exists"}
+
+TASK [mcx_hardening_5_role : Ensure AIDE package is installed] *****************
+changed: [192.168.91.171] => {"changed": true, "msg": "", "rc": 0, "results": ["Installed: aide-0.16-14.el8_5.1.x86_64"]}
+
+TASK [mcx_hardening_5_role : Create systemd service unit for AIDE integrity check] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "884dccdde2cc05c565db587cf024789c832fe0ef", "dest": "/etc/systemd/system/aidecheck.service", "gid": 0, "group": "root", "md5sum": "2563f89545d38c4fb6409291f17df587", "mode": "0644", "owner": "root", "size": 97, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753178126.2544253-591424-222920646985695/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Create systemd timer unit for AIDE integrity check] ***
+changed: [192.168.91.171] => {"changed": true, "checksum": "79afd13040a733b311b37feeba4c6f9ca77d606f", "dest": "/etc/systemd/system/aidecheck.timer", "gid": 0, "group": "root", "md5sum": "8d685670060bd782014bc0bbda06de32", "mode": "0644", "owner": "root", "size": 126, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753178126.8328023-591452-224913770554140/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Reload systemd daemon] ****************************
+ok: [192.168.91.171] => {"changed": false, "name": null, "status": {}}
+
+TASK [mcx_hardening_5_role : Enable and start aidecheck timer] *****************
+changed: [192.168.91.171] => {"changed": true, "enabled": true, "name": "aidecheck.timer", "state": "started", "status": {"AccuracyUSec": "1min", "ActiveEnterTimestampMonotonic": "0", "ActiveExitTimestampMonotonic": "0", "ActiveState": "inactive", "After": "-.mount sysinit.target time-sync.target", "AllowIsolate": "no", "AssertResult": "no", "AssertTimestampMonotonic": "0", "Before": "timers.target shutdown.target aidecheck.service", "CanFreeze": "no", "CanIsolate": "no", "CanReload": "no", "CanStart": "yes", "CanStop": "yes", "CollectMode": "inactive", "ConditionResult": "no", "ConditionTimestampMonotonic": "0", "Conflicts": "shutdown.target", "DefaultDependencies": "yes", "Description": "Run AIDE integrity check daily", "FailureAction": "none", "FragmentPath": "/etc/systemd/system/aidecheck.timer", "FreezerState": "running", "Id": "aidecheck.timer", "IgnoreOnIsolate": "no", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestampMonotonic": "0", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "LastTriggerUSecMonotonic": "0", "LoadState": "loaded", "Names": "aidecheck.timer", "NeedDaemonReload": "no", "NextElapseUSecMonotonic": "infinity", "OnFailureJobMode": "replace", "Perpetual": "no", "Persistent": "yes", "RandomizedDelayUSec": "0", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterElapse": "yes", "Requires": "-.mount sysinit.target", "RequiresMountsFor": "/var/lib/systemd/timers", "Result": "success", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StateChangeTimestampMonotonic": "0", "StopWhenUnneeded": "no", "SubState": "dead", "SuccessAction": "none", "TimersCalendar": "{ OnCalendar=*-*-* 00:00:00 ; next_elapse=(null) }", "Transient": "no", "Triggers": "aidecheck.service", "Unit": "aidecheck.service", "UnitFilePreset": "disabled", "UnitFileState": "disabled", "WakeSystem": "no"}}
+
+TASK [mcx_hardening_5_role : Configure AIDE cron job as additional check] ******
+changed: [192.168.91.171] => {"changed": true, "envs": [], "jobs": ["Run AIDE integrity check (cron)"]}
+
+TASK [mcx_hardening_6_role : 6.1.10  Ensure permissions on /etc/shells are configured] ***
+ok: [192.168.91.171] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/shells", "size": 90, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Get list of world-writable files] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002", "delta": "0:00:01.256711", "end": "2025-07-22 05:55:30.021118", "msg": "", "rc": 0, "start": "2025-07-22 05:55:28.764407", "stderr": "", "stderr_lines": [], "stdout": "/etc/issue", "stdout_lines": ["/etc/issue"]}
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)] ***
+changed: [192.168.91.171] => (item=/etc/issue) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/etc/issue", "mode": "0531", "owner": "root", "path": "/etc/issue", "size": 66, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Find] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser", "delta": "0:00:03.068174", "end": "2025-07-22 05:55:33.742705", "msg": "", "rc": 0, "start": "2025-07-22 05:55:30.674531", "stderr": "", "stderr_lines": [], "stdout": "/var/lib/private/systemd/journal-upload", "stdout_lines": ["/var/lib/private/systemd/journal-upload"]}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix] ***
+changed: [192.168.91.171] => (item=/var/lib/private/systemd/journal-upload) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/var/lib/private/systemd/journal-upload", "mode": "0755", "owner": "root", "path": "/var/lib/private/systemd/journal-upload", "size": 6, "state": "directory", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup", "delta": "0:00:03.079384", "end": "2025-07-22 05:55:37.474150", "msg": "", "rc": 0, "start": "2025-07-22 05:55:34.394766", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix] ***
+skipping: [192.168.91.171] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.171] => {"changed": false, "cmd": "awk -F':' '($2 != \"x\" ) { print $1}' /etc/passwd", "delta": "0:00:00.005687", "end": "2025-07-22 05:55:37.797879", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 05:55:37.792192", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.171] => {"false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": ["pwconv"], "delta": "0:00:00.142984", "end": "2025-07-22 05:55:38.317275", "msg": "", "rc": 0, "start": "2025-07-22 05:55:38.174291", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.171] => {"changed": false, "cmd": "awk -F':' '($2 != \"x\" ) { print $1}' /etc/passwd", "delta": "0:00:00.005403", "end": "2025-07-22 05:55:38.628699", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 05:55:38.623296", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.171] => {"false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.171] => {"changed": false, "false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": ["pwconv"], "delta": "0:00:00.013001", "end": "2025-07-22 05:55:39.046660", "msg": "", "rc": 0, "start": "2025-07-22 05:55:39.033659", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3 | Ensure ENCRYPT_METHOD and crypt_style are set] ***
+ok: [192.168.91.171] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "ENCRYPT_METHOD SHA512", "path": "/etc/login.defs", "regexp": "^#?ENCRYPT_METHOD"}, "msg": ""}
+ok: [192.168.91.171] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "crypt_style = sha512", "path": "/etc/libuser.conf", "regexp": "^#?crypt_style"}, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3.1 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth] ***
+changed: [192.168.91.171] => (item=password) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password", "msg": "line replaced"}
+changed: [192.168.91.171] => (item=system) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system", "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.1 | Set password changed characters (difok)] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.2 | Set minimum password length (minlen)] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.3 | Set password complexity minimum character classes (minclass)] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.4 | Patch pwquality.conf for separated options (looped values)] ***
+changed: [192.168.91.171] => (item={'key': 'lcredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "lcredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.171] => (item={'key': 'ucredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ucredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.171] => (item={'key': 'dcredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "dcredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.171] => (item={'key': 'ocredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ocredit", "value": -1}, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.5 | Set maximum repeating characters allowed] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.6 | Set maximum sequential characters allowed] ***
+ok: [192.168.91.171] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.7 | Enforce password quality for root] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+RUNNING HANDLER [mcx_hardening_4_role : Restart_sshd_mac] **********************
+changed: [192.168.91.171] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ActiveEnterTimestampMonotonic": "265451112902", "ActiveExitTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ActiveExitTimestampMonotonic": "265451099417", "ActiveState": "active", "After": "sysinit.target basic.target system.slice sshd-keygen.target network.target systemd-journald.socket", "AllowIsolate": "no", "AllowedCPUs": "", "AllowedMemoryNodes": "", "AmbientCapabilities": "", "AssertResult": "yes", "AssertTimestamp": "Tue 2025-07-22 05:54:33 EDT", "AssertTimestampMonotonic": "265451101754", "Before": "multi-user.target shutdown.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "no", "CPUAffinity": "", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "[not set]", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ConditionTimestampMonotonic": "265451101754", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlPID": "0", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "man:sshd(8) man:sshd_config(5)", "DynamicUser": "no", "EffectiveCPUs": "", "EffectiveMemoryNodes": "", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "162858", "ExecMainStartTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ExecMainStartTimestampMonotonic": "265451104191", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOSchedulingClass": "0", "IOSchedulingPriority": "0", "IOWeight": "[not set]", "IPAccounting": "no", "IPEgressBytes": "18446744073709551615", "IPEgressPackets": "18446744073709551615", "IPIngressBytes": "18446744073709551615", "IPIngressPackets": "18446744073709551615", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Tue 2025-07-22 05:54:33 EDT", "InactiveEnterTimestampMonotonic": "265451100717", "InactiveExitTimestamp": "Tue 2025-07-22 05:54:33 EDT", "InactiveExitTimestampMonotonic": "265451104239", "InvocationID": "326d2275783e41ec99c0cb630de6863a", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "0", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "65536", "LimitMEMLOCKSoft": "65536", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "262144", "LimitNOFILESoft": "1024", "LimitNPROC": "128212", "LimitNPROCSoft": "128212", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "128212", "LimitSIGPENDINGSoft": "128212", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "162858", "MemoryAccounting": "yes", "MemoryCurrent": "1232896", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "MountFlags": "", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAMask": "", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "Perpetual": "no", "PrivateDevices": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "sysinit.target system.slice", "Restart": "on-failure", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardInputData": "", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Tue 2025-07-22 05:54:33 EDT", "StateChangeTimestampMonotonic": "265451112902", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "205139", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogTimestamp": "Tue 2025-07-22 05:54:33 EDT", "WatchdogTimestampMonotonic": "265451112901", "WatchdogUSec": "0"}}
+
+RUNNING HANDLER [mcx_hardening_4_role : Restart_sshd] **************************
+changed: [192.168.91.171] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ActiveEnterTimestampMonotonic": "265451112902", "ActiveExitTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ActiveExitTimestampMonotonic": "265451099417", "ActiveState": "active", "After": "sysinit.target basic.target system.slice sshd-keygen.target network.target systemd-journald.socket", "AllowIsolate": "no", "AllowedCPUs": "", "AllowedMemoryNodes": "", "AmbientCapabilities": "", "AssertResult": "yes", "AssertTimestamp": "Tue 2025-07-22 05:54:33 EDT", "AssertTimestampMonotonic": "265451101754", "Before": "multi-user.target shutdown.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "no", "CPUAffinity": "", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "[not set]", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ConditionTimestampMonotonic": "265451101754", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlPID": "0", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "man:sshd(8) man:sshd_config(5)", "DynamicUser": "no", "EffectiveCPUs": "", "EffectiveMemoryNodes": "", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "162858", "ExecMainStartTimestamp": "Tue 2025-07-22 05:54:33 EDT", "ExecMainStartTimestampMonotonic": "265451104191", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[Tue 2025-07-22 05:55:43 EDT] ; stop_time=[Tue 2025-07-22 05:55:43 EDT] ; pid=165743 ; code=exited ; status=0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOSchedulingClass": "0", "IOSchedulingPriority": "0", "IOWeight": "[not set]", "IPAccounting": "no", "IPEgressBytes": "18446744073709551615", "IPEgressPackets": "18446744073709551615", "IPIngressBytes": "18446744073709551615", "IPIngressPackets": "18446744073709551615", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Tue 2025-07-22 05:54:33 EDT", "InactiveEnterTimestampMonotonic": "265451100717", "InactiveExitTimestamp": "Tue 2025-07-22 05:54:33 EDT", "InactiveExitTimestampMonotonic": "265451104239", "InvocationID": "326d2275783e41ec99c0cb630de6863a", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "0", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "65536", "LimitMEMLOCKSoft": "65536", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "262144", "LimitNOFILESoft": "1024", "LimitNPROC": "128212", "LimitNPROCSoft": "128212", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "128212", "LimitSIGPENDINGSoft": "128212", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "162858", "MemoryAccounting": "yes", "MemoryCurrent": "1236992", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "MountFlags": "", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAMask": "", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "Perpetual": "no", "PrivateDevices": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "sysinit.target system.slice", "Restart": "on-failure", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardInputData": "", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Tue 2025-07-22 05:55:43 EDT", "StateChangeTimestampMonotonic": "265521255087", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "205139", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogTimestamp": "Tue 2025-07-22 05:54:33 EDT", "WatchdogTimestampMonotonic": "265451112901", "WatchdogUSec": "0"}}
+
+RUNNING HANDLER [mcx_hardening_5_role : Reload systemd] ************************
+ok: [192.168.91.171] => {"changed": false, "name": null, "status": {}}
+
+PLAY RECAP *********************************************************************
+192.168.91.171             : ok=125  changed=59   unreachable=0    failed=0    skipped=12   rescued=0    ignored=0   
+

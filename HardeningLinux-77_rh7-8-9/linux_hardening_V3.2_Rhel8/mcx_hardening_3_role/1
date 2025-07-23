@@ -1,0 +1,5 @@
+---
+# tasks file for ./mcx_hardening_3_role
+(3.1.3)			Ensure bluetooth services are not in use 
+(3.3.9)			Ensure suspicious packets are logged 
+(3.4.2.4)		Ensure network interfaces are assigned to appropriate zone

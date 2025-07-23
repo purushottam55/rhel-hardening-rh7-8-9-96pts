@@ -1,0 +1,35 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Check if module '{{ item.name }}' exists on disk] **********
+ok: [192.168.91.233] => (item=freevxfs)
+ok: [192.168.91.233] => (item=hfs)
+ok: [192.168.91.233] => (item=hfsplus)
+ok: [192.168.91.233] => (item=jffs2)
+ok: [192.168.91.233] => (item=usb-storage)
+
+TASK [TestingRole : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.233] => (item=freevxfs) 
+skipping: [192.168.91.233] => (item=hfs) 
+skipping: [192.168.91.233] => (item=hfsplus) 
+skipping: [192.168.91.233] => (item=jffs2) 
+skipping: [192.168.91.233] => (item=usb-storage) 
+skipping: [192.168.91.233]
+
+TASK [TestingRole : Unload module '{{ item.name }}' if loaded] *****************
+fatal: [192.168.91.233]: FAILED! => {"msg": "The conditional check ''{{ item.name }}' in ansible_facts.modules' failed. The error was: error while evaluating conditional ('{{ item.name }}' in ansible_facts.modules): 'dict object' has no attribute 'modules'. 'dict object' has no attribute 'modules'\n\nThe error appears to be in '/root/HardeningDevelopement96/linux_hardening_V3.2_testing/TestingRole/tasks/main.yml': line 26, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- name: \"Unload module '{{ item.name }}' if loaded\"\n  ^ here\nWe could be wrong, but this one looks like it might be an issue with\nmissing quotes. Always quote template expression brackets when they\nstart a value. For instance:\n\n    with_items:\n      - {{ foo }}\n\nShould be written as:\n\n    with_items:\n      - \"{{ foo }}\"\n"}
+...ignoring
+
+TASK [TestingRole : Verify module '{{ item.name }}' is not loaded] *************
+ok: [192.168.91.233] => (item=freevxfs)
+ok: [192.168.91.233] => (item=hfs)
+ok: [192.168.91.233] => (item=hfsplus)
+ok: [192.168.91.233] => (item=jffs2)
+ok: [192.168.91.233] => (item=usb-storage)
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=4    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+

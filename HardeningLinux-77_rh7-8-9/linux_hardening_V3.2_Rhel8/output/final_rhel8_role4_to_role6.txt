@@ -1,0 +1,423 @@
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_Rhel8]# ansible-playbook  linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] *********************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.4.1 Add line to sshd_config for allowusers] ************************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.4.2 Add line to sshd_config for allowgroups] ***********************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.4.3 Add line to sshd_config for denyusers] *************************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.4.4 Add line to sshd_config for denygroups] ************************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.6  Ensure only strong Ciphers are used] ****************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ********************************************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ********************************************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.11 | PATCH | Ensure only strong Key Exchange algorithms are used] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.2.14 | PATCH | Ensure sshd MACs are configured] **********************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.1.1 Ensure pam is installed and up to date] ************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role :  4.4.2.2.2 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so] ******
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so] ***************************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock is configured in account section] ********************************************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : Backup system-auth and password-auth before changes] *******************************************************************
+changed: [192.168.91.199] => (item=system-auth)
+changed: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so] *****************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's authfail line with proper params after last password validation module] **************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role :  4.4.2.3 Ensure backup of PAM files before modification] ***************************************************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwquality module is enabled] **********************************************************************
+changed: [192.168.91.199] => (item=system-auth)
+changed: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced] *******************************
+changed: [192.168.91.199] => (item=system-auth)
+changed: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_unix.so is present with use_authtok] **************************************************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_deny.so is present] *******************************************************************************
+ok: [192.168.91.199] => (item=system-auth)
+ok: [192.168.91.199] => (item=password-auth)
+
+TASK [mcx_hardening_4_role : 4.4.2.4 Backup system-auth before enabling pam_pwhistory] **************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth] *****************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Backup password-auth before enabling pam_pwhistory] ********************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Backup system-auth before configuring password history remember] *******************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in system-auth] *********************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Backup password-auth before configuring password history remember] *****************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in password-auth] *******************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.3.2 Backup system-auth before enforcing password history for root] ***********************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.3.3 | Ensure password history is enforced for the root user in system-auth] **************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role :  4.4.2.3.3 Backup password-auth before enforcing password history for root] ********************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth] ************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 Backup system-auth before ensuring use_authtok] **************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4.1 Backup password-auth before ensuring use_authtok] **********************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth] ************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.4.1 Backup system-auth before any changes] ***********************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.4.2 to 4.4 Backup password-auth before any changes] **************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.4.3 | Ensure pam_unix does not include nullok in system-auth] ****************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.3.4.4 | Ensure pam_unix does not include nullok in password-auth] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] *******************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] *****************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] *******************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] *****************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Backup system-auth before any changes] *********************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : Backup password-auth before any changes] *******************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ****************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] **************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] *******************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] *****************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] *******************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] *****************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.1.5  Ensure inactive password lock is 30 days or less | set fact days since_epoch] *********************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | capture users date in future] *******************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future] ***************************************
+ok: [192.168.91.199] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 | WARNING | Set fact for manual task warning.] *****************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.2.2 | Ensure root user umask is configured] ************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | set system account to non login shell] ************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | lock not root system accounts] ********************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set] **********************************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set MSG] ******************************************************************************
+ok: [192.168.91.199] => {
+    "msg": "NFR-ANCIBLETEST 192.168.91.199 Root password status {'changed': True, 'stdout': 'root:$6$qrlXVJM7HJ6DczlP$/sQ3EunOEGeM4VJZXc6hgAXR84F.L73AjvfM/xMfR1YfykouRukS2VeO494CcsSMsdUm.WUAmfxN9vOxfH4yQ.:20279:0:99999:7:::', 'stderr': '', 'rc': 0, 'cmd': \"grep -i '^root:' /etc/shadow\", 'start': '2025-07-20 07:07:16.490569', 'end': '2025-07-20 07:07:16.495658', 'delta': '0:00:00.005089', 'msg': '', 'stdout_lines': ['root:$6$qrlXVJM7HJ6DczlP$/sQ3EunOEGeM4VJZXc6hgAXR84F.L73AjvfM/xMfR1YfykouRukS2VeO494CcsSMsdUm.WUAmfxN9vOxfH4yQ.:20279:0:99999:7:::'], 'stderr_lines': [], 'failed': False}"
+}
+
+TASK [mcx_hardening_4_role : 4.5.3.3 | PATCH | Ensure default user umask is configured] *************************************************************
+ok: [192.168.91.199] => (item={'path': '/etc/bashrc', 'line': 'umask'})
+ok: [192.168.91.199] => (item={'path': '/etc/profile', 'line': 'umask'})
+ok: [192.168.91.199] => (item={'path': '/etc/login.defs', 'line': 'UMASK'})
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host] **********
+ok: [192.168.91.199] => (item=^(\$ModLoad imtcp))
+ok: [192.168.91.199] => (item=^(\$InputTCPServerRun))
+ok: [192.168.91.199] => (item=^(module\(load="imtcp"\)))
+ok: [192.168.91.199] => (item=^(input\(type="imtcp"))
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host] *************
+ok: [192.168.91.199] => (item=ModLoad imtcp)
+ok: [192.168.91.199] => (item=InputTCPServerRun)
+
+TASK [mcx_hardening_5_role : 5.1.3 Backup of /etc/logrotate.conf file] ******************************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : 5.1.3 Ensure logrotate package is installed] ***************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : 5.1.3.1 Ensure /etc/logrotate.conf exists] *****************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : 5.1.3.2 Ensure logrotate is scheduled via cron.daily] ******************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : 5.1.3.3 Warn if logrotate cron job is missing] *************************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Ensure AIDE package is installed] **************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Create systemd service unit for AIDE integrity check] ******************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Create systemd timer unit for AIDE integrity check] ********************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Reload systemd daemon] *************************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Enable and start aidecheck timer] **************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_5_role : Configure AIDE cron job as additional check] ***************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.10  Ensure permissions on /etc/shells are configured] **************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Get list of world-writable files] ****************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)] ****************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Find] ************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix] *************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find] **********************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix] ***********************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID executables are reviewed | Find SUID executables] *****************************************
+ok: [192.168.91.199] => (item=/)
+ok: [192.168.91.199] => (item=/boot)
+ok: [192.168.91.199] => (item=/home)
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables] **********************************
+ok: [192.168.91.199] => (item=/)
+ok: [192.168.91.199] => (item=/boot)
+ok: [192.168.91.199] => (item=/home)
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Flatten suid_executables results for easier use] ************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Set fact SGID executables] **********************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | PATCH | Ensure SUID and SGID files are reviewed | Remove SUID bit] ********************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | PATCH | Audit SGID executables | Remove SGID bit] *************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SUID executables exist] ********************************
+ok: [192.168.91.199] => {
+    "msg": [
+        "Warning!! You have SUID executables",
+        "The files are listed below, please confirm the integrity of these binaries",
+        []
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SGID executables exist] ********************************
+ok: [192.168.91.199] => {
+    "msg": [
+        "Warning!! You have SGID executables",
+        "The files listed below, please review the integrity of these binaries",
+        []
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARNING | Set fact for manual task warning.] ******************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ********
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ******************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] *******************************************************************
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] *********************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Get root PATH variable] ********************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Split root PATH entries] *******************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Check for empty directory (::) in PATH] ****************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Check for trailing colon in PATH] **********************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.8 | DEBUG | Report empty or trailing colon warnings] ***************************************************************
+ok: [192.168.91.199] => {
+    "msg": "PATH format looks OK.\n"
+}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Get stat for all PATH directories] *********************************************************************
+ok: [192.168.91.199] => (item=/usr/local/sbin)
+ok: [192.168.91.199] => (item=/sbin)
+ok: [192.168.91.199] => (item=/bin)
+ok: [192.168.91.199] => (item=/usr/sbin)
+ok: [192.168.91.199] => (item=/usr/bin)
+ok: [192.168.91.199] => (item=/root/bin)
+
+TASK [mcx_hardening_6_role : 6.2.8 | PATCH | Correct ownership and permissions on PATH directories] *************************************************
+ok: [192.168.91.199] => (item=/usr/local/sbin)
+skipping: [192.168.91.199] => (item=/sbin)
+skipping: [192.168.91.199] => (item=/bin)
+ok: [192.168.91.199] => (item=/usr/sbin)
+ok: [192.168.91.199] => (item=/usr/bin)
+skipping: [192.168.91.199] => (item=/root/bin)
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3 | Ensure ENCRYPT_METHOD and crypt_style are set] ***********************************************************
+ok: [192.168.91.199] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'})
+ok: [192.168.91.199] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'})
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3.1 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth] *******************************
+changed: [192.168.91.199] => (item=password)
+changed: [192.168.91.199] => (item=system)
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.1 | Set password changed characters (difok)] *****************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.2 | Set minimum password length (minlen)] ********************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.3 | Set password complexity minimum character classes (minclass)] ********************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.4 | Patch pwquality.conf for separated options (looped values)] **********************************************
+ok: [192.168.91.199] => (item={'key': 'lcredit', 'value': -1})
+ok: [192.168.91.199] => (item={'key': 'ucredit', 'value': -1})
+ok: [192.168.91.199] => (item={'key': 'dcredit', 'value': -1})
+ok: [192.168.91.199] => (item={'key': 'ocredit', 'value': -1})
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.5 | Set maximum repeating characters allowed] ****************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.6 | Set maximum sequential characters allowed] ***************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.7 | Enforce password quality for root] ***********************************************************************
+ok: [192.168.91.199]
+
+PLAY RECAP ******************************************************************************************************************************************
+192.168.91.199             : ok=107  changed=20   unreachable=0    failed=0    skipped=12   rescued=0    ignored=0
+
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_Rhel8]#
+

@@ -1,0 +1,21 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Find world-writable files (excluding system paths)] ********
+ok: [192.168.91.233]
+
+TASK [TestingRole : Remove other write permission from world-writable files] ***
+skipping: [192.168.91.233]
+
+TASK [TestingRole : Find world-writable directories (excluding system paths)] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure sticky bit is set on world-writable directories] ****
+skipping: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=3    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+

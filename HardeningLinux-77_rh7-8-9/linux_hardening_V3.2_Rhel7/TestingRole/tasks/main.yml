@@ -1,0 +1,1208 @@
+ 
+#This role is dedicated to test one by one task at a time. This file is soft link      ln TestingRole/tasks/main.yml testHere.yml   ie. shortcut to file
+
+---
+
+
+
+- name: "Ensure only approved services are listening on a network interface"
+  debug:
+    msg: 'We have already implemented disabling services in Script prev @Mcx - Discussed with infra'
+
+
+
+
+#- name: " 4.4.2.1.1 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so"
+#  blockinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    insertafter: '^auth.*pam_env\.so'
+#    block: |
+#      auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900 even_deny_root
+#    create: no
+#    state: present
+#    marker: "# {mark} ANSIBLE MANAGED BLOCK - pam_faillock preauth"
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so"
+#  lineinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    insertafter: '^auth.*pam_unix\.so'
+#    line: 'auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 even_deny_root'
+#    create: no
+#    state: present
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "4.4.2.1.1 Ensure pam_faillock is configured in account section"
+#  lineinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    regexp: '^account\s+required\s+pam_faillock\.so'
+#    line: 'account     required      pam_faillock.so'
+#    insertafter: '^account'
+#    state: present
+#  loop:
+#    - system-auth
+#    - password-auth
+# Note for above task : if pam user get locked : use following command => # faillock --user testuser --reset
+
+
+
+#- name: "4.4.2.2.1 Ensure pam_pwquality module is enabled |  Ensure backup of PAM files before modification"
+#  copy:
+#    src: "/etc/pam.d/{{ item }}"
+#    dest: "/etc/pam.d/{{ item }}.pre_ansible.bak"
+#    remote_src: yes
+#    owner: root
+#    group: root
+#    mode: '0600'
+#    backup: yes
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "Ensure pam_pwquality.so is first password module with correct arguments"
+#  blockinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    marker: "# {mark} ANSIBLE MANAGED BLOCK - PAM PWQUALITY"
+#    insertafter: '^#%PAM-1.0'
+#    block: |
+#      password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "Ensure pam_pwhistory.so is present with correct options, use_authtok enforced"
+#  lineinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    insertafter: 'pam_pwquality.so.*'
+#    regexp: '^\s*password\s+required\s+pam_pwhistory\.so.*'
+#    line: 'password    required     pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok'
+#    state: present
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "Ensure pam_unix.so is present with use_authtok"
+#  lineinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    insertafter: 'pam_pwhistory.so.*'
+#    regexp: '^\s*password\s+sufficient\s+pam_unix\.so.*'
+#    line: 'password    sufficient   pam_unix.so sha512 shadow try_first_pass use_authtok'
+#    state: present
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+#- name: "Ensure pam_deny.so is present"
+#  lineinfile:
+#    path: "/etc/pam.d/{{ item }}"
+#    insertafter: 'pam_unix.so.*'
+#    regexp: '^\s*password\s+required\s+pam_deny\.so.*'
+#    line: 'password    required     pam_deny.so'
+#    state: present
+#  loop:
+#    - system-auth
+#    - password-auth
+#
+
+
+
+#- name: "5.3.2 | PATCH | Ensure filesystem integrity is regularly checked"
+#  block:
+#
+#    - name: Ensure AIDE package is installed
+#      ansible.builtin.yum:
+#        name: aide
+#        state: present
+#
+#    - name: Create systemd service unit for AIDE integrity check
+#      ansible.builtin.copy:
+#        dest: /etc/systemd/system/aidecheck.service
+#        content: |
+#          [Unit]
+#          Description=AIDE integrity check
+#
+#          [Service]
+#          Type=oneshot
+#          ExecStart=/usr/sbin/aide --check
+#        owner: root
+#        group: root
+#        mode: '0644'
+#      notify: Reload systemd
+#
+#    - name: Create systemd timer unit for AIDE integrity check
+#      ansible.builtin.copy:
+#        dest: /etc/systemd/system/aidecheck.timer
+#        content: |
+#          [Unit]
+#          Description=Run AIDE integrity check daily
+#
+#          [Timer]
+#          OnCalendar=daily
+#          Persistent=true
+#
+#          [Install]
+#          WantedBy=timers.target
+#        owner: root
+#        group: root
+#        mode: '0644'
+#      notify: Reload systemd
+#
+#    - name: Reload systemd daemon
+#      ansible.builtin.systemd:
+#        daemon_reload: yes
+#
+#    - name: Enable and start aidecheck timer
+#      ansible.builtin.systemd:
+#        name: aidecheck.timer
+#        enabled: true
+#        state: started
+#
+#    - name: Configure AIDE cron job as additional check
+#      ansible.builtin.cron:
+#        name: "Run AIDE integrity check (cron)"
+#        user: root
+#        minute: "0"
+#        hour: "5"
+#        job: "/usr/sbin/aide --check"
+
+#  handlers:
+ #   - name: Reload systemd
+#      ansible.builtin.systemd:
+#        daemon_reload: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client"
+#  notify: Restart_rsyslog
+
+#  block:
+#    - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host"
+#      ansible.builtin.replace:
+#        path: /etc/rsyslog.conf
+#        regexp: '{{ item }}'
+#        replace: '#\1'
+#      loop:
+#        - '^(\$ModLoad imtcp)'
+#        - '^(\$InputTCPServerRun)'
+#        - '^(module\(load="imtcp"\))'
+#        - '^(input\(type="imtcp")'
+#
+#    - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host"
+#      ansible.builtin.replace:
+#        path: /etc/rsyslog.conf
+#        regexp: '^#(.*{{ item }}.*)'
+#        replace: '\1'
+#      loop:
+#        - 'ModLoad imtcp'
+#        - 'InputTCPServerRun'
+#- name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords"
+#  vars:
+#      warn_control_id: '6.2.1'
+#  block:
+#      - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords"
+#        ansible.builtin.shell: awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
+#        changed_when: false
+#        failed_when: false
+#        register: rhel7cis_6_2_1_nonshadowed_users
+#
+#      - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings"
+#        when: rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0
+#        ansible.builtin.debug:
+#            msg:
+#                - "Warning!! You have users that are not using a shadowed password. Please convert the below accounts to use a shadowed password"
+#                - "{{ rhel7cis_6_2_1_nonshadowed_users.stdout_lines }}"
+#
+#      - name: "6.2.1 | WARN | Ensure accounts in /etc/passwd use shadowed passwords | warn_count"
+#        when: rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0
+#        ansible.builtin.import_tasks:
+#            file: warning_facts.yml
+#      
+#      - name: "6.2.1 | Remediate | Run pwconv to convert passwords to shadow"
+#        ansible.builtin.command: pwconv
+#        become: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: "4.2.9 | PATCH | Ensure sshd GSSAPIAuthentication is disabled"
+#  notify: Restart_sshd
+#  ansible.builtin.lineinfile:
+#    path: /etc/ssh/sshd_config
+#    regexp: ^(?i)(#|)\s*gssapiauthentication
+#    line: 'GSSAPIAuthentication no'
+#    validate: 'sshd -t -f %s'
+
+#- name: "4.2.12 | PATCH | Ensure only strong Key Exchange algorithms are used"
+#  notify: Restart_sshd
+#  ansible.builtin.lineinfile:
+#    path: /etc/ssh/sshd_config
+#    regexp: '^KexAlgorithms'
+#    line: "KexAlgorithms {{ rhel7cis_sshd['kex'] }}"
+#    validate: 'sshd -t -f %s'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed"
+#  vars:
+#    warn_control_id: '6.1.13'
+#lock:
+#    - name: "6.1.13 | AUDIT | Ensure SUID executables are reviewed | Find SUID executables"
+#      ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -4000 -not -fstype nfs
+#      changed_when: false
+#      failed_when: false
+#      check_mode: false
+#      register: rhel7cis_6_1_13_suid_executables
+#      loop: "{{ ansible_facts.mounts }}"
+#      loop_control:
+#        label: "{{ item.mount }}"
+#
+#    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables"
+#      ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -2000 -not -fstype nfs
+#      changed_when: false
+#      failed_when: false
+#      check_mode: false
+#      register: rhel7cis_6_1_13_sgid_executables
+#      loop: "{{ ansible_facts.mounts }}"
+#      loop_control:
+#        label: "{{ item.mount }}"
+#
+#    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Flatten suid_executables results for easier use"
+#      ansible.builtin.set_fact:
+#        rhel7cis_6_1_13_suid_executables_flatten: "{{ rhel7cis_6_1_13_suid_executables.results | map(attribute='stdout_lines') | flatten }}"
+#
+#    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Set fact SGID executables"
+#      ansible.builtin.set_fact:
+#        rhel7cis_6_1_13_sgid_executables_flatten: "{{ rhel7cis_6_1_13_sgid_executables.results | map(attribute='stdout_lines') | flatten }}"
+#
+#    - name: "6.1.13 | PATCH | Ensure SUID and SGID files are reviewed | Remove SUID bit"
+#      ansible.builtin.file:
+#        path: "{{ item }}"
+#        mode: 'u-s'
+#      loop: "{{ rhel7cis_6_1_13_suid_executables_flatten }}"
+#
+#    - name: "6.1.13 | PATCH | Audit SGID executables | Remove SGID bit"
+#      ansible.builtin.file:
+#        path: "{{ item }}"
+#        mode: 'g-s'
+#      with_items:
+#        - "{{ rhel7cis_6_1_13_sgid_executables_flatten }}"
+#
+#    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SUID executables exist"
+#      ansible.builtin.debug:
+#        msg:
+#          - "Warning!! You have SUID executables"
+#          - "The files are listed below, please confirm the integrity of these binaries"
+#          - "{{ rhel7cis_6_1_13_suid_executables_flatten }}"
+#
+#    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SGID executables exist"
+#      ansible.builtin.debug:
+#        msg:
+#          - "Warning!! You have SGID executables"
+#          - "The files listed below, please review the integrity of these binaries"
+#          - "{{ rhel7cis_6_1_13_sgid_executables_flatten }}"
+#
+#    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Warn Count"
+#      ansible.builtin.import_tasks:
+#        file: warning_facts.yml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# This point is tested and but need to configure actual values from the email. # check email for values. 
+#- name: "5.1.2.6 | PATCH | Ensure journald log rotation is configured per site policy"
+#  ansible.builtin.lineinfile:
+#      path: /etc/systemd/journald.conf
+#      regexp: "{{ item.regexp }}"
+#      line: "{{ item.line }}"
+##  notify: Restart_journald
+#  loop:
+#      - { regexp: '^#SystemMaxUse=|^SystemMaxUse=', line: 'SystemMaxUse=50M'}
+#      - { regexp: '^#SystemKeepFree=|^SystemKeepFree=', line: 'SystemKeepFree={{ rhel7cis_journald_systemkeepfree }}' }
+#      - { regexp: '^#RuntimeMaxUse=|^RuntimeMaxUse=', line: 'RuntimeMaxUse={{ rhel7cis_journald_runtimemaxuse }}'}
+#      - { regexp: '^#RuntimeKeepFree=|^RuntimeKeepFree=', line: 'RuntimeKeepFree={{ rhel7cis_journald_runtimekeepfree }}'}
+#     - { regexp: '^#MaxFileSec=|^MaxFileSec=', line: 'MaxFileSec={{ rhel7cis_journald_maxfilesec }}'}
+
+
+
+
+
+#- name: "6.2.8 | PATCH | Ensure root PATH Integrity"
+#  block:
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths"
+#        ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+#        changed_when: false
+#        register: rhel7cis_6_2_8_root_paths
+#
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Get root paths"
+#        ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2 | tr ":" "\n"
+#        changed_when: false
+#        register: rhel7cis_6_2_8_root_paths_split
+#
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Set fact"
+#        ansible.builtin.set_fact:
+#            root_paths: "{{ rhel7cis_6_2_8_root_paths.stdout }}"
+#
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for empty dirs"
+#        ansible.builtin.shell: 'echo {{ root_paths }} | grep -q "::" && echo "roots path contains a empty directory (::)"'
+#        changed_when: false
+#        failed_when: rhel7cis_6_2_8_root_path_empty_dir.rc not in [ 0, 1 ]
+#        register: rhel7cis_6_2_8_root_path_empty_dir
+#
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for trailing ':'"
+#        ansible.builtin.shell: '{{ root_paths }} | cut -d= -f2 | grep -q ":$" && echo "roots path contains a trailing (:)"'
+#        changed_when: false
+#        failed_when: rhel7cis_6_2_8_root_path_trailing_colon.rc not in [ 0, 1 ]
+#        register: rhel7cis_6_2_8_root_path_trailing_colon
+#
+#      - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions"
+#        block:
+#            - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Check for owner and permissions"
+#              ansible.builtin.stat:
+#                  path: "{{ item }}"
+#              register: rhel7cis_6_2_8_root_path_perms
+#              loop: "{{ rhel7cis_6_2_8_root_paths_split.stdout_lines }}"
+#
+#            - name: "6.2.8 | AUDIT | Ensure root PATH Integrity | Set permissions"
+#              when:
+#                  - item.stat.exists
+#                  - item.stat.isdir
+#                  - item.stat.pw_name != 'root' or item.stat.gr_name != 'root' or item.stat.woth or item.stat.wgrp
+#                  - (item != 'root') and (not rhel7cis_uses_root)
+#              ansible.builtin.file:
+#                  path: "{{ item.stat.path }}"
+#                  state: directory
+#                  owner: root
+#                  group: root
+#                  mode: '0755'
+#                  follow: false
+#              loop: "{{ rhel7cis_6_2_8_root_path_perms.results }}"
+#              loop_control:
+#                  label: "{{ item }}"
+
+
+
+#- name: "4.2.6 | PATCH | Ensure only strong Ciphers are used"
+#  ansible.builtin.lineinfile:
+#    path: /etc/ssh/sshd_config
+#    regexp: '^Ciphers'
+#    line: "Ciphers aes256-ctr,aes192-ctr,aes128-ctr"
+#    state: present
+#    validate: 'sshd -t -f %s'
+#
+#- name: Restart sshd after changes
+#  ansible.builtin.service:
+#    name: sshd
+#    state: restarted
+
+
+
+#- name: "4.5.3.3 | PATCH | Ensure default user umask is configured"
+#  ansible.builtin.replace:
+#      path: "{{ item.path }}"
+#      regexp: (?i)(umask\s+\d\d\d)
+#      replace: '{{ item.line }} 027'
+#  loop:
+#      - { path: '/etc/bashrc', line: 'umask' }
+#      - { path: '/etc/profile', line: 'umask' }
+#      - { path: '/etc/login.defs', line: 'UMASK' }
+
+
+
+
+#- name: "4.4.2.1.3 | PATCH | Ensure password unlock time is configured properly with correct ordering and options"
+#  block:
+#    - name: "Backup system-auth and password-auth before changes"
+#      copy:
+#        src: "/etc/pam.d/{{ item }}"
+#        dest: "/etc/pam.d/{{ item }}.bak_{{ ansible_date_time.iso8601 }}"
+#        backup: yes
+#      loop:
+#        - system-auth
+#        - password-auth
+#
+#    - name: "Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so"
+#      lineinfile:
+#        path: "/etc/pam.d/{{ item }}"
+#        regexp: '^auth\s+required\s+pam_faillock.so\s+preauth.*$'
+#        line: "auth required pam_faillock.so preauth silent audit deny=5 unlock_time=900 even_deny_root"
+#        insertafter: '^auth\s+required\s+pam_env.so'
+#        create: yes
+#        backup: yes
+#      loop:
+#        - system-auth
+#        - password-auth
+#
+#    - name: "Ensure pam_faillock's authfail line with proper params after last password validation module"
+#      blockinfile:
+#        path: "/etc/pam.d/{{ item }}"
+#        marker: "# {mark} ANSIBLE MANAGED BLOCK pam_faillock authfail"
+#        insertafter: '^auth\s+requisite\s+pam_succeed_if.so.*$'
+#        block: |
+#          auth [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 even_deny_root
+#      loop:
+#        - system-auth
+#        - password-auth
+
+
+#- name: "6.1.10  Ensure permissions on /etc/security/opasswd are configured"
+
+#  ansible.builtin.file:
+#      path: /etc/security/opasswd
+#      owner: root
+#      group: root
+#      mode: '0600'
+
+
+#- name: "6.1.9  Ensure permissions on /etc/shells are configured"
+#  ansible.builtin.file:
+#      path: /etc/shells
+#      owner: root
+#      group: root
+#      mode: u-x,go-wx
+
+
+#- name: "4.2.7 Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
+#  block:
+#      - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval"
+#        ansible.builtin.lineinfile:
+#            path: /etc/ssh/sshd_config
+#            regexp: '^ClientAliveInterval'
+#            line: "ClientAliveInterval 7200"
+#            validate: 'sshd -t -f %s'
+#
+#      - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set"
+#        ansible.builtin.lineinfile:
+#            path: /etc/ssh/sshd_config
+#            regexp: '^ClientAliveCountMax'
+#            line: "ClientAliveCountMax 0"
+#            validate: 'sshd -t -f %s'
+#
+#- name: "Restart sshd after changes"
+#  command: systemctl restart sshd.service
+
+
+
+#- name: "3.3.9  Ensure suspicious packets are logged"
+#  become: true
+#  lineinfile:
+#    path: /etc/sysctl.conf
+#    regexp: '^net\.ipv4\.conf\.all\.log_martians'
+#    line: 'net.ipv4.conf.all.log_martians=1'
+#    state: present
+#
+#- name: Ensure net.ipv4.conf.default.log_martians is set to 1 in sysctl.conf
+#  become: true
+#  lineinfile:
+#    path: /etc/sysctl.conf
+#    regexp: '^net\.ipv4\.conf\.default\.log_martians'
+#    line: 'net.ipv4.conf.default.log_martians=1'
+#    state: present
+#
+#- name: Reload sysctl settings to apply changes
+#  become: true
+#  command: sysctl -p /etc/sysctl.conf
+
+
+#==================================above done by pn
+
+
+#- name: Ensure preauth line is present
+#  lineinfile:
+#    path: "{{ item }}"
+#    line: "auth        required      pam_faillock.so preauth silent audit deny={{ deny }} unlock_time={{ unlock_time }} even_deny_root"
+#    insertafter: '^auth.*pam_env.so'
+#    regexp: 'pam_faillock.so.*preauth'
+#  loop: "{{ auth_files }}"
+#
+#- name: Ensure authfail line is present
+#  lineinfile:
+#    path: "{{ item }}"
+#    line: "auth        [default=die] pam_faillock.so authfail audit deny={{ deny }} unlock_time={{ unlock_time }} even_deny_root"
+#    insertafter: '^auth.*pam_unix.so'
+#    regexp: 'pam_faillock.so.*authfail'
+#  loop: "{{ auth_files }}"
+#
+#- name: Ensure unlock_time is set in faillock.conf
+#  lineinfile:
+#    path: /etc/security/faillock.conf
+#    regexp: '^unlock_time\s*='
+#    line: "unlock_time = {{ unlock_time }}"
+#  create: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Below point is available for rhel 8+
+#- name: 5.1.2.1.1 Ensure systemd-journald remote is installed
+#  yum:
+#    name: systemd-journal-remote
+#    state: present
+
+#- name: 5.1.2.1.3 Ensure systemd-journald remote is enabled
+#  systemd:
+#    name: systemd-journal-remote.service
+#    enabled: true
+#    state: started
+
+#- name: 5.1.2.1.3 Ensure systemd-journald remote upload is enabled
+#  systemd:
+#    name: systemd-journal-upload.service
+#    enabled: true
+#    state: started
+
+#- name: 5.1.3 Backup of /etc/logrotate.conf file
+#  copy:
+#    src: /etc/logrotate.conf
+#    dest: "/etc/logrotate.conf.backup-{{ '%Y%m%d%H%M%S' | strftime}}"
+#    remote_src: yes
+#  ignore_errors: yes
+
+#- name: 5.1.3 Ensure logrotate package is installed
+#  yum:
+#    name: logrotate
+#    state: present
+
+#- name: 5.1.3.1 Ensure /etc/logrotate.conf exists
+#  copy:
+#    dest: /etc/logrotate.conf
+#    content: |
+#      daily
+#      rotate 7
+#      compress
+#      missingok
+#      notifempty
+#      create 0640 root utmp
+#      include /etc/logrotate.d
+#    mode: '0644'
+#    owner: root
+#    group: root
+
+#- name: 5.1.3.2 Ensure logrotate is scheduled via cron.daily
+#  stat:
+#    path: /etc/cron.daily/logrotate
+#  register: logrotate_cron
+
+#- name: 5.1.3.3 Warn if logrotate cron job is missing
+#  debug:
+#    msg: "Logrotate cron is missing in /etc/cron.daily"
+#  when: not logrotate_cron.stat.exists
+
+
+
+
+
+
+#- name: 6.1.11 Ensure no world writable files exist
+#  block:
+#    - name: 6.1.11 Ensure no world writable files exist | Get list of world-writable files
+#      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+#      register: output_6_1_11
+#    - name: 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)
+ #     file:
+#        path: '{{ item }}'
+# #       mode: o-w
+#      loop: "{{ output_6_1_11.stdout_lines }}"
+#      when: output_6_1_11.stdout_lines is defined and output_6_1_11.stdout_lines | length > 0
+
+
+#- name: 6.1.12 Ensure no unowned files or directories exist (Automated)
+#  block:
+#    - name: 6.1.12 Ensure no unowned files or directories exist (Automated) | Find
+#      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser
+#      register: output_6_1_12
+#    - name: 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix
+#      file:
+#        path: "{{ item }}"
+#        owner: root
+ ##       group: root
+ #     loop: "{{ output_6_1_12.stdout_lines }}"
+  #    when: output_6_1_12.stdout_lines is defined and output_6_1_12.stdout_lines | length > 0
+
+
+#- name: 6.1.13 Ensure no ungrouped files or directories exist (Automated)
+#  block:
+#    - name: 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find
+#      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup
+#      register: output_6_1_13
+ #   - name: 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix
+#      file:
+#        path: "{{ item }}"
+#        owner: root
+#        group: root
+#      loop: "{{ output_6_1_13.stdout_lines }}"
+#      when: output_6_1_13.stdout_lines is defined and output_6_1_13.stdout_lines | length > 0
+
+
+#- name: 5.6.2 Ensure system accounts are secured (Automated)
+#  block:
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | set system account to non login shell
+#      shell: awk -F: ($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 } /etc/passwd | while read user; do usermod -s $(which nologin) $user; done
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | lock not root system accounts
+#      shell: awk -F ':' '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}' | while read user do usermod -L $user done
+
+#- name: 5.6.2 Ensure system accounts are secured (Automated)
+#  block:
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | set system account to non login shell
+#      shell: |
+#        awk -F: '($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 }' /etc/passwd | while read user; do
+#          usermod -s $(which nologin) $user
+#        done
+#
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | lock not root system accounts
+#      shell: |
+#        awk -F ':' '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}' | while read user; do
+#          usermod -L $user
+#        done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- name: 4.2.2.1.1       Ensure systemd-journal-remote is installed (Manual) | Install systemd-journal-remote package
+  package:
+    name: systemd-journal-remote
+    state: latest
+  ignore_errors: true
+
+
+
+# 4.2.2.1.2     Ensure systemd-journal-remote is configured (Manual)
+
+- name: 4.2.2.1.2       Ensure systemd-journal-remote is configured (Manual) Set configuration options in systemd-journal-upload.conf
+  blockinfile:
+    path: /etc/systemd/journal-upload.conf
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item }}"
+    block: |
+      URL=192.168.91.233
+      ServerKeyFile=/etc/ssl/private/journal-upload.pem
+      ServerCertificateFile=/etc/ssl/certs/journal-upload.pem
+      TrustedCertificateFile=/etc/ssl/ca/trusted.pem
+  loop: ['']
+  notify:
+    - Restart systemd-journal-upload
+  ignore_errors: true
+
+
+# 4.2.2.1.3     Ensure systemd-journal-remote is enabled (Manual)
+
+#- name: 4.2.2.1.3       Ensure systemd-journal-remote is enabled (Manual) | Enable and start systemd-journal-upload
+#  service:
+#    name: systemd-journal-upload.service
+#    state: started
+#    enabled: yes
+#  ignore_errors: true
+#
+#
+#- name: 4.2.2.1.4 Ensure journald is not configured to recieve logs from a remote client (Automated) 
+#  systemd:
+#    name: systemd-journal-remote.socket
+#    state: stopped
+#    masked: yes
+#  ignore_errors: true
+
+#- name: 4.2.2.1.4      Ensure journald is not configured to recieve logs from a remote client (Automated) | Mask systemd-journal-remote.socket using systemctl
+# systemd:
+#   name: systemd-journal-remote.socket
+#   state: masked
+#
+
+#- name: 4.2.2.1.3       Ensure systemd-journal-remote is enabled (Manual) | Enable and start systemd-journal-upload
+#  service:
+#    name: systemd-journald
+#    state: started
+#    enabled: yes
+#  ignore_errors: true
+
+
+- name: 4.2.2.1.3 Ensure systemd-journal-upload is enabled and started
+  service:
+    name: systemd-journal-upload.service
+    state: started
+    enabled: yes
+  ignore_errors: true
+
+- name: 4.2.2.1.3 Ensure systemd-journald is enabled and started
+  service:
+    name: systemd-journald
+    state: started
+    enabled: yes
+  ignore_errors: true
+
+- name: 4.2.2.1.4 Ensure journald is not configured to receive logs from a remote client - stop and mask socket
+  systemd:
+    name: systemd-journal-remote.socket
+    state: stopped
+    masked: yes
+  ignore_errors: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: 5.6.2 Ensure system accounts are secured (Automated)
+ # block:
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | set system account to non login shell
+#      shell: awk -F: ($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 } /etc/passwd | while read user; do usermod -s $(which nologin) $user; done
+#    - name: 5.6.2 Ensure system accounts are secured (Automated) | lock not root system accounts
+#      shell: awk -F ':' '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}' | while read user do usermod -L $user done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: 5.1.2.1.1 Install systemd-jounald-remote
+#  yum:
+#    name: systemd-journal-remote
+#    state: present
+
+#- name: Ensure root password is set
+#  shell: grep -i '^root:' /etc/shadow
+#  register: root_shadow
+  
+#- name: debug message
+#  debug: 
+#    msg: "{{ ansible_hostname }} {{ ansible_default_ipv4.address }} Root password status {{ root_shadow }}"
+
+
+#- name: 1.9 Ensure updates, patches, and additional security software are installed (Check Only)
+#  ansible.builtin.command: yum check-update
+#  register: yum_updates
+#  ignore_errors: true
+
+#- name: Show available updates
+#  ansible.builtin.debug:
+#    var: yum_updates.stdout_lines
+    
+
+#- name: Find world-writable files (excluding system paths)
+#  find:
+#    paths: /
+#    recurse: yes
+#    file_type: file
+#    mode: '0002'
+#    excludes:
+#      - /proc
+#      - /sys
+#      - /run/user
+#      - /snap
+ #     - /dev
+ #     - /var/lib/containerd
+#      - /var/lib/kubelet/pods
+#    follow: false
+#  register: ww_files
+
+#- name: Remove other write permission from world-writable files
+#  ansible.builtin.file:
+#    path: "{{ item.path }}"
+#    mode: "u=rwX,g=rX,o=rX"
+#  loop: "{{ ww_files.files }}"
+#  when: item.mode is defined
+#  ignore_errors: true
+#
+#- name: Find world-writable directories (excluding system paths)
+#  find:
+#    paths: /
+#    recurse: yes
+#    file_type: directory
+#    mode: '0002'
+#    excludes:
+#      - /proc
+#      - /sys
+#      - /run/user
+ #     - /snap
+#      - /dev
+#      - /var/lib/containerd
+#      - /var/lib/kubelet/pods
+ #   follow: false
+#  register: ww_dirs
+#
+#- name: Ensure sticky bit is set on world-writable directories
+ ## ansible.builtin.file:
+#    path: "{{ item.path }}"
+#    mode: "{{ (item.mode | int(base=8)) | bitwise_or(0o1000) | octal }}"
+#  loop: "{{ ww_dirs.files }}"
+#  when: item.mode is defined and ((item.mode | int(base=8)) & 0o1000) == 0
+#  ignore_errors: true
+#
+
+
+
+
+
+
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.1) 9(1.2.1.1)	Ensure GPG keys are configured 
+#- name: "1.2.1 | AUDIT | Ensure GPG keys are configured" 
+#  ansible.builtin.shell: "PKG=`rpm -qf {{ rpm_gpg_key }}` && rpm -q --queryformat \"%{PACKAGER} %{SIGPGP:pgpsig}\\n\" \"${PKG}\" | grep \"^{{ rpm_packager }}.*Key.ID.{{ rpm_key }}\""
+#  changed_when: false
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.4) 9(1.2.1.4)	Ensure package manager repositories are configured 
+#- name: "1.2.4 | AUDIT | Ensure package manager repositories are configured"
+#  vars:
+#      warn_control_id: '1.2.4'
+#  block:
+#      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Get repo list"
+#        ansible.builtin.shell: yum repolist
+#        changed_when: false
+#        failed_when: false
+#        register: dnf_configured
+#        check_mode: false
+#
+#      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Display repo list"
+#        ansible.builtin.debug:
+#            msg:
+#               - "Warning!! Below are the configured repos. Please review and make sure all align with site policy"
+#                - "{{ dnf_configured.stdout_lines }}"
+#
+#      - name: "1.2.4 | AUDIT | Ensure package manager repositories are configured | Warn Count"
+#        ansible.builtin.import_tasks:
+#            file: warning_facts.yml
+
+#-------------------------------------------------
+#OS = RHEL 7,8,9	7,8(1.2.5) 9(1.2.2.1)	Ensure updates, patches, and additional security software are installed 
+#- name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed"
+#  notify: Change_requires_reboot
+#  block:
+#      - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | Patch"
+#        ansible.builtin.package:
+#            name: "*"
+#            state: latest
+#
+#      - name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | update_facts"
+#        ansible.builtin.package_facts:
+#            manager: auto
+#
+#- name: "1.2.5 | PATCH | Ensure updates, patches, and additional security software are installed | limit kernels"
+#
+#  ansible.builtin.lineinfile:
+#      path: /etc/yum.conf
+#      regexp: ^installonly_limit=
+#      line: installonly_limit={{ rhel7cis_installed_kernel_limit }}
+#

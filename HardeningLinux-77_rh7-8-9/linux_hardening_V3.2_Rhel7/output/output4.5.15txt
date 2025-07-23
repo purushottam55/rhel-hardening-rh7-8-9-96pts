@@ -1,0 +1,23 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.5.1.5 | FACT | Ensure inactive password lock is 30 days or less | set fact days since_epoch] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.5.1.5 | AUDIT | Ensure inactive password lock is 30 days or less | capture users date in future] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.5.1.5 | WARN | Ensure inactive password lock is 30 days or less | Warn Users in future] ***
+ok: [192.168.91.233] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

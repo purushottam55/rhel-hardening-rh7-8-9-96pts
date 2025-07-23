@@ -1,0 +1,13 @@
+---
+# vars file for ../linux_hardening_V3.2_testing/TestingRole
+
+rhel9cis_sshd_allowusers: "root"
+#rhel9cis_sshd_allowgroups: "root"
+rhel9cis_sshd_denyusers: ""
+rhel9cis_sshd_denygroups: ""
+rhel9cis_sshd_config_file: "/etc/ssh/sshd_config"
+rhel9cis_rule_5_1_7: true
+
+warn_control_list: ""
+warn_count: 0
+

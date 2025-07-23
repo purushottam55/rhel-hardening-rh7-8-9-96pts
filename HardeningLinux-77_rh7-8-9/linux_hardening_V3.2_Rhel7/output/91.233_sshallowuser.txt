@@ -1,0 +1,24 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.2.4.1 Add line to sshd_config for allowusers] ************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.2.4.2 Add line to sshd_config for allowgroups] ***********
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.2.4.3 Add line to sshd_config for denyusers] *************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.2.4.4 Add line to sshd_config for denygroups] ************
+changed: [192.168.91.233]
+
+RUNNING HANDLER [TestingRole : Restart sshd] ***********************************
+changed: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

@@ -1,0 +1,135 @@
+Using /root/Linux_Hardening_FINAL_NFR/Hardening_Playbook_3.2_77pts/linux_hardening_V3.2_Rhel8/ansible.cfg as config file
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.171]
+
+TASK [mcx_hardening_1_role :  1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk] ***
+ok: [192.168.91.171] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.171] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}
+
+TASK [mcx_hardening_1_role : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.171] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "freevxfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/freevxfs.ko"}}, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfs.ko"}}, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfsplus", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfsplus.ko"}}, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "jffs2", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/jffs2.ko"}}, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "usb_storage", "type": "drivers"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/drivers/usb_storage.ko"}}, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Get list of loaded kernel modules] ****************
+ok: [192.168.91.171] => {"changed": false, "cmd": "lsmod | awk '{print $1}' | tail -n +2", "delta": "0:00:00.013390", "end": "2025-07-22 05:04:48.564252", "msg": "", "rc": 0, "start": "2025-07-22 05:04:48.550862", "stderr": "", "stderr_lines": [], "stdout": "crct10dif_pclmul\ncrc32_pclmul\nghash_clmulni_intel\npcspkr\ni2c_piix4\njoydev\nvirtio_balloon\nxfs\nlibcrc32c\nsr_mod\nsd_mod\ncdrom\nt10_pi\nsg\nata_generic\nbochs\ndrm_vram_helper\ndrm_kms_helper\nsyscopyarea\nsysfillrect\nsysimgblt\ndrm_ttm_helper\nttm\ndrm\nata_piix\ncrc32c_intel\nlibata\nvirtio_net\nnet_failover\nserio_raw\nvirtio_scsi\nfailover\ndm_mirror\ndm_region_hash\ndm_log\ndm_mod", "stdout_lines": ["crct10dif_pclmul", "crc32_pclmul", "ghash_clmulni_intel", "pcspkr", "i2c_piix4", "joydev", "virtio_balloon", "xfs", "libcrc32c", "sr_mod", "sd_mod", "cdrom", "t10_pi", "sg", "ata_generic", "bochs", "drm_vram_helper", "drm_kms_helper", "syscopyarea", "sysfillrect", "sysimgblt", "drm_ttm_helper", "ttm", "drm", "ata_piix", "crc32c_intel", "libata", "virtio_net", "net_failover", "serio_raw", "virtio_scsi", "failover", "dm_mirror", "dm_region_hash", "dm_log", "dm_mod"]}
+
+TASK [mcx_hardening_1_role : Unload module '{{ item.name }}' if loaded] ********
+skipping: [192.168.91.171] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "freevxfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfsplus", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "jffs2", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "usb_storage", "type": "drivers"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.171] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Verify module '{{ item.name }}' is not loaded] ****
+ok: [192.168.91.171] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q freevxfs", "delta": "0:00:00.008255", "end": "2025-07-22 05:04:48.989117", "failed_when_result": false, "item": {"name": "freevxfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:04:48.980862", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfs", "delta": "0:00:00.008206", "end": "2025-07-22 05:04:49.318925", "failed_when_result": false, "item": {"name": "hfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:04:49.310719", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfsplus", "delta": "0:00:00.006818", "end": "2025-07-22 05:04:49.629275", "failed_when_result": false, "item": {"name": "hfsplus", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:04:49.622457", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q jffs2", "delta": "0:00:00.007783", "end": "2025-07-22 05:04:49.949135", "failed_when_result": false, "item": {"name": "jffs2", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:04:49.941352", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.171] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q usb_storage", "delta": "0:00:00.007409", "end": "2025-07-22 05:04:50.256254", "failed_when_result": false, "item": {"name": "usb_storage", "type": "drivers"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 05:04:50.248845", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent] ***
+ok: [192.168.91.171] => {
+    "msg": "Warning!! /tmp doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.171] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent] ***
+ok: [192.168.91.171] => {
+    "msg": "Warning!! /dev/shm doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.171] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1]", "warn_count": "2"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.2.2 Ensure GPG keys are configured] *************
+changed: [192.168.91.171] => {"changed": true, "cmd": "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\\n'", "delta": "0:00:00.014288", "end": "2025-07-22 05:04:50.703503", "msg": "", "rc": 0, "start": "2025-07-22 05:04:50.689215", "stderr": "", "stderr_lines": [], "stdout": "gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)\ngpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)\ngpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)\ngpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)\ngpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)\ngpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)\ngpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))", "stdout_lines": ["gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)", "gpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)", "gpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)", "gpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)", "gpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)", "gpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)", "gpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))"]}
+
+TASK [mcx_hardening_1_role : 1.2.3 Ensure gpgcheck is globally activated] ******
+changed: [192.168.91.171] => {"changed": true, "cmd": "sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/yum.conf", "delta": "0:00:00.005352", "end": "2025-07-22 05:04:51.013193", "msg": "", "rc": 0, "start": "2025-07-22 05:04:51.007841", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : shell] ********************************************
+changed: [192.168.91.171] => {"changed": true, "cmd": "find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\;", "delta": "0:00:00.072136", "end": "2025-07-22 05:04:51.383201", "msg": "", "rc": 0, "start": "2025-07-22 05:04:51.311065", "stderr": "", "stderr_lines": [], "stdout": "Checking: /etc/yum.repos.d/old/redhat.repo\nChecking: /etc/yum.repos.d/old/sbalinux.repo\nChecking: /etc/yum.repos.d/old/server-dc.repo\nChecking: /etc/yum.repos.d/old/rhel8.repo\nChecking: /etc/yum.repos.d/old/epel-modular.repo\nChecking: /etc/yum.repos.d/old/epel-playground.repo\nChecking: /etc/yum.repos.d/old/epel-testing-modular.repo\nChecking: /etc/yum.repos.d/old/epel-testing.repo\nChecking: /etc/yum.repos.d/old/epel.repo\nChecking: /etc/yum.repos.d/repo_backup/server-dc.repo\nChecking: /etc/yum.repos.d/bkp/redhat.repo\nChecking: /etc/yum.repos.d/bkp/server-dc.repo\nChecking: /etc/yum.repos.d/redhat.repo\nChecking: /etc/yum.repos.d/server-dc.repo", "stdout_lines": ["Checking: /etc/yum.repos.d/old/redhat.repo", "Checking: /etc/yum.repos.d/old/sbalinux.repo", "Checking: /etc/yum.repos.d/old/server-dc.repo", "Checking: /etc/yum.repos.d/old/rhel8.repo", "Checking: /etc/yum.repos.d/old/epel-modular.repo", "Checking: /etc/yum.repos.d/old/epel-playground.repo", "Checking: /etc/yum.repos.d/old/epel-testing-modular.repo", "Checking: /etc/yum.repos.d/old/epel-testing.repo", "Checking: /etc/yum.repos.d/old/epel.repo", "Checking: /etc/yum.repos.d/repo_backup/server-dc.repo", "Checking: /etc/yum.repos.d/bkp/redhat.repo", "Checking: /etc/yum.repos.d/bkp/server-dc.repo", "Checking: /etc/yum.repos.d/redhat.repo", "Checking: /etc/yum.repos.d/server-dc.repo"]}
+
+TASK [mcx_hardening_1_role : 1.2.4 Ensure package manager repositories are configured] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": "yum repolist", "delta": "0:00:00.703112", "end": "2025-07-22 05:04:52.394528", "msg": "", "rc": 0, "start": "2025-07-22 05:04:51.691416", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nrepo id                          repo name\nrhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\nrhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)", "stdout_lines": ["Updating Subscription Management repositories.", "repo id                          repo name", "rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)", "rhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"]}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)] ***
+changed: [192.168.91.171] => {"changed": true, "cmd": ["yum", "check-update"], "delta": "0:00:05.330826", "end": "2025-07-22 05:05:04.676995", "msg": "", "rc": 0, "start": "2025-07-22 05:04:59.346169", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nRed Hat Enterprise Linux 8 for x86_64 - AppStre 116 kB/s | 4.5 kB     00:00    \nRed Hat Enterprise Linux 8 for x86_64 - BaseOS  105 kB/s | 4.1 kB     00:00    ", "stdout_lines": ["Updating Subscription Management repositories.", "Red Hat Enterprise Linux 8 for x86_64 - AppStre 116 kB/s | 4.5 kB     00:00    ", "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  105 kB/s | 4.1 kB     00:00    "]}
+
+TASK [mcx_hardening_1_role : 1.2.5.1 Show available updates] *******************
+ok: [192.168.91.171] => {
+    "yum_updates.stdout_lines": [
+        "Updating Subscription Management repositories.",
+        "Red Hat Enterprise Linux 8 for x86_64 - AppStre 116 kB/s | 4.5 kB     00:00    ",
+        "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  105 kB/s | 4.1 kB     00:00    "
+    ]
+}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | Set file] *****
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | comment out other entry] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.171] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : (1.6.1 Ensure message of the day is configured properly] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_1_role : 1.6.3  Ensure remote login warning banner is configured properly] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_1_role : Ensure SSHD config uses /etc/issue.net as Banner] ***
+changed: [192.168.91.171] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+ok: [192.168.91.171] => (item=ypbind) => {"ansible_loop_var": "item", "changed": false, "item": "ypbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=dnsmasq) => {"ansible_loop_var": "item", "changed": false, "item": "dnsmasq", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=cups) => {"ansible_loop_var": "item", "changed": false, "item": "cups", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=avahi-daemon) => {"ansible_loop_var": "item", "changed": false, "item": "avahi-daemon", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=bluetooth) => {"ansible_loop_var": "item", "changed": false, "item": "bluetooth", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=rpcbind) => {"ansible_loop_var": "item", "changed": false, "item": "rpcbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=xinetd) => {"ansible_loop_var": "item", "changed": false, "item": "xinetd", "msg": "Nothing to do", "rc": 0, "results": []}
+changed: [192.168.91.171] => (item=telnet) => {"ansible_loop_var": "item", "changed": true, "item": "telnet", "msg": "", "rc": 0, "results": ["Removed: telnet-1:0.17-76.el8.x86_64"]}
+ok: [192.168.91.171] => (item=rsh) => {"ansible_loop_var": "item", "changed": false, "item": "rsh", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=vsftpd) => {"ansible_loop_var": "item", "changed": false, "item": "vsftpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=tftp) => {"ansible_loop_var": "item", "changed": false, "item": "tftp", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=nfs) => {"ansible_loop_var": "item", "changed": false, "item": "nfs", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=nfs-server) => {"ansible_loop_var": "item", "changed": false, "item": "nfs-server", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=rpc-statd) => {"ansible_loop_var": "item", "changed": false, "item": "rpc-statd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=ypserv) => {"ansible_loop_var": "item", "changed": false, "item": "ypserv", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=snmpd) => {"ansible_loop_var": "item", "changed": false, "item": "snmpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=bind) => {"ansible_loop_var": "item", "changed": false, "item": "bind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=squid) => {"ansible_loop_var": "item", "changed": false, "item": "squid", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=dovecot) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=samba) => {"ansible_loop_var": "item", "changed": false, "item": "samba", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.171] => (item=blez) => {"ansible_loop_var": "item", "changed": false, "item": "blez", "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_2_role : 2.2.22 Ensure only approved services are listening on a network interface] ***
+ok: [192.168.91.171] => {
+    "msg": "We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra"
+}
+
+TASK [mcx_hardening_2_role : 2.2.21.3 | Ensure mail transfer agents are configured for local-only mode] ***
+fatal: [192.168.91.171]: FAILED! => {"changed": false, "msg": "Destination /etc/postfix/main.cf does not exist !", "rc": 257}
+
+PLAY RECAP *********************************************************************
+192.168.91.171             : ok=23   changed=11   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+

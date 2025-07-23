@@ -1,0 +1,29 @@
+---
+# vars file for mcx_hardening_pam_role
+
+#4.4.3.4.3(latest) or 5.5.4(in role 4)
+
+rhel8cis_pam_pwhash: sha512
+
+rhel8cis_allow_authselect_updates: false
+
+rhel8cis_rule_4_4_3_4_3: true
+
+rhel8cis_authselect_custom_profile_name: my-hardened-profile
+
+
+###############
+
+#4.4.3.2.1 to 4.4.3.2.7
+
+rhel8cis_pwquality_difok: 4
+rhel8cis_pwquality_minlen: 14
+rhel8cis_pwquality_minclass_value: 1
+rhel8cis_pwquality_maxrepeat: 3
+rhel8cis_pwquality_maxsequence: 3
+rhel8cis_pwquality:  
+  - { key: "lcredit", value: -1 }
+  - { key: "ucredit", value: -1 }
+  - { key: "dcredit", value: -1 }
+  - { key: "ocredit", value: -1 }
+rhel8cis_root_umask: "027"

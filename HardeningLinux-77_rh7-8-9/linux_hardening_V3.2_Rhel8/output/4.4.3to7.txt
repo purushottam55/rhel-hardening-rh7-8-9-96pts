@@ -1,0 +1,31 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.3 | PATCH | Ensure password length is configured] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.4 | PATCH | Ensure password complexity is configured | minclass] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.4 | PATCH | Ensure password complexity is configured | separated values] ***
+changed: [192.168.91.233] => (item={'key': '#minclass', 'value': 3})
+changed: [192.168.91.233] => (item={'key': 'dcredit', 'value': '-1'})
+changed: [192.168.91.233] => (item={'key': 'ucredit', 'value': '-1'})
+changed: [192.168.91.233] => (item={'key': 'ocredit', 'value': '-1'})
+changed: [192.168.91.233] => (item={'key': 'lcredit', 'value': '-1'})
+
+TASK [TestingRole : 4.4.2.2.5 | PATCH | Ensure password same consecutive characters is configured] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.6 | PATCH | Ensure password maximum sequential characters is configured] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.7 | PATCH | Ensure password dictionary check is enabled] ***
+changed: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

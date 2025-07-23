@@ -1,0 +1,41 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Check if module '{{ item.name }}' exists on disk] **********
+ok: [192.168.91.233] => (item=freevxfs)
+ok: [192.168.91.233] => (item=hfs)
+ok: [192.168.91.233] => (item=hfsplus)
+ok: [192.168.91.233] => (item=jffs2)
+ok: [192.168.91.233] => (item=usb_storage)
+
+TASK [TestingRole : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.233] => (item=freevxfs) 
+skipping: [192.168.91.233] => (item=hfs) 
+skipping: [192.168.91.233] => (item=hfsplus) 
+skipping: [192.168.91.233] => (item=jffs2) 
+skipping: [192.168.91.233] => (item=usb_storage) 
+skipping: [192.168.91.233]
+
+TASK [TestingRole : Get list of loaded kernel modules] *************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Unload module '{{ item.name }}' if loaded] *****************
+skipping: [192.168.91.233] => (item=freevxfs) 
+skipping: [192.168.91.233] => (item=hfs) 
+skipping: [192.168.91.233] => (item=hfsplus) 
+skipping: [192.168.91.233] => (item=jffs2) 
+changed: [192.168.91.233] => (item=usb_storage)
+
+TASK [TestingRole : Verify module '{{ item.name }}' is not loaded] *************
+ok: [192.168.91.233] => (item=freevxfs)
+ok: [192.168.91.233] => (item=hfs)
+ok: [192.168.91.233] => (item=hfsplus)
+ok: [192.168.91.233] => (item=jffs2)
+ok: [192.168.91.233] => (item=usb_storage)
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=5    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+

@@ -1,0 +1,395 @@
+
+
+######################################################Rhel9 - Role 6#######################################################
+
+---
+
+- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host"
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: '{{ item }}'
+    replace: '#\1'
+  loop:
+    - '^(\$ModLoad imtcp)'
+    - '^(\$InputTCPServerRun)'
+    - '^(module\(load="imtcp"\))'
+    - '^(input\(type="imtcp")'
+  notify: Restart_rsyslog
+
+- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host"
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: '^#(.*{{ item }}.*)'
+    replace: '\1'
+  loop:
+    - 'ModLoad imtcp'
+    - 'InputTCPServerRun'
+  notify: Restart_rsyslog
+
+#- name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client"
+#  notify: Restart_rsyslog
+#    - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host"
+#      ansible.builtin.replace:
+#        path: /etc/rsyslog.conf
+#        regexp: '{{ item }}'
+#        replace: '#\1'
+#      loop:
+#        - '^(\$ModLoad imtcp)'
+#        - '^(\$InputTCPServerRun)'
+#        - '^(module\(load="imtcp"\))'
+#        - '^(input\(type="imtcp")'
+#
+#    - name: "5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host"
+#      ansible.builtin.replace:
+ #       path: /etc/rsyslog.conf
+#        regexp: '^#(.*{{ item }}.*)'
+#        replace: '\1'
+#      loop:
+#        - 'ModLoad imtcp'
+#        - 'InputTCPServerRun'
+
+
+#------
+
+- name: 5.1.3 Backup of /etc/logrotate.conf file
+  copy:
+    src: /etc/logrotate.conf
+    dest: "/etc/logrotate.conf.backup-{{ '%Y%m%d%H%M%S' | strftime}}"
+    remote_src: yes
+  ignore_errors: yes
+
+
+- name: 5.1.3.1 Ensure /etc/logrotate.conf exists
+  copy:
+    dest: /etc/logrotate.conf
+    content: |
+      daily
+      rotate 7
+      compress
+      missingok
+      notifempty
+      create 0640 root utmp
+      include /etc/logrotate.d
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: 5.1.3.2 Ensure logrotate is scheduled via cron.daily
+  stat:
+    path: /etc/cron.daily/logrotate
+  register: logrotate_cron
+
+- name: 5.1.3.3 Warn if logrotate cron job is missing
+  debug:
+    msg: "Logrotate cron is missing in /etc/cron.daily"
+  when: not logrotate_cron.stat.exists
+
+
+#----
+
+- name: "5.3.2 | PATCH | Ensure filesystem integrity is regularly checked"
+  block:
+
+    - name: Ensure AIDE package is installed
+      ansible.builtin.yum:
+        name: aide
+        state: present
+
+    - name: Create systemd service unit for AIDE integrity check
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/aidecheck.service
+        content: |
+          [Unit]
+          Description=AIDE integrity check
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/sbin/aide --check
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload systemd
+
+    - name: Create systemd timer unit for AIDE integrity check
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/aidecheck.timer
+        content: |
+          [Unit]
+          Description=Run AIDE integrity check daily
+
+          [Timer]
+          OnCalendar=daily
+          Persistent=true
+
+          [Install]
+          WantedBy=timers.target
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload systemd
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable and start aidecheck timer
+      ansible.builtin.systemd:
+        name: aidecheck.timer
+        enabled: true
+        state: started
+
+    - name: Configure AIDE cron job as additional check
+      ansible.builtin.cron:
+        name: "Run AIDE integrity check (cron)"
+        user: root
+        minute: "0"
+        hour: "5"
+        job: "/usr/sbin/aide --check"
+
+#-----
+
+- name: 5.5.4 Ensure password hashing algorithm is SHA-512 (Automated)
+  ignore_errors: yes
+  block:
+    - name: 4.5.1.1 Ensure strong password hashing algorithm is configured
+      lineinfile:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      loop:
+        - { path: /etc/libuser.conf, regexp: '^#?crypt_style', line: 'crypt_style = sha512' }
+        - { path: /etc/login.defs, regexp: '^#?ENCRYPT_METHOD', line: 'ENCRYPT_METHOD SHA512' }
+
+    - name: 4.5.1.1 Ensure password hashing algorithm is SHA-512 (Automated) | Configure pam_unix.so
+      script: script_5_5_4.sh
+
+
+
+
+
+
+################################################## Role 6 ###################################################################
+
+
+# tasks file for ./mcx_hardening_6_role
+
+- name: "6.1.9  Ensure permissions on /etc/shells are configured"
+  ansible.builtin.file:
+      path: /etc/shells
+      owner: root
+      group: root
+      mode: u-x,go-wx
+
+#(6.1.10) (7.1.10)              Ensure permissions on /etc/security/opasswd are configured
+
+- name: "6.1.3 | PATCH | Ensure permissions on /etc/security/opasswd are configured"
+  ansible.builtin.file:
+    path: /etc/security/opasswd
+    owner: root
+    group: root
+    mode: '0600'
+
+#(6.1.12) (7.1.12)              Ensure no unowned or ungrouped files or directories exist
+
+- name: 6.1.11 Ensure no world writable files exist
+  block:
+    - name: 6.1.11 Ensure no world writable files exist | Get list of world-writable files
+      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+      register: output_6_1_11
+    - name: 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)
+      file:
+        path: '{{ item }}'
+        mode: o-w
+      loop: "{{ output_6_1_11.stdout_lines }}"
+      when: output_6_1_11.stdout_lines is defined and output_6_1_11.stdout_lines | length > 0
+
+
+#- name: 6.1.12 Ensure no unowned files or directories exist (Automated)
+#  block:
+#    - name: 6.1.12 Ensure no unowned files or directories exist (Automated) | Find
+#      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser
+#      register: output_6_1_12
+#    - name: 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix
+#      file:
+#        path: "{{ item }}"
+#        owner: root
+#        group: root
+#      loop: "{{ output_6_1_12.stdout_lines }}"
+#      when: output_6_1_12.stdout_lines is defined and output_6_1_12.stdout_lines | length > 0
+#
+#
+#- name: 6.1.13 Ensure no ungrouped files or directories exist (Automated)
+#  block:
+#    - name: 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find
+#      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup
+#      register: output_6_1_13
+#    - name: 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix
+#      file:
+#        path: "{{ item }}"
+#        owner: root
+#        group: root
+#      loop: "{{ output_6_1_13.stdout_lines }}"
+#      when: output_6_1_13.stdout_lines is defined and output_6_1_13.stdout_lines | length > 0
+
+#----
+
+
+#(6.1.13) (7.1.13)              Ensure SUID and SGID files are reviewed
+
+- name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed"
+  vars:
+    warn_control_id: '6.1.13'
+  block:
+    - name: "6.1.13 | AUDIT | Ensure SUID executables are reviewed | Find SUID executables"
+      ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -4000 -not -fstype nfs
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rhel7cis_6_1_13_suid_executables
+      loop: "{{ ansible_facts.mounts }}"
+      loop_control:
+        label: "{{ item.mount }}"
+
+    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables"
+      ansible.builtin.shell: find {{ item.mount }} -xdev -type f -perm -2000 -not -fstype nfs
+      changed_when: false
+      failed_when: false
+      check_mode: false
+      register: rhel7cis_6_1_13_sgid_executables
+      loop: "{{ ansible_facts.mounts }}"
+      loop_control:
+        label: "{{ item.mount }}"
+
+    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Flatten suid_executables results for easier use"
+      ansible.builtin.set_fact:
+        rhel7cis_6_1_13_suid_executables_flatten: "{{ rhel7cis_6_1_13_suid_executables.results | map(attribute='stdout_lines') | flatten }}"
+
+    - name: "6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Set fact SGID executables"
+      ansible.builtin.set_fact:
+        rhel7cis_6_1_13_sgid_executables_flatten: "{{ rhel7cis_6_1_13_sgid_executables.results | map(attribute='stdout_lines') | flatten }}"
+
+    - name: "6.1.13 | PATCH | Ensure SUID and SGID files are reviewed | Remove SUID bit"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 'u-s'
+      loop: "{{ rhel7cis_6_1_13_suid_executables_flatten }}"
+
+    - name: "6.1.13 | PATCH | Audit SGID executables | Remove SGID bit"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 'g-s'
+      with_items:
+        - "{{ rhel7cis_6_1_13_sgid_executables_flatten }}"
+
+    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SUID executables exist"
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have SUID executables"
+          - "The files are listed below, please confirm the integrity of these binaries"
+          - "{{ rhel7cis_6_1_13_suid_executables_flatten }}"
+
+    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SGID executables exist"
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! You have SGID executables"
+          - "The files listed below, please review the integrity of these binaries"
+          - "{{ rhel7cis_6_1_13_sgid_executables_flatten }}"
+
+    - name: "6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Warn Count"
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+
+#------
+
+- name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords"
+  vars:
+      warn_control_id: '6.2.1'
+  block:
+      - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords"
+        ansible.builtin.shell: awk -F':' '($2 != "x" ) { print $1}' /etc/passwd
+        changed_when: false
+        failed_when: false
+        register: rhel7cis_6_2_1_nonshadowed_users
+
+      - name: "6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings"
+        when: rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You have users that are not using a shadowed password. Please convert the below accounts to use a shadowed password"
+                - "{{ rhel7cis_6_2_1_nonshadowed_users.stdout_lines }}"
+
+      - name: "6.2.1 | WARN | Ensure accounts in /etc/passwd use shadowed passwords | warn_count"
+        when: rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+      - name: "6.2.1 | Remediate | Run pwconv to convert passwords to shadow"
+        ansible.builtin.command: pwconv
+        become: true
+
+
+#----
+
+
+#(6.2.8) (5.4.2.5)              Ensure root path integrity
+- name: "6.2.8 | PATCH | Ensure root PATH Integrity"
+  block:
+
+    - name: "6.2.8 | AUDIT | Get root PATH variable"
+      ansible.builtin.shell: sudo -Hiu root env | grep '^PATH' | cut -d= -f2
+      changed_when: false
+      register: root_path_string
+
+    - name: "6.2.8 | AUDIT | Split root PATH entries"
+      set_fact:
+        root_path_list: "{{ root_path_string.stdout.split(':') }}"
+
+    - name: "6.2.8 | AUDIT | Check for empty directory (::) in PATH"
+      ansible.builtin.shell: "echo '{{ root_path_string.stdout }}' | grep -q '::'"
+      register: check_empty_dir
+      failed_when: false
+      changed_when: false
+
+    - name: "6.2.8 | AUDIT | Check for trailing colon in PATH"
+      ansible.builtin.shell: "echo '{{ root_path_string.stdout }}' | grep -q ':$'"
+      register: check_trailing_colon
+      failed_when: false
+      changed_when: false
+
+    - name: "6.2.8 | DEBUG | Report empty or trailing colon warnings"
+      debug:
+        msg: >
+          {%- if check_empty_dir.rc == 0 and check_trailing_colon.rc == 0 -%}
+            WARNING: PATH contains empty directory (::) and trailing colon (:)
+          {%- elif check_empty_dir.rc == 0 -%}
+            WARNING: PATH contains empty directory (::)
+          {%- elif check_trailing_colon.rc == 0 -%}
+            WARNING: PATH contains trailing colon (:)
+          {%- else -%}
+            PATH format looks OK.
+          {%- endif -%}
+
+    - name: "6.2.8 | AUDIT | Get stat for all PATH directories"
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ root_path_list }}"
+      register: root_path_stats
+
+    - name: "6.2.8 | PATCH | Correct ownership and permissions on PATH directories"
+      ansible.builtin.file:
+        path: "{{ item.stat.path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+        follow: false
+      when:
+        - item.stat.exists
+        - item.stat.isdir
+        - item.stat.pw_name != 'root' or item.stat.gr_name != 'root' or item.stat.mode|int(base=8) != 755
+      loop: "{{ root_path_stats.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+

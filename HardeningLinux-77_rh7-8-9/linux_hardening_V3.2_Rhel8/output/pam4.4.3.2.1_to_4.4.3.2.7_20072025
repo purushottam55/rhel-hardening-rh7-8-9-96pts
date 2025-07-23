@@ -1,0 +1,42 @@
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_Rhel8]# ansible-playbook  linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] *********************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 5.5.4 | Ensure ENCRYPT_METHOD and crypt_style are set] ***************************************************************
+ok: [192.168.91.199] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'})
+ok: [192.168.91.199] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'})
+
+TASK [mcx_hardening_pam_role : 5.5.4 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth] *************************************
+changed: [192.168.91.199] => (item=password)
+changed: [192.168.91.199] => (item=system)
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.1 | Set password changed characters (difok)] *****************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.2 | Set minimum password length (minlen)] ********************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.3 | Set password complexity minimum character classes (minclass)] ********************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.4 | Patch pwquality.conf for separated options (looped values)] **********************************************
+changed: [192.168.91.199] => (item={'key': 'lcredit', 'value': -1})
+changed: [192.168.91.199] => (item={'key': 'ucredit', 'value': -1})
+changed: [192.168.91.199] => (item={'key': 'dcredit', 'value': -1})
+changed: [192.168.91.199] => (item={'key': 'ocredit', 'value': -1})
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.5 | Set maximum repeating characters allowed] ****************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.6 | Set maximum sequential characters allowed] ***************************************************************
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.7 | Enforce password quality for root] ***********************************************************************
+changed: [192.168.91.199]
+
+PLAY RECAP ******************************************************************************************************************************************
+192.168.91.199             : ok=10   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+

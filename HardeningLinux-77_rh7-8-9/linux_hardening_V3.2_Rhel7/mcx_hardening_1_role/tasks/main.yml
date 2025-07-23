@@ -1,0 +1,193 @@
+##########################################################Role 1 #################################################################
+
+---
+
+- name: " 1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk"
+#(1.1.1.2)              Ensure freevxfs kernel module is not available
+#(1.1.1.3)              Ensure hfs kernel module is not available
+#(1.1.1.4)              Ensure hfsplus kernel module is not available
+#(1.1.1.5)              Ensure jffs2 kernel module is not available
+#(1.1.1.8)              Ensure usb-storage kernel module is not available
+  stat:
+    path: "/lib/modules/{{ ansible_kernel }}/kernel/{{ item.type }}/{{ item.name | replace('-', '_') }}.ko"
+  register: module_check
+  loop: "{{ kernel_modules_to_disable }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Create modprobe.d config to disable module '{{ item.0.name }}'"
+  template:
+    src: modprobe.conf.j2
+    dest: "/etc/modprobe.d/{{ item.0.name }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  when: item.1.stat.exists
+  loop: "{{ kernel_modules_to_disable | zip(module_check.results) }}"
+  loop_control:
+    label: "{{ item.0.name }}"
+  vars:
+    module: "{{ item.0 }}"
+
+- name: "Get list of loaded kernel modules"
+  shell: "lsmod | awk '{print $1}' | tail -n +2"
+  register: loaded_modules
+  changed_when: false
+
+- name: "Unload module '{{ item.name }}' if loaded"
+  shell: "modprobe -r {{ item.name | replace('-', '_') }}"
+  when: (item.name | replace('-', '_')) in loaded_modules.stdout_lines
+  ignore_errors: true
+  loop: "{{ kernel_modules_to_disable }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Verify module '{{ item.name }}' is not loaded"
+  shell: "lsmod | grep -q {{ item.name | replace('-', '_') }}"
+  register: lsmod_check
+  failed_when: lsmod_check.rc == 0
+  changed_when: false
+  loop: "{{ kernel_modules_to_disable }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+#----
+
+#(1.1.2.1.1)            Ensure /tmp is a separate partition
+- name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a seperate partition"
+  vars:
+      warn_control_id: '1.1.2.1.1'
+      required_mount: '/tmp'
+  block:
+      - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+#----
+
+- name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition"
+  vars:
+      warn_control_id: '1.1.2.2.1'
+      required_mount: '/dev/shm'
+  block:
+      - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent"
+        ansible.builtin.debug:
+            msg: "Warning!! {{ required_mount }} doesn't exist. This is a manual task"
+
+      - name: "1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Warn Count"
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
+
+#----
+
+
+- name: 1.2.2 Ensure GPG keys are configured
+  shell: rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'
+
+- name: 1.2.3 Ensure gpgcheck is globally activated
+  shell: sed -i 's/^gpgcheck\s*=\s*.*/gpgcheck=1/' /etc/yum.conf
+
+- shell: find /etc/yum.repos.d/ -name "*.repo" -exec echo "Checking:" {} \; -exec sed -i 's/^gpgcheck\s*=\s*.*/gpgcheck=1/' {} \;
+
+#----
+
+- name: 1.2.4 Ensure package manager repositories are configured
+  shell: yum repolist
+  register: yum_repo
+
+- name: "1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed"
+  ansible.builtin.package:
+    name: mcstrans
+    state: absent
+
+#----
+
+#(1.2.5) (1.2.2.1) Ensure updates, patches, and additional security software are installed
+
+- name: 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)
+  ansible.builtin.command: yum check-update
+  register: yum_updates
+  ignore_errors: true
+
+- name: 1.2.5.1 Show available updates
+  ansible.builtin.debug:
+    var: yum_updates.stdout_lines
+
+#----
+
+- name: "1.3.3 Ensure authentication required for single user mode"
+  block:
+    - name: "1.3.3 | PATCH | Ensure authentication required for single user mode | Emergency service"
+      ansible.builtin.lineinfile:
+        path: /usr/lib/systemd/system/emergency.service
+        regexp: '/sbin/sulogin'
+        line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+
+    - name: "1.3.3 | PATCH | Ensure authentication required for single user mode | Rescue service"
+      ansible.builtin.lineinfile:
+        path: /usr/lib/systemd/system/rescue.service
+        regexp: '/sbin/sulogin'
+        line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default'
+
+
+#----
+
+- name: "1.4.2 |  Ensure ptrace_scope is restricted"
+  notify: Reload_sysctl
+  block:
+    - name: Ensure ptrace_scope is restricted | Set file
+      ansible.builtin.lineinfile:
+        path: /etc/sysctl.d/60-kernel_sysctl.conf
+        regexp: kernel.yama.ptrace_scope
+        line: kernel.yama.ptrace_scope = 1
+        create: true
+        mode: 'go-wx'
+
+    - name: Ensure ptrace_scope is restricted | comment out other entry
+      ansible.builtin.lineinfile:
+        path: /lib/sysctl.d/10-default-yama-scope.conf
+        backrefs: true
+        regexp: ^(\s*kernel.yama.ptrace_scope.*)
+        line: '# \1'
+        create: true
+        mode: 'go-wx'
+
+#----
+
+- name: "1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed"
+  ansible.builtin.package:
+    name: mcstrans
+    state: absent
+
+#----
+
+- name: "(1.6.1 Ensure message of the day is configured properly"
+  lineinfile:
+    path: /etc/motd
+    line: "Unauthorized access to this system is prohibited."
+    create: yes
+
+#----
+
+- name: "1.6.3  Ensure remote login warning banner is configured properly"
+  lineinfile:
+    path: /etc/issue.net
+    line: "Unauthorized access to this system is prohibited."
+    create: yes
+
+
+#---
+
+- name: Ensure SSHD config uses /etc/issue.net as Banner
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^Banner\s+'
+    line: 'Banner /etc/issue.net'
+    state: present
+  notify: Reload sshd
+
+

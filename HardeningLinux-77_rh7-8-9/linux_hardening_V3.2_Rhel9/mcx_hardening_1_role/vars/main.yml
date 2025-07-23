@@ -1,0 +1,5 @@
+---
+# vars file for ./mcx_hardening_1_role
+warn_control_list: ""
+warn_count: 0
+

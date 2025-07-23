@@ -1,0 +1,21 @@
+---
+# handlers file for ./mcx_hardening_5_role
+- name: Restart_rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Restart_rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+
+- name: Restart_sshd
+  ansible.builtin.service:
+    name: sshd
+    state: restarted
+

@@ -1,0 +1,27 @@
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_testing]# ansible-playbook  linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] *********************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure logrotate package is installed] ******************************************************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure /etc/logrotate.conf exists] **********************************************************************************************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Ensure logrotate is scheduled via cron.daily] ***********************************************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Warn if logrotate cron job is missing] ******************************************************************************************
+skipping: [192.168.91.233]
+
+TASK [TestingRole : 4.2.2.1.3       Ensure systemd-journal-remote is enabled (Manual) | Enable and start systemd-journal-upload] ********************
+ok: [192.168.91.233]
+
+PLAY RECAP ******************************************************************************************************************************************
+192.168.91.233             : ok=5    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_testing]#
+

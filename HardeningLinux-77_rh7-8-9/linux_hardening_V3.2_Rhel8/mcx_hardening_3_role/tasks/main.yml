@@ -1,0 +1,23 @@
+---
+
+
+- name: "3.3.9  Ensure suspicious packets are logged"
+  become: true
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^net\.ipv4\.conf\.all\.log_martians'
+    line: 'net.ipv4.conf.all.log_martians=1'
+    state: present
+
+- name: " 3.3.9.1 Ensure net.ipv4.conf.default.log_martians is set to 1 in sysctl.conf"
+  become: true
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: '^net\.ipv4\.conf\.default\.log_martians'
+    line: 'net.ipv4.conf.default.log_martians=1'
+    state: present
+
+- name: " 3.3.9.2 Reload sysctl settings to apply changes"
+  become: true
+  command: sysctl -p /etc/sysctl.conf
+

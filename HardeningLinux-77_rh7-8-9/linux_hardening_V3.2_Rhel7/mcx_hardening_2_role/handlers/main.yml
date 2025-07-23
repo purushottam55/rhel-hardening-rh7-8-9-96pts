@@ -1,0 +1,7 @@
+---
+# handlers file for ./mcx_hardening_2_role
+- name: Restart_postfix
+  ansible.builtin.systemd:
+    name: postfix
+    state: restarted
+

@@ -1,0 +1,622 @@
+---
+#This role is dedicated to test one by one task at a time. This file is soft link      ln TestingRole/tasks/main.yml testHere.yml   ie. shortcut to file
+- name: "4.2.4 Ensure sshd access is configured"
+  when: not skip_after_hardening
+  block:
+    - name: "4.2.4.1 Add line to sshd_config for allowusers"
+      when: "rhel9cis_sshd_allowusers | length > 0"
+      ansible.builtin.lineinfile:
+        path: "{{ rhel9cis_sshd_config_file }}"
+        regexp: "^AllowUsers"
+        line: "AllowUsers {{ rhel9cis_sshd_allowusers }}"
+        validate: sshd -t -f %s
+      notify: Restart sshd
+
+    - name: "4.2.4.2 Add line to sshd_config for allowgroups"
+      when: "rhel9cis_sshd_allowgroups | length > 0"
+      ansible.builtin.lineinfile:
+        path: "{{ rhel9cis_sshd_config_file }}"
+        regexp: "^AllowGroups"
+        line: "AllowGroups {{ rhel9cis_sshd_allowgroups }}"
+        validate: sshd -t -f %s
+      notify: Restart sshd
+
+    - name: "4.2.4.3 Add line to sshd_config for denyusers"
+      when: "rhel9cis_sshd_denyusers | length > 0"
+      ansible.builtin.lineinfile:
+        path: "{{ rhel9cis_sshd_config_file }}"
+        regexp: "^DenyUsers"
+        line: "DenyUsers {{ rhel9cis_sshd_denyusers }}"
+        insertbefore: "^Match"
+        firstmatch: true
+        validate: sshd -t -f %s
+      notify: Restart sshd
+
+    - name: "4.2.4.4 Add line to sshd_config for denygroups"
+      when: "rhel9cis_sshd_denygroups | length > 0"
+      ansible.builtin.lineinfile:
+        path: "{{ rhel9cis_sshd_config_file }}"
+        regexp: "^DenyGroups"
+        line: "DenyGroups {{ rhel9cis_sshd_denygroups }}"
+        validate: sshd -t -f %s
+      notify: Restart sshd
+#####
+
+- name: "4.2.6  Ensure only strong Ciphers are used"
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^Ciphers'
+    line: "Ciphers aes256-ctr,aes192-ctr,aes128-ctr"
+    state: present
+    validate: 'sshd -t -f %s'
+
+- name: Restart sshd after changes
+  ansible.builtin.service:
+    name: sshd
+    state: restarted
+####
+
+- name: "4.2.7 Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
+  block:
+      - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval"
+        ansible.builtin.lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^ClientAliveInterval'
+            line: "ClientAliveInterval 7200"
+            validate: 'sshd -t -f %s'
+
+      - name: "4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set"
+        ansible.builtin.lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^ClientAliveCountMax'
+            line: "ClientAliveCountMax 0"
+            validate: 'sshd -t -f %s'
+
+- name: "Restart sshd after changes"
+  command: systemctl restart sshd.service
+###
+
+
+- name: "4.2.9 | PATCH | Ensure sshd GSSAPIAuthentication is disabled"
+  notify: Restart_sshd
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^(?i)(#|)\s*gssapiauthentication
+    line: 'GSSAPIAuthentication no'
+    validate: 'sshd -t -f %s'
+###############
+
+- name: "4.2.12 | PATCH | Ensure only strong Key Exchange algorithms are used"
+  notify: Restart_sshd
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^KexAlgorithms'
+    line: "KexAlgorithms {{ rhel7cis_sshd['kex'] }}"
+    validate: 'sshd -t -f %s'
+
+#############
+
+- name: "4.2.15 | PATCH | Ensure sshd MACs are configured"
+  notify: Restart_sshd_mac
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^MACs'
+    line: "MACs {{ rhel7cis_sshd['macs'] }}"
+    validate: 'sshd -t -f %s'
+
+##################
+
+- name: "4.4.1.1 Ensure pam is installed and up to date"
+  ansible.builtin.package:
+    name: pam
+    state: latest
+
+- name: "4.4.1.2  Ensure libpwquality is installed"
+  ansible.builtin.package:
+    name: libpwquality
+    state: present
+#-----------
+
+- name: " 4.4.2.1.1 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so"
+  blockinfile:
+    path: "/etc/pam.d/{{ item }}"
+    insertafter: '^auth.*pam_env\.so'
+    block: |
+      auth        required      pam_faillock.so preauth silent audit deny=5 unlock_time=900 even_deny_root
+    create: no
+    state: present
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - pam_faillock preauth"
+  loop:
+    - system-auth
+    - password-auth
+
+- name: "4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so"
+  lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    insertafter: '^auth.*pam_unix\.so'
+    line: 'auth        [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 even_deny_root'
+    create: no
+    state: present
+  loop:
+    - system-auth
+    - password-auth
+
+- name: "4.4.2.1.1 Ensure pam_faillock is configured in account section"
+  lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    regexp: '^account\s+required\s+pam_faillock\.so'
+    line: 'account     required      pam_faillock.so'
+    insertafter: '^account'
+    state: present
+  loop:
+    - system-auth
+    - password-auth
+# Note for above task : if pam user get locked : use following command => # faillock --user testuser --reset
+#----------
+
+
+- name: "4.4.2.1.3 | PATCH | Ensure password unlock time is configured properly with correct ordering and options"
+  block:
+    - name: "Backup system-auth and password-auth before changes"
+      copy:
+        src: "/etc/pam.d/{{ item }}"
+        dest: "/etc/pam.d/{{ item }}.bak_{{ ansible_date_time.iso8601 }}"
+        backup: yes
+      loop:
+        - system-auth
+        - password-auth
+
+    - name: "Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so"
+      lineinfile:
+        path: "/etc/pam.d/{{ item }}"
+        regexp: '^auth\s+required\s+pam_faillock.so\s+preauth.*$'
+        line: "auth required pam_faillock.so preauth silent audit deny=5 unlock_time=900 even_deny_root"
+        insertafter: '^auth\s+required\s+pam_env.so'
+        create: yes
+        backup: yes
+      loop:
+        - system-auth
+        - password-auth
+
+    - name: "Ensure pam_faillock's authfail line with proper params after last password validation module"
+      blockinfile:
+        path: "/etc/pam.d/{{ item }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK pam_faillock authfail"
+        insertafter: '^auth\s+requisite\s+pam_succeed_if.so.*$'
+        block: |
+          auth [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 even_deny_root
+      loop:
+        - system-auth
+        - password-auth
+
+#######
+
+- name: " 4.4.2.2.1 Ensure backup of PAM files before modification"
+  copy:
+    src: "/etc/pam.d/{{ item }}"
+    dest: "/etc/pam.d/{{ item }}.pre_ansible.bak"
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0600'
+    backup: yes
+  loop:
+    - system-auth
+    - password-auth
+
+#-------
+
+# Ensure pam_pwquality.so is first password module with correct arguments
+
+- name: "4.4.2.2.1 Ensure pam_pwquality module is enabled"
+  blockinfile:
+    path: "/etc/pam.d/{{ item }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - PAM PWQUALITY"
+    insertafter: '^#%PAM-1.0'
+    block: |
+      password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3
+  loop:
+    - system-auth
+    - password-auth
+
+- name: "4.4.2.2.1 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced"
+  lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    insertafter: 'pam_pwquality.so.*'
+    regexp: '^\s*password\s+required\s+pam_pwhistory\.so.*'
+    line: 'password    required     pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok'
+    state: present
+  loop:
+    - system-auth
+    - password-auth
+
+
+- name: "4.4.2.2.1 Ensure pam_unix.so is present with use_authtok"
+  lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    insertafter: 'pam_pwhistory.so.*'
+    regexp: '^\s*password\s+sufficient\s+pam_unix\.so.*'
+    line: 'password    sufficient   pam_unix.so sha512 shadow try_first_pass use_authtok'
+    state: present
+  loop:
+    - system-auth
+    - password-auth
+
+- name: "4.4.2.2.1 Ensure pam_deny.so is present"
+  lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    insertafter: 'pam_unix.so.*'
+    regexp: '^\s*password\s+required\s+pam_deny\.so.*'
+    line: 'password    required     pam_deny.so'
+    state: present
+  loop:
+    - system-auth
+    - password-auth
+
+
+- name: "4.4.2.2.2 Ensure password number of changed characters is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^(?i)(#|)\s*difok
+    line: "difok = {{ rhel7cis_pwquality_difok }}"
+
+- name: "4.4.2.2.3 Ensure password length is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^(?i)(#|)\s*minlen
+    line: "minlen = {{ rhel7cis_pwquality_minlen }}"
+
+- name: "4.4.2.2.4 Ensure password complexity is configured | minclass"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^minclass
+    line: "minclass = {{ rhel7cis_pwquality_minclass_value }}"
+
+- name: "4.4.2.2.4 Ensure password complexity is configured | separated values"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^{{ item.key }}
+    line: "{{ item.key }} = {{ item.value }}"
+  loop: "{{ rhel7cis_pwquality }}"
+
+- name: "4.4.2.2.5 Ensure password same consecutive characters is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^(?i)(#|)\s*maxrepeat
+    line: "maxrepeat = {{ rhel7cis_pwquality_maxrepeat }}"
+
+- name: "4.4.2.2.6  Ensure password maximum sequential characters is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^(?i)(#|)\s*maxsequence
+    line: "maxsequence = {{ rhel7cis_pwquality_maxsequence }}"
+
+- name: "4.4.2.2.7 Ensure password dictionary check is enabled"
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: ^(?i)(#|)\s*dictcheck
+    line: "dictcheck = 1"
+#######
+
+- name: "4.4.2.3.1 Backup system-auth before enabling pam_pwhistory"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: '^password\s+required\s+pam_pwhistory\.so'
+    line: 'password    required    pam_pwhistory.so use_authtok remember=5 enforce_for_root'
+    insertafter: '^password.*pam_unix\.so'
+    state: present
+
+- name: "Backup password-auth before enabling pam_pwhistory"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/password-auth
+    regexp: '^password\s+required\s+pam_pwhistory\.so'
+    line: 'password    required    pam_pwhistory.so use_authtok remember=5 enforce_for_root'
+    insertafter: '^password.*pam_unix\.so'
+    state: present
+
+- name: "Backup system-auth before configuring password history remember"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.2 | Ensure password history remember is configured in system-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/system-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)remember=\d+'
+    replace: '\1remember=5'
+
+- name: "Backup password-auth before configuring password history remember"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.2 | Ensure password history remember is configured in password-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/password-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)remember=\d+'
+    replace: '\1remember=5'
+
+- name: "4.4.2.3.3 Backup system-auth before enforcing password history for root"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.3 | Ensure password history is enforced for the root user in system-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/system-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)enforce_for_root'
+    replace: '\1enforce_for_root'
+
+- name: " 4.4.2.3.3 Backup password-auth before enforcing password history for root"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/password-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)enforce_for_root'
+    replace: '\1enforce_for_root'
+
+- name: "4.4.2.3.4 Backup system-auth before ensuring use_authtok"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/system-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)use_authtok'
+    replace: '\1use_authtok'
+
+- name: "4.4.2.3.4.1 Backup password-auth before ensuring use_authtok"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth"
+  ansible.builtin.replace:
+    path: /etc/pam.d/password-auth
+    regexp: '(password\s+required\s+pam_pwhistory\.so.*)use_authtok'
+    replace: '\1use_authtok'
+########################################
+
+
+- name: "4.4.2.4.1 Backup system-auth before any changes"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.4.1 to 4.4 Backup password-auth before any changes"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(nullok)(.*)
+    line: \1\3
+    backrefs: true
+
+- name: "4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(nullok)(.*)
+    line: \1\3
+    backrefs: true
+
+- name: "4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)remember(.*)
+    line: \1\2
+    backrefs: true
+
+- name: "4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)remember(.*)
+    line: \1\2
+    backrefs: true
+
+- name: "4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(md5|bigcrypt|sha256|blowfish)(.*)
+    line: \1\2 sha512
+    backrefs: true
+
+- name: "4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(md5|bigcrypt|sha256|blowfish)(.*)
+    line: \1\2 sha512
+    backrefs: true
+
+- name: "4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(use_authtok)(.*)
+    line: \1use_authtok\3
+    backrefs: true
+
+- name: "4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(use_authtok)(.*)
+    line: \1use_authtok\3
+    backrefs: true
+- name: "Backup system-auth before any changes"
+  ansible.builtin.copy:
+    src: /etc/pam.d/system-auth
+    dest: "/etc/pam.d/system-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "Backup password-auth before any changes"
+  ansible.builtin.copy:
+    src: /etc/pam.d/password-auth
+    dest: "/etc/pam.d/password-auth.bak.{{ ansible_date_time.iso8601_basic }}"
+    remote_src: yes
+    mode: '0600'
+
+- name: "4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(nullok)(.*)
+    line: \1\3
+    backrefs: true
+
+- name: "4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(nullok)(.*)
+    line: \1\3
+    backrefs: true
+
+- name: "4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)remember(.*)
+    line: \1\2
+    backrefs: true
+
+- name: "4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)remember(.*)
+    line: \1\2
+    backrefs: true
+
+- name: "4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(md5|bigcrypt|sha256|blowfish)(.*)
+    line: \1\2 sha512
+    backrefs: true
+
+- name: "4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(md5|bigcrypt|sha256|blowfish)(.*)
+    line: \1\2 sha512
+    backrefs: true
+
+- name: "4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/system-auth"
+    regexp: (.*pam_unix.so.*)(use_authtok)(.*)
+    line: \1use_authtok\3
+    backrefs: true
+
+- name: "4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth"
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/password-auth"
+    regexp: (.*pam_unix.so.*)(use_authtok)(.*)
+    line: \1use_authtok\3
+    backrefs: true
+#####
+
+- name: "4.5.1.5 | Ensure all users last password change date is in the past"
+  vars:
+    warn_control_id: '4.5.1.5'
+  block:
+    - name: "4.5.1.5  Ensure inactive password lock is 30 days or less | set fact days since_epoch"
+      ansible.builtin.set_fact:
+        days_since_epoch: "{{ (ansible_facts['date_time']['epoch']|int)/86400 }}"
+
+    - name: "4.5.1.5 Ensure inactive password lock is 30 days or less | capture users date in future"
+      ansible.builtin.shell: |
+        awk -F: '{ if ($3 > "{{ days_since_epoch }}") { print $1 }  }' /etc/shadow
+      changed_when: false
+      failed_when: rhel7cis_users_user_future.rc not in [ 0, 1 ]
+      register: rhel7cis_users_user_future
+
+    - name: "4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future"
+      ansible.builtin.debug:
+        msg:
+          - "Warning!! - The following users have passwords set in the future please investigate"
+          - "{{ rhel7cis_users_user_future.stdout_lines }}"
+
+    - name: "4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future"
+      ansible.builtin.import_tasks:
+        file: warning_facts.yml
+#####################
+
+
+- name: "4.5.2.2 | Ensure root user umask is configured"
+  ansible.builtin.lineinfile:
+    path: /root/.bash_profile
+    regexp: \s*umask
+    line: "umask {{ rhel7cis_root_umask }}"
+###########################
+
+- name: 4.5.2.3  Ensure system accounts are secured (Automated)
+  block:
+    - name: 4.5.2.3 Ensure system accounts are secured (Automated) | set system account to non login shell
+      shell: |
+        awk -F: '($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"' && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 }' /etc/passwd | while read user; do
+          usermod -s $(which nologin) $user
+        done
+
+    - name: 4.5.2.3 Ensure system accounts are secured (Automated) | lock not root system accounts
+      shell: |
+        awk -F ':' '($1!="root" && $1!~/^\+/ && $3<'"$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!="L" && $2!="LK") {print $1}' | while read user; do
+          usermod -L $user
+        done
+
+
+###########################
+- name: "4.5.2.4  Ensure root password is set"
+  shell: grep -i '^root:' /etc/shadow
+  register: root_shadow
+
+- name: "4.5.2.4  Ensure root password is set MSG"
+  debug:
+    msg: "{{ ansible_hostname }} {{ ansible_default_ipv4.address }} Root password status {{ root_shadow }}"
+###################
+
+- name: "4.5.3.3 | PATCH | Ensure default user umask is configured"
+  ansible.builtin.replace:
+      path: "{{ item.path }}"
+      regexp: (?i)(umask\s+\d\d\d)
+      replace: '{{ item.line }} 027'
+  loop:
+      - { path: '/etc/bashrc', line: 'umask' }
+      - { path: '/etc/profile', line: 'umask' }
+      - { path: '/etc/login.defs', line: 'UMASK' }
+
+
+
+

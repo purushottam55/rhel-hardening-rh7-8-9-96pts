@@ -1,0 +1,723 @@
+Using /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel7/ansible.cfg as config file
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [mcx_hardening_1_role :  1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk] ***
+ok: [192.168.91.233] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.233] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.233] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.233] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.233] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}
+
+TASK [mcx_hardening_1_role : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.233] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "freevxfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/3.10.0-1160.el7.x86_64/kernel/fs/freevxfs.ko"}}, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/3.10.0-1160.el7.x86_64/kernel/fs/hfs.ko"}}, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfsplus", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/3.10.0-1160.el7.x86_64/kernel/fs/hfsplus.ko"}}, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "jffs2", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/3.10.0-1160.el7.x86_64/kernel/fs/jffs2.ko"}}, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "usb_storage", "type": "drivers"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/3.10.0-1160.el7.x86_64/kernel/drivers/usb_storage.ko"}}, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Get list of loaded kernel modules] ****************
+ok: [192.168.91.233] => {"changed": false, "cmd": "lsmod | awk '{print $1}' | tail -n +2", "delta": "0:00:00.006652", "end": "2025-07-19 07:09:22.157385", "msg": "", "rc": 0, "start": "2025-07-19 07:09:22.150733", "stderr": "", "stderr_lines": [], "stdout": "binfmt_misc\nbridge\nstp\nllc\nip_set\nnfnetlink\nnfit\nlibnvdimm\niosf_mbi\ncrc32_pclmul\nghash_clmulni_intel\naesni_intel\nlrw\ngf128mul\nglue_helper\nablk_helper\ncryptd\njoydev\nsg\nvirtio_balloon\npcspkr\ni2c_piix4\nxfs\nlibcrc32c\nsr_mod\nsd_mod\ncdrom\ncrc_t10dif\ncrct10dif_generic\nata_generic\npata_acpi\nvirtio_net\nnet_failover\nvirtio_scsi\nfailover\nbochs_drm\ndrm_kms_helper\nsyscopyarea\nsysfillrect\nsysimgblt\nfb_sys_fops\nttm\ndrm\nata_piix\ncrct10dif_pclmul\ncrct10dif_common\ncrc32c_intel\nlibata\nserio_raw\nvirtio_pci\nvirtio_ring\nvirtio\ndrm_panel_orientation_quirks\nfloppy\ndm_mirror\ndm_region_hash\ndm_log\ndm_mod", "stdout_lines": ["binfmt_misc", "bridge", "stp", "llc", "ip_set", "nfnetlink", "nfit", "libnvdimm", "iosf_mbi", "crc32_pclmul", "ghash_clmulni_intel", "aesni_intel", "lrw", "gf128mul", "glue_helper", "ablk_helper", "cryptd", "joydev", "sg", "virtio_balloon", "pcspkr", "i2c_piix4", "xfs", "libcrc32c", "sr_mod", "sd_mod", "cdrom", "crc_t10dif", "crct10dif_generic", "ata_generic", "pata_acpi", "virtio_net", "net_failover", "virtio_scsi", "failover", "bochs_drm", "drm_kms_helper", "syscopyarea", "sysfillrect", "sysimgblt", "fb_sys_fops", "ttm", "drm", "ata_piix", "crct10dif_pclmul", "crct10dif_common", "crc32c_intel", "libata", "serio_raw", "virtio_pci", "virtio_ring", "virtio", "drm_panel_orientation_quirks", "floppy", "dm_mirror", "dm_region_hash", "dm_log", "dm_mod"]}
+
+TASK [mcx_hardening_1_role : Unload module '{{ item.name }}' if loaded] ********
+skipping: [192.168.91.233] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "freevxfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfsplus", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "jffs2", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "usb_storage", "type": "drivers"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Verify module '{{ item.name }}' is not loaded] ****
+ok: [192.168.91.233] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q freevxfs", "delta": "0:00:00.006098", "end": "2025-07-19 07:09:22.435032", "failed_when_result": false, "item": {"name": "freevxfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:09:22.428934", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfs", "delta": "0:00:00.005335", "end": "2025-07-19 07:09:22.619636", "failed_when_result": false, "item": {"name": "hfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:09:22.614301", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfsplus", "delta": "0:00:00.005073", "end": "2025-07-19 07:09:22.800330", "failed_when_result": false, "item": {"name": "hfsplus", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:09:22.795257", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q jffs2", "delta": "0:00:00.005855", "end": "2025-07-19 07:09:22.984778", "failed_when_result": false, "item": {"name": "jffs2", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:09:22.978923", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q usb_storage", "delta": "0:00:00.005517", "end": "2025-07-19 07:09:23.175578", "failed_when_result": false, "item": {"name": "usb_storage", "type": "drivers"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:09:23.170061", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent] ***
+ok: [192.168.91.233] => {
+    "msg": "Warning!! /tmp doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.233] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent] ***
+ok: [192.168.91.233] => {
+    "msg": "Warning!! /dev/shm doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.233] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1]", "warn_count": "2"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.2.2 Ensure GPG keys are configured] *************
+changed: [192.168.91.233] => {"changed": true, "cmd": "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\\n'", "delta": "0:00:00.032485", "end": "2025-07-19 07:09:23.530956", "msg": "", "rc": 0, "start": "2025-07-19 07:09:23.498471", "stderr": "", "stderr_lines": [], "stdout": "gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)\ngpg-pubkey-2fa658e0-45700c69 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)", "stdout_lines": ["gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)", "gpg-pubkey-2fa658e0-45700c69 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)"]}
+
+TASK [mcx_hardening_1_role : 1.2.3 Ensure gpgcheck is globally activated] ******
+changed: [192.168.91.233] => {"changed": true, "cmd": "sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/yum.conf", "delta": "0:00:00.003011", "end": "2025-07-19 07:09:23.728943", "msg": "", "rc": 0, "start": "2025-07-19 07:09:23.725932", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : shell] ********************************************
+changed: [192.168.91.233] => {"changed": true, "cmd": "find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\;", "delta": "0:00:00.006695", "end": "2025-07-19 07:09:23.925873", "msg": "", "rc": 0, "start": "2025-07-19 07:09:23.919178", "stderr": "", "stderr_lines": [], "stdout": "Checking: /etc/yum.repos.d/local.repo\nChecking: /etc/yum.repos.d/redhat.repo", "stdout_lines": ["Checking: /etc/yum.repos.d/local.repo", "Checking: /etc/yum.repos.d/redhat.repo"]}
+
+TASK [mcx_hardening_1_role : 1.2.4 Ensure package manager repositories are configured] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "yum repolist", "delta": "0:00:00.904851", "end": "2025-07-19 07:09:25.023287", "msg": "", "rc": 0, "start": "2025-07-19 07:09:24.118436", "stderr": "", "stderr_lines": [], "stdout": "Loaded plugins: product-id, search-disabled-repos, subscription-manager\nrepo id                                     repo name                     status\nRHEL-7.9                                    RHEL                           5,230\n!rhel-7-server-els-optional-rpms/x86_64     Red Hat Enterprise Linux 7 Se 24,926\n!rhel-7-server-els-rpms/x86_64              Red Hat Enterprise Linux 7 Se 35,039\n!rhel-7-server-extras-rpms/x86_64           Red Hat Enterprise Linux 7 Se  1,491\n!rhel-7-server-optional-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Se 24,421\n!rhel-7-server-rpms/7Server/x86_64          Red Hat Enterprise Linux 7 Se 34,484\nrepolist: 125,591", "stdout_lines": ["Loaded plugins: product-id, search-disabled-repos, subscription-manager", "repo id                                     repo name                     status", "RHEL-7.9                                    RHEL                           5,230", "!rhel-7-server-els-optional-rpms/x86_64     Red Hat Enterprise Linux 7 Se 24,926", "!rhel-7-server-els-rpms/x86_64              Red Hat Enterprise Linux 7 Se 35,039", "!rhel-7-server-extras-rpms/x86_64           Red Hat Enterprise Linux 7 Se  1,491", "!rhel-7-server-optional-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Se 24,421", "!rhel-7-server-rpms/7Server/x86_64          Red Hat Enterprise Linux 7 Se 34,484", "repolist: 125,591"]}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0, "results": ["mcstrans is not installed"]}
+
+TASK [mcx_hardening_1_role : 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)] ***
+fatal: [192.168.91.233]: FAILED! => {"changed": true, "cmd": ["yum", "check-update"], "delta": "0:00:08.224429", "end": "2025-07-19 07:09:34.705528", "msg": "non-zero return code", "rc": 100, "start": "2025-07-19 07:09:26.481099", "stderr": "", "stderr_lines": [], "stdout": "Loaded plugins: product-id, search-disabled-repos, subscription-manager\n\nNetworkManager.x86_64            1:1.18.8-2.el7_9         rhel-7-server-els-rpms\nNetworkManager-config-server.noarch\n                                 1:1.18.8-2.el7_9         rhel-7-server-els-rpms\nNetworkManager-libnm.x86_64      1:1.18.8-2.el7_9         rhel-7-server-els-rpms\nNetworkManager-team.x86_64       1:1.18.8-2.el7_9         rhel-7-server-els-rpms\nNetworkManager-tui.x86_64        1:1.18.8-2.el7_9         rhel-7-server-els-rpms\napr-util.x86_64                  1.5.2-6.el7_9.1          rhel-7-server-els-rpms\nat.x86_64                        3.1.13-25.el7_9          rhel-7-server-els-rpms\naudit.x86_64                     2.8.5-4.el7_9.1          rhel-7-server-els-rpms\naudit-libs.x86_64                2.8.5-4.el7_9.1          rhel-7-server-els-rpms\nbash.x86_64                      4.2.46-35.el7_9          rhel-7-server-els-rpms\nbind-export-libs.x86_64          32:9.11.4-26.P2.el7_9.18 rhel-7-server-els-rpms\nbinutils.x86_64                  2.27-44.base.el7_9.1     rhel-7-server-els-rpms\nca-certificates.noarch           2024.2.69_v8.0.303-71.el7_9\n                                                          rhel-7-server-els-rpms\ncoreutils.x86_64                 8.22-24.el7_9.2          rhel-7-server-els-rpms\ncronie.x86_64                    1.4.11-25.el7_9          rhel-7-server-els-rpms\ncronie-anacron.x86_64            1.4.11-25.el7_9          rhel-7-server-els-rpms\ncurl.x86_64                      7.29.0-59.el7_9.2        rhel-7-server-els-rpms\ncyrus-sasl-lib.x86_64            2.1.26-24.el7_9          rhel-7-server-els-rpms\ndevice-mapper.x86_64             7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms\ndevice-mapper-event.x86_64       7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms\ndevice-mapper-event-libs.x86_64  7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms\ndevice-mapper-libs.x86_64        7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms\ndevice-mapper-persistent-data.x86_64\n                                 0.8.5-3.el7_9.2          rhel-7-server-els-rpms\ndhclient.x86_64                  12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms\ndhcp-common.x86_64               12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms\ndhcp-libs.x86_64                 12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms\ndiffutils.x86_64                 3.3-6.el7_9              rhel-7-server-els-rpms\ndmidecode.x86_64                 1:3.2-5.el7_9.1          rhel-7-server-els-rpms\nemacs-filesystem.noarch          1:24.3-23.el7_9.2        rhel-7-server-els-rpms\nexpat.x86_64                     2.1.0-15.el7_9           rhel-7-server-els-rpms\nfirewalld.noarch                 0.6.3-13.el7_9           rhel-7-server-els-rpms\nfirewalld-filesystem.noarch      0.6.3-13.el7_9           rhel-7-server-els-rpms\nfreetype.x86_64                  2.8-15.el7_9.1           rhel-7-server-els-rpms\ngettext.x86_64                   0.19.8.1-3.el7_9         rhel-7-server-els-rpms\ngettext-libs.x86_64              0.19.8.1-3.el7_9         rhel-7-server-els-rpms\nglib2.x86_64                     2.56.1-9.el7_9           rhel-7-server-els-rpms\nglibc.x86_64                     2.17-326.el7_9.5         rhel-7-server-els-rpms\nglibc-common.x86_64              2.17-326.el7_9.5         rhel-7-server-els-rpms\ngrub2.x86_64                     1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-common.noarch              1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-pc.x86_64                  1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-pc-modules.noarch          1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-tools.x86_64               1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-tools-extra.x86_64         1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngrub2-tools-minimal.x86_64       1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms\ngzip.x86_64                      1.5-11.el7_9             rhel-7-server-els-rpms\nhttpd.x86_64                     2.4.6-99.el7_9.3         rhel-7-server-els-rpms\nhttpd-tools.x86_64               2.4.6-99.el7_9.3         rhel-7-server-els-rpms\ninitscripts.x86_64               9.49.53-1.el7_9.1        rhel-7-server-els-rpms\niprutils.x86_64                  2.4.17.1-3.el7_7         rhel-7-server-els-rpms\niwl100-firmware.noarch           39.31.5.1-84.el7_9       rhel-7-server-els-rpms\niwl1000-firmware.noarch          1:39.31.5.1-84.el7_9     rhel-7-server-els-rpms\niwl105-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl135-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl2000-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl2030-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl3160-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms\niwl3945-firmware.noarch          15.32.2.9-84.el7_9       rhel-7-server-els-rpms\niwl4965-firmware.noarch          228.61.2.24-84.el7_9     rhel-7-server-els-rpms\niwl5000-firmware.noarch          8.83.5.1_1-84.el7_9      rhel-7-server-els-rpms\niwl5150-firmware.noarch          8.24.2.2-84.el7_9        rhel-7-server-els-rpms\niwl6000-firmware.noarch          9.221.4.1-84.el7_9       rhel-7-server-els-rpms\niwl6000g2a-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl6000g2b-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms\niwl6050-firmware.noarch          41.28.5.1-84.el7_9       rhel-7-server-els-rpms\niwl7260-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms\nkbd.x86_64                       1.15.5-16.el7_9          rhel-7-server-els-rpms\nkbd-legacy.noarch                1.15.5-16.el7_9          rhel-7-server-els-rpms\nkbd-misc.noarch                  1.15.5-16.el7_9          rhel-7-server-els-rpms\nkernel.x86_64                    3.10.0-1160.135.1.el7    rhel-7-server-els-rpms\nkernel-tools.x86_64              3.10.0-1160.135.1.el7    rhel-7-server-els-rpms\nkernel-tools-libs.x86_64         3.10.0-1160.135.1.el7    rhel-7-server-els-rpms\nkexec-tools.x86_64               2.0.15-51.el7_9.3        rhel-7-server-els-rpms\nkpartx.x86_64                    0.4.9-136.el7_9          rhel-7-server-els-rpms\nkrb5-libs.x86_64                 1.15.1-55.el7_9.4        rhel-7-server-els-rpms\nless.x86_64                      458-10.el7_9             rhel-7-server-els-rpms\nlibblkid.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms\nlibcroco.x86_64                  0.6.12-6.el7_9           rhel-7-server-els-rpms\nlibcurl.x86_64                   7.29.0-59.el7_9.2        rhel-7-server-els-rpms\nlibgcc.x86_64                    4.8.5-45.el7_9           rhel-7-server-els-rpms\nlibgomp.x86_64                   4.8.5-45.el7_9           rhel-7-server-els-rpms\nlibgudev1.x86_64                 219-78.el7_9.11          rhel-7-server-els-rpms\nlibmount.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms\nlibndp.x86_64                    1.2-10.el7_9             rhel-7-server-els-rpms\nlibsmartcols.x86_64              2.23.2-65.el7_9.1        rhel-7-server-els-rpms\nlibssh2.x86_64                   1.8.0-4.el7_9.1          rhel-7-server-els-rpms\nlibstdc++.x86_64                 4.8.5-45.el7_9           rhel-7-server-els-rpms\nlibuuid.x86_64                   2.23.2-65.el7_9.1        rhel-7-server-els-rpms\nlibxml2.x86_64                   2.9.1-6.el7_9.9          rhel-7-server-els-rpms\nlibxml2-python.x86_64            2.9.1-6.el7_9.9          rhel-7-server-els-rpms\nlibxslt.x86_64                   1.1.28-9.el7_9           rhel-7-server-els-rpms\nlinux-firmware.noarch            20200421-84.git78c0348.el7_9\n                                                          rhel-7-server-els-rpms\nlvm2.x86_64                      7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms\nlvm2-libs.x86_64                 7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms\nmicrocode_ctl.x86_64             2:2.1-73.24.el7_9        rhel-7-server-els-rpms\nnspr.x86_64                      4.35.0-1.el7_9           rhel-7-server-els-rpms\nnss.x86_64                       3.90.0-2.el7_9           rhel-7-server-els-rpms\nnss-pem.x86_64                   1.0.3-7.el7_9.1          rhel-7-server-els-rpms\nnss-softokn.x86_64               3.90.0-6.el7_9           rhel-7-server-els-rpms\nnss-softokn-freebl.x86_64        3.90.0-6.el7_9           rhel-7-server-els-rpms\nnss-sysinit.x86_64               3.90.0-2.el7_9           rhel-7-server-els-rpms\nnss-tools.x86_64                 3.90.0-2.el7_9           rhel-7-server-els-rpms\nnss-util.x86_64                  3.90.0-1.el7_9           rhel-7-server-els-rpms\nopenldap.x86_64                  2.4.44-25.el7_9          rhel-7-server-els-rpms\nopenssh.x86_64                   7.4p1-23.el7_9           rhel-7-server-els-rpms\nopenssh-clients.x86_64           7.4p1-23.el7_9           rhel-7-server-els-rpms\nopenssh-server.x86_64            7.4p1-23.el7_9           rhel-7-server-els-rpms\nopenssl.x86_64                   1:1.0.2k-26.el7_9        rhel-7-server-els-rpms\nopenssl-libs.x86_64              1:1.0.2k-26.el7_9        rhel-7-server-els-rpms\npolkit.x86_64                    0.112-26.el7_9.1         rhel-7-server-els-rpms\npython.x86_64                    2.7.5-94.el7_9           rhel-7-server-els-rpms\npython-firewall.noarch           0.6.3-13.el7_9           rhel-7-server-els-rpms\npython-libs.x86_64               2.7.5-94.el7_9           rhel-7-server-els-rpms\npython-perf.x86_64               3.10.0-1160.135.1.el7    rhel-7-server-els-rpms\npython-setuptools.noarch         0.9.8-7.el7_9.1          rhel-7-server-els-rpms\npython-syspurpose.x86_64         1.24.54-1.el7_9          rhel-7-server-els-rpms\nredhat-release-server.x86_64     7.9-12.el7_9             rhel-7-server-els-rpms\nredhat-support-lib-python.noarch 0.14.0-1.el7_9           rhel-7-server-els-rpms\nredhat-support-tool.noarch       0.14.0-1.el7_9           rhel-7-server-els-rpms\nrpm.x86_64                       4.11.3-48.el7_9          rhel-7-server-els-rpms\nrpm-build-libs.x86_64            4.11.3-48.el7_9          rhel-7-server-els-rpms\nrpm-libs.x86_64                  4.11.3-48.el7_9          rhel-7-server-els-rpms\nrpm-python.x86_64                4.11.3-48.el7_9          rhel-7-server-els-rpms\nrsyslog.x86_64                   8.24.0-57.el7_9.3        rhel-7-server-els-rpms\nselinux-policy.noarch            3.13.1-268.el7_9.2       rhel-7-server-els-rpms\nselinux-policy-targeted.noarch   3.13.1-268.el7_9.2       rhel-7-server-els-rpms\nstrace.x86_64                    4.24-7.el7_9             rhel-7-server-els-rpms\nsubscription-manager.x86_64      1.24.54-1.el7_9          rhel-7-server-els-rpms\nsubscription-manager-rhsm.x86_64 1.24.54-1.el7_9          rhel-7-server-els-rpms\nsubscription-manager-rhsm-certificates.x86_64\n                                 1.24.54-1.el7_9          rhel-7-server-els-rpms\nsudo.x86_64                      1.8.23-10.el7_9.4        rhel-7-server-els-rpms\nsystemd.x86_64                   219-78.el7_9.11          rhel-7-server-els-rpms\nsystemd-libs.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms\nsystemd-sysv.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms\ntuned.noarch                     2.11.0-13.el7_9          rhel-7-server-els-rpms\ntzdata.noarch                    2025b-1.el7              rhel-7-server-els-rpms\nutil-linux.x86_64                2.23.2-65.el7_9.1        rhel-7-server-els-rpms\nvim-minimal.x86_64               2:7.4.629-8.el7_9        rhel-7-server-els-rpms\nvirt-what.x86_64                 1.18-4.el7_9.1           rhel-7-server-els-rpms\nwpa_supplicant.x86_64            1:2.6-12.el7_9.2         rhel-7-server-els-rpms\nxz.x86_64                        5.2.2-2.el7_9            rhel-7-server-els-rpms\nxz-libs.x86_64                   5.2.2-2.el7_9            rhel-7-server-els-rpms\nzlib.x86_64                      1.2.7-21.el7_9.1         rhel-7-server-els-rpms", "stdout_lines": ["Loaded plugins: product-id, search-disabled-repos, subscription-manager", "", "NetworkManager.x86_64            1:1.18.8-2.el7_9         rhel-7-server-els-rpms", "NetworkManager-config-server.noarch", "                                 1:1.18.8-2.el7_9         rhel-7-server-els-rpms", "NetworkManager-libnm.x86_64      1:1.18.8-2.el7_9         rhel-7-server-els-rpms", "NetworkManager-team.x86_64       1:1.18.8-2.el7_9         rhel-7-server-els-rpms", "NetworkManager-tui.x86_64        1:1.18.8-2.el7_9         rhel-7-server-els-rpms", "apr-util.x86_64                  1.5.2-6.el7_9.1          rhel-7-server-els-rpms", "at.x86_64                        3.1.13-25.el7_9          rhel-7-server-els-rpms", "audit.x86_64                     2.8.5-4.el7_9.1          rhel-7-server-els-rpms", "audit-libs.x86_64                2.8.5-4.el7_9.1          rhel-7-server-els-rpms", "bash.x86_64                      4.2.46-35.el7_9          rhel-7-server-els-rpms", "bind-export-libs.x86_64          32:9.11.4-26.P2.el7_9.18 rhel-7-server-els-rpms", "binutils.x86_64                  2.27-44.base.el7_9.1     rhel-7-server-els-rpms", "ca-certificates.noarch           2024.2.69_v8.0.303-71.el7_9", "                                                          rhel-7-server-els-rpms", "coreutils.x86_64                 8.22-24.el7_9.2          rhel-7-server-els-rpms", "cronie.x86_64                    1.4.11-25.el7_9          rhel-7-server-els-rpms", "cronie-anacron.x86_64            1.4.11-25.el7_9          rhel-7-server-els-rpms", "curl.x86_64                      7.29.0-59.el7_9.2        rhel-7-server-els-rpms", "cyrus-sasl-lib.x86_64            2.1.26-24.el7_9          rhel-7-server-els-rpms", "device-mapper.x86_64             7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms", "device-mapper-event.x86_64       7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms", "device-mapper-event-libs.x86_64  7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms", "device-mapper-libs.x86_64        7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms", "device-mapper-persistent-data.x86_64", "                                 0.8.5-3.el7_9.2          rhel-7-server-els-rpms", "dhclient.x86_64                  12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms", "dhcp-common.x86_64               12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms", "dhcp-libs.x86_64                 12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms", "diffutils.x86_64                 3.3-6.el7_9              rhel-7-server-els-rpms", "dmidecode.x86_64                 1:3.2-5.el7_9.1          rhel-7-server-els-rpms", "emacs-filesystem.noarch          1:24.3-23.el7_9.2        rhel-7-server-els-rpms", "expat.x86_64                     2.1.0-15.el7_9           rhel-7-server-els-rpms", "firewalld.noarch                 0.6.3-13.el7_9           rhel-7-server-els-rpms", "firewalld-filesystem.noarch      0.6.3-13.el7_9           rhel-7-server-els-rpms", "freetype.x86_64                  2.8-15.el7_9.1           rhel-7-server-els-rpms", "gettext.x86_64                   0.19.8.1-3.el7_9         rhel-7-server-els-rpms", "gettext-libs.x86_64              0.19.8.1-3.el7_9         rhel-7-server-els-rpms", "glib2.x86_64                     2.56.1-9.el7_9           rhel-7-server-els-rpms", "glibc.x86_64                     2.17-326.el7_9.5         rhel-7-server-els-rpms", "glibc-common.x86_64              2.17-326.el7_9.5         rhel-7-server-els-rpms", "grub2.x86_64                     1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-common.noarch              1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-pc.x86_64                  1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-pc-modules.noarch          1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-tools.x86_64               1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-tools-extra.x86_64         1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "grub2-tools-minimal.x86_64       1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms", "gzip.x86_64                      1.5-11.el7_9             rhel-7-server-els-rpms", "httpd.x86_64                     2.4.6-99.el7_9.3         rhel-7-server-els-rpms", "httpd-tools.x86_64               2.4.6-99.el7_9.3         rhel-7-server-els-rpms", "initscripts.x86_64               9.49.53-1.el7_9.1        rhel-7-server-els-rpms", "iprutils.x86_64                  2.4.17.1-3.el7_7         rhel-7-server-els-rpms", "iwl100-firmware.noarch           39.31.5.1-84.el7_9       rhel-7-server-els-rpms", "iwl1000-firmware.noarch          1:39.31.5.1-84.el7_9     rhel-7-server-els-rpms", "iwl105-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl135-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl2000-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl2030-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl3160-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms", "iwl3945-firmware.noarch          15.32.2.9-84.el7_9       rhel-7-server-els-rpms", "iwl4965-firmware.noarch          228.61.2.24-84.el7_9     rhel-7-server-els-rpms", "iwl5000-firmware.noarch          8.83.5.1_1-84.el7_9      rhel-7-server-els-rpms", "iwl5150-firmware.noarch          8.24.2.2-84.el7_9        rhel-7-server-els-rpms", "iwl6000-firmware.noarch          9.221.4.1-84.el7_9       rhel-7-server-els-rpms", "iwl6000g2a-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl6000g2b-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms", "iwl6050-firmware.noarch          41.28.5.1-84.el7_9       rhel-7-server-els-rpms", "iwl7260-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms", "kbd.x86_64                       1.15.5-16.el7_9          rhel-7-server-els-rpms", "kbd-legacy.noarch                1.15.5-16.el7_9          rhel-7-server-els-rpms", "kbd-misc.noarch                  1.15.5-16.el7_9          rhel-7-server-els-rpms", "kernel.x86_64                    3.10.0-1160.135.1.el7    rhel-7-server-els-rpms", "kernel-tools.x86_64              3.10.0-1160.135.1.el7    rhel-7-server-els-rpms", "kernel-tools-libs.x86_64         3.10.0-1160.135.1.el7    rhel-7-server-els-rpms", "kexec-tools.x86_64               2.0.15-51.el7_9.3        rhel-7-server-els-rpms", "kpartx.x86_64                    0.4.9-136.el7_9          rhel-7-server-els-rpms", "krb5-libs.x86_64                 1.15.1-55.el7_9.4        rhel-7-server-els-rpms", "less.x86_64                      458-10.el7_9             rhel-7-server-els-rpms", "libblkid.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms", "libcroco.x86_64                  0.6.12-6.el7_9           rhel-7-server-els-rpms", "libcurl.x86_64                   7.29.0-59.el7_9.2        rhel-7-server-els-rpms", "libgcc.x86_64                    4.8.5-45.el7_9           rhel-7-server-els-rpms", "libgomp.x86_64                   4.8.5-45.el7_9           rhel-7-server-els-rpms", "libgudev1.x86_64                 219-78.el7_9.11          rhel-7-server-els-rpms", "libmount.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms", "libndp.x86_64                    1.2-10.el7_9             rhel-7-server-els-rpms", "libsmartcols.x86_64              2.23.2-65.el7_9.1        rhel-7-server-els-rpms", "libssh2.x86_64                   1.8.0-4.el7_9.1          rhel-7-server-els-rpms", "libstdc++.x86_64                 4.8.5-45.el7_9           rhel-7-server-els-rpms", "libuuid.x86_64                   2.23.2-65.el7_9.1        rhel-7-server-els-rpms", "libxml2.x86_64                   2.9.1-6.el7_9.9          rhel-7-server-els-rpms", "libxml2-python.x86_64            2.9.1-6.el7_9.9          rhel-7-server-els-rpms", "libxslt.x86_64                   1.1.28-9.el7_9           rhel-7-server-els-rpms", "linux-firmware.noarch            20200421-84.git78c0348.el7_9", "                                                          rhel-7-server-els-rpms", "lvm2.x86_64                      7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms", "lvm2-libs.x86_64                 7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms", "microcode_ctl.x86_64             2:2.1-73.24.el7_9        rhel-7-server-els-rpms", "nspr.x86_64                      4.35.0-1.el7_9           rhel-7-server-els-rpms", "nss.x86_64                       3.90.0-2.el7_9           rhel-7-server-els-rpms", "nss-pem.x86_64                   1.0.3-7.el7_9.1          rhel-7-server-els-rpms", "nss-softokn.x86_64               3.90.0-6.el7_9           rhel-7-server-els-rpms", "nss-softokn-freebl.x86_64        3.90.0-6.el7_9           rhel-7-server-els-rpms", "nss-sysinit.x86_64               3.90.0-2.el7_9           rhel-7-server-els-rpms", "nss-tools.x86_64                 3.90.0-2.el7_9           rhel-7-server-els-rpms", "nss-util.x86_64                  3.90.0-1.el7_9           rhel-7-server-els-rpms", "openldap.x86_64                  2.4.44-25.el7_9          rhel-7-server-els-rpms", "openssh.x86_64                   7.4p1-23.el7_9           rhel-7-server-els-rpms", "openssh-clients.x86_64           7.4p1-23.el7_9           rhel-7-server-els-rpms", "openssh-server.x86_64            7.4p1-23.el7_9           rhel-7-server-els-rpms", "openssl.x86_64                   1:1.0.2k-26.el7_9        rhel-7-server-els-rpms", "openssl-libs.x86_64              1:1.0.2k-26.el7_9        rhel-7-server-els-rpms", "polkit.x86_64                    0.112-26.el7_9.1         rhel-7-server-els-rpms", "python.x86_64                    2.7.5-94.el7_9           rhel-7-server-els-rpms", "python-firewall.noarch           0.6.3-13.el7_9           rhel-7-server-els-rpms", "python-libs.x86_64               2.7.5-94.el7_9           rhel-7-server-els-rpms", "python-perf.x86_64               3.10.0-1160.135.1.el7    rhel-7-server-els-rpms", "python-setuptools.noarch         0.9.8-7.el7_9.1          rhel-7-server-els-rpms", "python-syspurpose.x86_64         1.24.54-1.el7_9          rhel-7-server-els-rpms", "redhat-release-server.x86_64     7.9-12.el7_9             rhel-7-server-els-rpms", "redhat-support-lib-python.noarch 0.14.0-1.el7_9           rhel-7-server-els-rpms", "redhat-support-tool.noarch       0.14.0-1.el7_9           rhel-7-server-els-rpms", "rpm.x86_64                       4.11.3-48.el7_9          rhel-7-server-els-rpms", "rpm-build-libs.x86_64            4.11.3-48.el7_9          rhel-7-server-els-rpms", "rpm-libs.x86_64                  4.11.3-48.el7_9          rhel-7-server-els-rpms", "rpm-python.x86_64                4.11.3-48.el7_9          rhel-7-server-els-rpms", "rsyslog.x86_64                   8.24.0-57.el7_9.3        rhel-7-server-els-rpms", "selinux-policy.noarch            3.13.1-268.el7_9.2       rhel-7-server-els-rpms", "selinux-policy-targeted.noarch   3.13.1-268.el7_9.2       rhel-7-server-els-rpms", "strace.x86_64                    4.24-7.el7_9             rhel-7-server-els-rpms", "subscription-manager.x86_64      1.24.54-1.el7_9          rhel-7-server-els-rpms", "subscription-manager-rhsm.x86_64 1.24.54-1.el7_9          rhel-7-server-els-rpms", "subscription-manager-rhsm-certificates.x86_64", "                                 1.24.54-1.el7_9          rhel-7-server-els-rpms", "sudo.x86_64                      1.8.23-10.el7_9.4        rhel-7-server-els-rpms", "systemd.x86_64                   219-78.el7_9.11          rhel-7-server-els-rpms", "systemd-libs.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms", "systemd-sysv.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms", "tuned.noarch                     2.11.0-13.el7_9          rhel-7-server-els-rpms", "tzdata.noarch                    2025b-1.el7              rhel-7-server-els-rpms", "util-linux.x86_64                2.23.2-65.el7_9.1        rhel-7-server-els-rpms", "vim-minimal.x86_64               2:7.4.629-8.el7_9        rhel-7-server-els-rpms", "virt-what.x86_64                 1.18-4.el7_9.1           rhel-7-server-els-rpms", "wpa_supplicant.x86_64            1:2.6-12.el7_9.2         rhel-7-server-els-rpms", "xz.x86_64                        5.2.2-2.el7_9            rhel-7-server-els-rpms", "xz-libs.x86_64                   5.2.2-2.el7_9            rhel-7-server-els-rpms", "zlib.x86_64                      1.2.7-21.el7_9.1         rhel-7-server-els-rpms"]}
+...ignoring
+
+TASK [mcx_hardening_1_role : 1.2.5.1 Show available updates] *******************
+ok: [192.168.91.233] => {
+    "yum_updates.stdout_lines": [
+        "Loaded plugins: product-id, search-disabled-repos, subscription-manager",
+        "",
+        "NetworkManager.x86_64            1:1.18.8-2.el7_9         rhel-7-server-els-rpms",
+        "NetworkManager-config-server.noarch",
+        "                                 1:1.18.8-2.el7_9         rhel-7-server-els-rpms",
+        "NetworkManager-libnm.x86_64      1:1.18.8-2.el7_9         rhel-7-server-els-rpms",
+        "NetworkManager-team.x86_64       1:1.18.8-2.el7_9         rhel-7-server-els-rpms",
+        "NetworkManager-tui.x86_64        1:1.18.8-2.el7_9         rhel-7-server-els-rpms",
+        "apr-util.x86_64                  1.5.2-6.el7_9.1          rhel-7-server-els-rpms",
+        "at.x86_64                        3.1.13-25.el7_9          rhel-7-server-els-rpms",
+        "audit.x86_64                     2.8.5-4.el7_9.1          rhel-7-server-els-rpms",
+        "audit-libs.x86_64                2.8.5-4.el7_9.1          rhel-7-server-els-rpms",
+        "bash.x86_64                      4.2.46-35.el7_9          rhel-7-server-els-rpms",
+        "bind-export-libs.x86_64          32:9.11.4-26.P2.el7_9.18 rhel-7-server-els-rpms",
+        "binutils.x86_64                  2.27-44.base.el7_9.1     rhel-7-server-els-rpms",
+        "ca-certificates.noarch           2024.2.69_v8.0.303-71.el7_9",
+        "                                                          rhel-7-server-els-rpms",
+        "coreutils.x86_64                 8.22-24.el7_9.2          rhel-7-server-els-rpms",
+        "cronie.x86_64                    1.4.11-25.el7_9          rhel-7-server-els-rpms",
+        "cronie-anacron.x86_64            1.4.11-25.el7_9          rhel-7-server-els-rpms",
+        "curl.x86_64                      7.29.0-59.el7_9.2        rhel-7-server-els-rpms",
+        "cyrus-sasl-lib.x86_64            2.1.26-24.el7_9          rhel-7-server-els-rpms",
+        "device-mapper.x86_64             7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms",
+        "device-mapper-event.x86_64       7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms",
+        "device-mapper-event-libs.x86_64  7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms",
+        "device-mapper-libs.x86_64        7:1.02.170-6.el7_9.5     rhel-7-server-els-rpms",
+        "device-mapper-persistent-data.x86_64",
+        "                                 0.8.5-3.el7_9.2          rhel-7-server-els-rpms",
+        "dhclient.x86_64                  12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms",
+        "dhcp-common.x86_64               12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms",
+        "dhcp-libs.x86_64                 12:4.2.5-83.el7_9.2      rhel-7-server-els-rpms",
+        "diffutils.x86_64                 3.3-6.el7_9              rhel-7-server-els-rpms",
+        "dmidecode.x86_64                 1:3.2-5.el7_9.1          rhel-7-server-els-rpms",
+        "emacs-filesystem.noarch          1:24.3-23.el7_9.2        rhel-7-server-els-rpms",
+        "expat.x86_64                     2.1.0-15.el7_9           rhel-7-server-els-rpms",
+        "firewalld.noarch                 0.6.3-13.el7_9           rhel-7-server-els-rpms",
+        "firewalld-filesystem.noarch      0.6.3-13.el7_9           rhel-7-server-els-rpms",
+        "freetype.x86_64                  2.8-15.el7_9.1           rhel-7-server-els-rpms",
+        "gettext.x86_64                   0.19.8.1-3.el7_9         rhel-7-server-els-rpms",
+        "gettext-libs.x86_64              0.19.8.1-3.el7_9         rhel-7-server-els-rpms",
+        "glib2.x86_64                     2.56.1-9.el7_9           rhel-7-server-els-rpms",
+        "glibc.x86_64                     2.17-326.el7_9.5         rhel-7-server-els-rpms",
+        "glibc-common.x86_64              2.17-326.el7_9.5         rhel-7-server-els-rpms",
+        "grub2.x86_64                     1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-common.noarch              1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-pc.x86_64                  1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-pc-modules.noarch          1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-tools.x86_64               1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-tools-extra.x86_64         1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "grub2-tools-minimal.x86_64       1:2.02-0.87.el7_9.15     rhel-7-server-els-rpms",
+        "gzip.x86_64                      1.5-11.el7_9             rhel-7-server-els-rpms",
+        "httpd.x86_64                     2.4.6-99.el7_9.3         rhel-7-server-els-rpms",
+        "httpd-tools.x86_64               2.4.6-99.el7_9.3         rhel-7-server-els-rpms",
+        "initscripts.x86_64               9.49.53-1.el7_9.1        rhel-7-server-els-rpms",
+        "iprutils.x86_64                  2.4.17.1-3.el7_7         rhel-7-server-els-rpms",
+        "iwl100-firmware.noarch           39.31.5.1-84.el7_9       rhel-7-server-els-rpms",
+        "iwl1000-firmware.noarch          1:39.31.5.1-84.el7_9     rhel-7-server-els-rpms",
+        "iwl105-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl135-firmware.noarch           18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl2000-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl2030-firmware.noarch          18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl3160-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms",
+        "iwl3945-firmware.noarch          15.32.2.9-84.el7_9       rhel-7-server-els-rpms",
+        "iwl4965-firmware.noarch          228.61.2.24-84.el7_9     rhel-7-server-els-rpms",
+        "iwl5000-firmware.noarch          8.83.5.1_1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl5150-firmware.noarch          8.24.2.2-84.el7_9        rhel-7-server-els-rpms",
+        "iwl6000-firmware.noarch          9.221.4.1-84.el7_9       rhel-7-server-els-rpms",
+        "iwl6000g2a-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl6000g2b-firmware.noarch       18.168.6.1-84.el7_9      rhel-7-server-els-rpms",
+        "iwl6050-firmware.noarch          41.28.5.1-84.el7_9       rhel-7-server-els-rpms",
+        "iwl7260-firmware.noarch          25.30.13.0-84.el7_9      rhel-7-server-els-rpms",
+        "kbd.x86_64                       1.15.5-16.el7_9          rhel-7-server-els-rpms",
+        "kbd-legacy.noarch                1.15.5-16.el7_9          rhel-7-server-els-rpms",
+        "kbd-misc.noarch                  1.15.5-16.el7_9          rhel-7-server-els-rpms",
+        "kernel.x86_64                    3.10.0-1160.135.1.el7    rhel-7-server-els-rpms",
+        "kernel-tools.x86_64              3.10.0-1160.135.1.el7    rhel-7-server-els-rpms",
+        "kernel-tools-libs.x86_64         3.10.0-1160.135.1.el7    rhel-7-server-els-rpms",
+        "kexec-tools.x86_64               2.0.15-51.el7_9.3        rhel-7-server-els-rpms",
+        "kpartx.x86_64                    0.4.9-136.el7_9          rhel-7-server-els-rpms",
+        "krb5-libs.x86_64                 1.15.1-55.el7_9.4        rhel-7-server-els-rpms",
+        "less.x86_64                      458-10.el7_9             rhel-7-server-els-rpms",
+        "libblkid.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms",
+        "libcroco.x86_64                  0.6.12-6.el7_9           rhel-7-server-els-rpms",
+        "libcurl.x86_64                   7.29.0-59.el7_9.2        rhel-7-server-els-rpms",
+        "libgcc.x86_64                    4.8.5-45.el7_9           rhel-7-server-els-rpms",
+        "libgomp.x86_64                   4.8.5-45.el7_9           rhel-7-server-els-rpms",
+        "libgudev1.x86_64                 219-78.el7_9.11          rhel-7-server-els-rpms",
+        "libmount.x86_64                  2.23.2-65.el7_9.1        rhel-7-server-els-rpms",
+        "libndp.x86_64                    1.2-10.el7_9             rhel-7-server-els-rpms",
+        "libsmartcols.x86_64              2.23.2-65.el7_9.1        rhel-7-server-els-rpms",
+        "libssh2.x86_64                   1.8.0-4.el7_9.1          rhel-7-server-els-rpms",
+        "libstdc++.x86_64                 4.8.5-45.el7_9           rhel-7-server-els-rpms",
+        "libuuid.x86_64                   2.23.2-65.el7_9.1        rhel-7-server-els-rpms",
+        "libxml2.x86_64                   2.9.1-6.el7_9.9          rhel-7-server-els-rpms",
+        "libxml2-python.x86_64            2.9.1-6.el7_9.9          rhel-7-server-els-rpms",
+        "libxslt.x86_64                   1.1.28-9.el7_9           rhel-7-server-els-rpms",
+        "linux-firmware.noarch            20200421-84.git78c0348.el7_9",
+        "                                                          rhel-7-server-els-rpms",
+        "lvm2.x86_64                      7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms",
+        "lvm2-libs.x86_64                 7:2.02.187-6.el7_9.5     rhel-7-server-els-rpms",
+        "microcode_ctl.x86_64             2:2.1-73.24.el7_9        rhel-7-server-els-rpms",
+        "nspr.x86_64                      4.35.0-1.el7_9           rhel-7-server-els-rpms",
+        "nss.x86_64                       3.90.0-2.el7_9           rhel-7-server-els-rpms",
+        "nss-pem.x86_64                   1.0.3-7.el7_9.1          rhel-7-server-els-rpms",
+        "nss-softokn.x86_64               3.90.0-6.el7_9           rhel-7-server-els-rpms",
+        "nss-softokn-freebl.x86_64        3.90.0-6.el7_9           rhel-7-server-els-rpms",
+        "nss-sysinit.x86_64               3.90.0-2.el7_9           rhel-7-server-els-rpms",
+        "nss-tools.x86_64                 3.90.0-2.el7_9           rhel-7-server-els-rpms",
+        "nss-util.x86_64                  3.90.0-1.el7_9           rhel-7-server-els-rpms",
+        "openldap.x86_64                  2.4.44-25.el7_9          rhel-7-server-els-rpms",
+        "openssh.x86_64                   7.4p1-23.el7_9           rhel-7-server-els-rpms",
+        "openssh-clients.x86_64           7.4p1-23.el7_9           rhel-7-server-els-rpms",
+        "openssh-server.x86_64            7.4p1-23.el7_9           rhel-7-server-els-rpms",
+        "openssl.x86_64                   1:1.0.2k-26.el7_9        rhel-7-server-els-rpms",
+        "openssl-libs.x86_64              1:1.0.2k-26.el7_9        rhel-7-server-els-rpms",
+        "polkit.x86_64                    0.112-26.el7_9.1         rhel-7-server-els-rpms",
+        "python.x86_64                    2.7.5-94.el7_9           rhel-7-server-els-rpms",
+        "python-firewall.noarch           0.6.3-13.el7_9           rhel-7-server-els-rpms",
+        "python-libs.x86_64               2.7.5-94.el7_9           rhel-7-server-els-rpms",
+        "python-perf.x86_64               3.10.0-1160.135.1.el7    rhel-7-server-els-rpms",
+        "python-setuptools.noarch         0.9.8-7.el7_9.1          rhel-7-server-els-rpms",
+        "python-syspurpose.x86_64         1.24.54-1.el7_9          rhel-7-server-els-rpms",
+        "redhat-release-server.x86_64     7.9-12.el7_9             rhel-7-server-els-rpms",
+        "redhat-support-lib-python.noarch 0.14.0-1.el7_9           rhel-7-server-els-rpms",
+        "redhat-support-tool.noarch       0.14.0-1.el7_9           rhel-7-server-els-rpms",
+        "rpm.x86_64                       4.11.3-48.el7_9          rhel-7-server-els-rpms",
+        "rpm-build-libs.x86_64            4.11.3-48.el7_9          rhel-7-server-els-rpms",
+        "rpm-libs.x86_64                  4.11.3-48.el7_9          rhel-7-server-els-rpms",
+        "rpm-python.x86_64                4.11.3-48.el7_9          rhel-7-server-els-rpms",
+        "rsyslog.x86_64                   8.24.0-57.el7_9.3        rhel-7-server-els-rpms",
+        "selinux-policy.noarch            3.13.1-268.el7_9.2       rhel-7-server-els-rpms",
+        "selinux-policy-targeted.noarch   3.13.1-268.el7_9.2       rhel-7-server-els-rpms",
+        "strace.x86_64                    4.24-7.el7_9             rhel-7-server-els-rpms",
+        "subscription-manager.x86_64      1.24.54-1.el7_9          rhel-7-server-els-rpms",
+        "subscription-manager-rhsm.x86_64 1.24.54-1.el7_9          rhel-7-server-els-rpms",
+        "subscription-manager-rhsm-certificates.x86_64",
+        "                                 1.24.54-1.el7_9          rhel-7-server-els-rpms",
+        "sudo.x86_64                      1.8.23-10.el7_9.4        rhel-7-server-els-rpms",
+        "systemd.x86_64                   219-78.el7_9.11          rhel-7-server-els-rpms",
+        "systemd-libs.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms",
+        "systemd-sysv.x86_64              219-78.el7_9.11          rhel-7-server-els-rpms",
+        "tuned.noarch                     2.11.0-13.el7_9          rhel-7-server-els-rpms",
+        "tzdata.noarch                    2025b-1.el7              rhel-7-server-els-rpms",
+        "util-linux.x86_64                2.23.2-65.el7_9.1        rhel-7-server-els-rpms",
+        "vim-minimal.x86_64               2:7.4.629-8.el7_9        rhel-7-server-els-rpms",
+        "virt-what.x86_64                 1.18-4.el7_9.1           rhel-7-server-els-rpms",
+        "wpa_supplicant.x86_64            1:2.6-12.el7_9.2         rhel-7-server-els-rpms",
+        "xz.x86_64                        5.2.2-2.el7_9            rhel-7-server-els-rpms",
+        "xz-libs.x86_64                   5.2.2-2.el7_9            rhel-7-server-els-rpms",
+        "zlib.x86_64                      1.2.7-21.el7_9.1         rhel-7-server-els-rpms"
+    ]
+}
+
+TASK [mcx_hardening_1_role : 1.3.3 | PATCH | Ensure authentication required for single user mode | Emergency service] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.3.3 | PATCH | Ensure authentication required for single user mode | Rescue service] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | Set file] *****
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | comment out other entry] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0, "results": ["mcstrans is not installed"]}
+
+TASK [mcx_hardening_1_role : (1.6.1 Ensure message of the day is configured properly] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.6.3  Ensure remote login warning banner is configured properly] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure SSHD config uses /etc/issue.net as Banner] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+ok: [192.168.91.233] => (item=ypbind) => {"ansible_loop_var": "item", "changed": false, "item": "ypbind", "msg": "", "rc": 0, "results": ["ypbind is not installed"]}
+ok: [192.168.91.233] => (item=dnsmasq) => {"ansible_loop_var": "item", "changed": false, "item": "dnsmasq", "msg": "", "rc": 0, "results": ["dnsmasq is not installed"]}
+ok: [192.168.91.233] => (item=cups) => {"ansible_loop_var": "item", "changed": false, "item": "cups", "msg": "", "rc": 0, "results": ["cups is not installed"]}
+ok: [192.168.91.233] => (item=avahi-daemon) => {"ansible_loop_var": "item", "changed": false, "item": "avahi-daemon", "msg": "", "rc": 0, "results": ["avahi-daemon is not installed"]}
+ok: [192.168.91.233] => (item=bluetooth) => {"ansible_loop_var": "item", "changed": false, "item": "bluetooth", "msg": "", "rc": 0, "results": ["bluetooth is not installed"]}
+ok: [192.168.91.233] => (item=rpcbind) => {"ansible_loop_var": "item", "changed": false, "item": "rpcbind", "msg": "", "rc": 0, "results": ["rpcbind is not installed"]}
+ok: [192.168.91.233] => (item=slapd) => {"ansible_loop_var": "item", "changed": false, "item": "slapd", "msg": "", "rc": 0, "results": ["slapd is not installed"]}
+ok: [192.168.91.233] => (item=xinetd) => {"ansible_loop_var": "item", "changed": false, "item": "xinetd", "msg": "", "rc": 0, "results": ["xinetd is not installed"]}
+ok: [192.168.91.233] => (item=telnet) => {"ansible_loop_var": "item", "changed": false, "item": "telnet", "msg": "", "rc": 0, "results": ["telnet is not installed"]}
+ok: [192.168.91.233] => (item=rsh) => {"ansible_loop_var": "item", "changed": false, "item": "rsh", "msg": "", "rc": 0, "results": ["rsh is not installed"]}
+ok: [192.168.91.233] => (item=vsftpd) => {"ansible_loop_var": "item", "changed": false, "item": "vsftpd", "msg": "", "rc": 0, "results": ["vsftpd is not installed"]}
+ok: [192.168.91.233] => (item=tftp) => {"ansible_loop_var": "item", "changed": false, "item": "tftp", "msg": "", "rc": 0, "results": ["tftp is not installed"]}
+ok: [192.168.91.233] => (item=nfs) => {"ansible_loop_var": "item", "changed": false, "item": "nfs", "msg": "", "rc": 0, "results": ["nfs is not installed"]}
+ok: [192.168.91.233] => (item=nfs-server) => {"ansible_loop_var": "item", "changed": false, "item": "nfs-server", "msg": "", "rc": 0, "results": ["nfs-server is not installed"]}
+ok: [192.168.91.233] => (item=rpc-statd) => {"ansible_loop_var": "item", "changed": false, "item": "rpc-statd", "msg": "", "rc": 0, "results": ["rpc-statd is not installed"]}
+ok: [192.168.91.233] => (item=ypserv) => {"ansible_loop_var": "item", "changed": false, "item": "ypserv", "msg": "", "rc": 0, "results": ["ypserv is not installed"]}
+ok: [192.168.91.233] => (item=snmpd) => {"ansible_loop_var": "item", "changed": false, "item": "snmpd", "msg": "", "rc": 0, "results": ["snmpd is not installed"]}
+ok: [192.168.91.233] => (item=bind) => {"ansible_loop_var": "item", "changed": false, "item": "bind", "msg": "", "rc": 0, "results": ["bind is not installed"]}
+ok: [192.168.91.233] => (item=squid) => {"ansible_loop_var": "item", "changed": false, "item": "squid", "msg": "", "rc": 0, "results": ["squid is not installed"]}
+ok: [192.168.91.233] => (item=dovecot) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot", "msg": "", "rc": 0, "results": ["dovecot is not installed"]}
+ok: [192.168.91.233] => (item=samba) => {"ansible_loop_var": "item", "changed": false, "item": "samba", "msg": "", "rc": 0, "results": ["samba is not installed"]}
+
+TASK [mcx_hardening_2_role : 2.2.22 Ensure only approved services are listening on a network interface] ***
+ok: [192.168.91.233] => {
+    "msg": "We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra"
+}
+
+TASK [mcx_hardening_2_role : 2.2.21 | Ensure mail transfer agents are configured for local-only mode] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_3_role : 3.3.9  Ensure suspicious packets are logged] ******
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_3_role :  3.3.9.1 Ensure net.ipv4.conf.default.log_martians is set to 1 in sysctl.conf] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_3_role :  3.3.9.2 Reload sysctl settings to apply changes] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": ["sysctl", "-p", "/etc/sysctl.conf"], "delta": "0:00:00.002974", "end": "2025-07-19 07:10:00.517147", "msg": "", "rc": 0, "start": "2025-07-19 07:10:00.514173", "stderr": "", "stderr_lines": [], "stdout": "net.ipv4.conf.all.log_martians = 1\nnet.ipv4.conf.default.log_martians = 1", "stdout_lines": ["net.ipv4.conf.all.log_martians = 1", "net.ipv4.conf.default.log_martians = 1"]}
+
+TASK [mcx_hardening_4_role : 4.2.4.1 Add line to sshd_config for allowusers] ***
+skipping: [192.168.91.233] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.2 Add line to sshd_config for allowgroups] ***
+skipping: [192.168.91.233] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.3 Add line to sshd_config for denyusers] ****
+skipping: [192.168.91.233] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.4 Add line to sshd_config for denygroups] ***
+skipping: [192.168.91.233] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.6  Ensure only strong Ciphers are used] *******
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.233] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Sat 2025-07-19 06:24:21 IST", "ActiveEnterTimestampMonotonic": "894248111331", "ActiveExitTimestamp": "Sat 2025-07-19 06:24:21 IST", "ActiveExitTimestampMonotonic": "894248103777", "ActiveState": "active", "After": "basic.target sshd-keygen.service systemd-journald.socket system.slice network.target", "AllowIsolate": "no", "AmbientCapabilities": "0", "AssertResult": "yes", "AssertTimestamp": "Sat 2025-07-19 06:24:21 IST", "AssertTimestampMonotonic": "894248104993", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "18446744073709551615", "CPUAccounting": "no", "CPUQuotaPerSecUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "18446744073709551615", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "18446744073709551615", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Sat 2025-07-19 06:24:21 IST", "ConditionTimestampMonotonic": "894248104993", "ConflictedBy": "sshd.socket", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.service", "ControlGroup": "/system.slice/sshd.service", "ControlPID": "0", "DefaultDependencies": "yes", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "man:sshd(8) man:sshd_config(5)", "EnvironmentFile": "/etc/sysconfig/sshd (ignore_errors=no)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "179951", "ExecMainStartTimestamp": "Sat 2025-07-19 06:24:21 IST", "ExecMainStartTimestampMonotonic": "894248105488", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "GuessMainPID": "yes", "IOScheduling": "0", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreOnSnapshot": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Sat 2025-07-19 06:24:21 IST", "InactiveEnterTimestampMonotonic": "894248104715", "InactiveExitTimestamp": "Sat 2025-07-19 06:24:21 IST", "InactiveExitTimestampMonotonic": "894248105528", "JobTimeoutAction": "none", "JobTimeoutUSec": "0", "KillMode": "process", "KillSignal": "15", "LimitAS": "18446744073709551615", "LimitCORE": "18446744073709551615", "LimitCPU": "18446744073709551615", "LimitDATA": "18446744073709551615", "LimitFSIZE": "18446744073709551615", "LimitLOCKS": "18446744073709551615", "LimitMEMLOCK": "65536", "LimitMSGQUEUE": "819200", "LimitNICE": "0", "LimitNOFILE": "4096", "LimitNPROC": "31050", "LimitRSS": "18446744073709551615", "LimitRTPRIO": "0", "LimitRTTIME": "18446744073709551615", "LimitSIGPENDING": "31050", "LimitSTACK": "18446744073709551615", "LoadState": "loaded", "MainPID": "179951", "MemoryAccounting": "no", "MemoryCurrent": "18446744073709551615", "MemoryLimit": "18446744073709551615", "MountFlags": "0", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "PrivateDevices": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "ProtectHome": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "Requires": "system.slice basic.target", "Restart": "on-failure", "RestartUSec": "42s", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitInterval": "10000000", "StartupBlockIOWeight": "18446744073709551615", "StartupCPUShares": "18446744073709551615", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "no", "TasksCurrent": "18446744073709551615", "TasksMax": "18446744073709551615", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.service", "WatchdogTimestamp": "Sat 2025-07-19 06:24:21 IST", "WatchdogTimestampMonotonic": "894248111314", "WatchdogUSec": "0"}}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.233] => {"changed": true, "cmd": ["systemctl", "restart", "sshd.service"], "delta": "0:00:00.019966", "end": "2025-07-19 07:10:01.987490", "msg": "", "rc": 0, "start": "2025-07-19 07:10:01.967524", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.2.9 | PATCH | Ensure sshd GSSAPIAuthentication is disabled] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.2.12 | PATCH | Ensure only strong Key Exchange algorithms are used] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.2.15 | PATCH | Ensure sshd MACs are configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.1.1 Ensure pam is installed and up to date] ***
+ok: [192.168.91.233] => {"changed": false, "changes": {"installed": [], "updated": []}, "msg": "", "rc": 0, "results": ["All packages providing pam are up to date", ""]}
+
+TASK [mcx_hardening_4_role : 4.4.1.2  Ensure libpwquality is installed] ********
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0, "results": ["libpwquality-1.2.3-5.el7.x86_64 providing libpwquality is already installed"]}
+
+TASK [mcx_hardening_4_role :  4.4.2.1.1 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock is configured in account section] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : Backup system-auth and password-auth before changes] ***
+changed: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "6f0a1936b77229f8744b7eb41a8062e0e2ea11ab", "dest": "/etc/pam.d/system-auth.bak_2025-07-19T01:39:20Z", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "bdefc0b67fca84a50457d4a15d3a102a", "mode": "0640", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 1858, "src": "/root/.ansible/tmp/ansible-tmp-1752869408.906095-333042-192064802903939/source", "state": "file", "uid": 0}
+changed: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "dc721f2537d5df26dc1a8bc9af78d0ecaded1429", "dest": "/etc/pam.d/password-auth.bak_2025-07-19T01:39:20Z", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "a3ff85d5acea5b4eecd59b37b17f8730", "mode": "0640", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 1961, "src": "/root/.ansible/tmp/ansible-tmp-1752869409.3836205-333042-241749207318569/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's authfail line with proper params after last password validation module] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role :  4.4.2.2.1 Ensure backup of PAM files before modification] ***
+changed: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup_file": "/etc/pam.d/system-auth.pre_ansible.bak.199651.2025-07-19@07:10:16~", "changed": true, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+changed: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup_file": "/etc/pam.d/password-auth.pre_ansible.bak.199709.2025-07-19@07:10:16~", "changed": true, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwquality module is enabled] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced] ***
+changed: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_unix.so is present with use_authtok] ***
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_deny.so is present] **********
+ok: [192.168.91.233] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.233] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.2 Ensure password number of changed characters is configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.3 Ensure password length is configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.4 Ensure password complexity is configured | minclass] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.4 Ensure password complexity is configured | separated values] ***
+ok: [192.168.91.233] => (item={'key': '#minclass', 'value': 4}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"key": "#minclass", "value": 4}, "msg": ""}
+ok: [192.168.91.233] => (item={'key': 'dcredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"key": "dcredit", "value": "-1"}, "msg": ""}
+ok: [192.168.91.233] => (item={'key': 'ucredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"key": "ucredit", "value": "-1"}, "msg": ""}
+ok: [192.168.91.233] => (item={'key': 'ocredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"key": "ocredit", "value": "-1"}, "msg": ""}
+ok: [192.168.91.233] => (item={'key': 'lcredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"key": "lcredit", "value": "-1"}, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.5 Ensure password same consecutive characters is configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.6  Ensure password maximum sequential characters is configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.7 Ensure password dictionary check is enabled] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 Backup system-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.233] => {"changed": true, "checksum": "691881d8033acc1fcd14d1bdb724091847360a73", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "3de45af32a96298b5d563e04b2598d66", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2036, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth] ***
+changed: [192.168.91.233] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup password-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.233] => {"changed": true, "checksum": "e65d19026d04fc7473904668853a37c0f6440410", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "8f909aec606f5df9f28a590f08b3dbf7", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2039, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***
+changed: [192.168.91.233] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup system-auth before configuring password history remember] ***
+changed: [192.168.91.233] => {"changed": true, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.2 | Ensure password history remember is configured in system-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before configuring password history remember] ***
+changed: [192.168.91.233] => {"changed": true, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.2 | Ensure password history remember is configured in password-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 Backup system-auth before enforcing password history for root] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 | Ensure password history is enforced for the root user in system-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role :  4.4.2.3.3 Backup password-auth before enforcing password history for root] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 Backup system-auth before ensuring use_authtok] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4.1 Backup password-auth before ensuring use_authtok] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth] ***
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 Backup system-auth before any changes] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 to 4.4 Backup password-auth before any changes] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Backup system-auth before any changes] ************
+ok: [192.168.91.233] => {"changed": false, "checksum": "d456099b5b9d5089dab28296992957b8fdbee94d", "dest": "/etc/pam.d/system-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "1e6c8b5f02fd70c556c0eb29696ba5f3", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2019, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before any changes] **********
+ok: [192.168.91.233] => {"changed": false, "checksum": "bc16ceebf7a3bfec10bc6a437c563ec94a48717e", "dest": "/etc/pam.d/password-auth.bak.20250719T070920680185", "gid": 0, "group": "root", "md5sum": "d6ccb30271a8fd939ac2e05600fc4ad0", "mode": "0600", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 2022, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.5.1.5  Ensure inactive password lock is 30 days or less | set fact days since_epoch] ***
+ok: [192.168.91.233] => {"ansible_facts": {"days_since_epoch": "20288.068981481483"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | capture users date in future] ***
+ok: [192.168.91.233] => {"changed": false, "cmd": "awk -F: '{ if ($3 > \"20288.068981481483\") { print $1 }  }' /etc/shadow\n", "delta": "0:00:00.003169", "end": "2025-07-19 07:10:28.162549", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-19 07:10:28.159380", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future] ***
+ok: [192.168.91.233] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.233] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1] [4.5.1.5]", "warn_count": "3"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.2.2 | Ensure root user umask is configured] ***
+ok: [192.168.91.233] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | set system account to non login shell] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "awk -F: '($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"' && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 }' /etc/passwd | while read user; do\n  usermod -s $(which nologin) $user\ndone\n", "delta": "0:00:00.005327", "end": "2025-07-19 07:10:28.642864", "msg": "", "rc": 0, "start": "2025-07-19 07:10:28.637537", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | lock not root system accounts] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "awk -F ':' '($1!=\"root\" && $1!~/^\\+/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!=\"L\" && $2!=\"LK\") {print $1}' | while read user; do\n  usermod -L $user\ndone\n", "delta": "0:00:00.055905", "end": "2025-07-19 07:10:28.896082", "msg": "", "rc": 0, "start": "2025-07-19 07:10:28.840177", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set] *************
+changed: [192.168.91.233] => {"changed": true, "cmd": "grep -i '^root:' /etc/shadow", "delta": "0:00:00.003147", "end": "2025-07-19 07:10:29.098926", "msg": "", "rc": 0, "start": "2025-07-19 07:10:29.095779", "stderr": "", "stderr_lines": [], "stdout": "root:$6$JS4gjCQY7h.badTF$m35A3OfRJudy93AE1hzIgrKwgmRqlLQow/X0RxeGAqtL1d/H2oLHUP40tAARBDfI.yhxiP3FbFlDGFJLiJt741::0:99999:7:::", "stdout_lines": ["root:$6$JS4gjCQY7h.badTF$m35A3OfRJudy93AE1hzIgrKwgmRqlLQow/X0RxeGAqtL1d/H2oLHUP40tAARBDfI.yhxiP3FbFlDGFJLiJt741::0:99999:7:::"]}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set MSG] *********
+ok: [192.168.91.233] => {
+    "msg": "hardening-testing7 192.168.91.233 Root password status {'changed': True, 'end': '2025-07-19 07:10:29.098926', 'stdout': 'root:$6$JS4gjCQY7h.badTF$m35A3OfRJudy93AE1hzIgrKwgmRqlLQow/X0RxeGAqtL1d/H2oLHUP40tAARBDfI.yhxiP3FbFlDGFJLiJt741::0:99999:7:::', 'cmd': \"grep -i '^root:' /etc/shadow\", 'rc': 0, 'start': '2025-07-19 07:10:29.095779', 'stderr': '', 'delta': '0:00:00.003147', 'msg': '', 'stdout_lines': ['root:$6$JS4gjCQY7h.badTF$m35A3OfRJudy93AE1hzIgrKwgmRqlLQow/X0RxeGAqtL1d/H2oLHUP40tAARBDfI.yhxiP3FbFlDGFJLiJt741::0:99999:7:::'], 'stderr_lines': [], 'failed': False}"
+}
+
+TASK [mcx_hardening_4_role : 4.5.3.3 | PATCH | Ensure default user umask is configured] ***
+ok: [192.168.91.233] => (item={'path': '/etc/bashrc', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/bashrc"}, "msg": "", "rc": 0}
+ok: [192.168.91.233] => (item={'path': '/etc/profile', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/profile"}, "msg": "", "rc": 0}
+ok: [192.168.91.233] => (item={'path': '/etc/login.defs', 'line': 'UMASK'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "UMASK", "path": "/etc/login.defs"}, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host] ***
+changed: [192.168.91.233] => (item=^(\$ModLoad imtcp)) => {"ansible_loop_var": "item", "changed": true, "item": "^(\\$ModLoad imtcp)", "msg": "1 replacements made", "rc": 0}
+changed: [192.168.91.233] => (item=^(\$InputTCPServerRun)) => {"ansible_loop_var": "item", "changed": true, "item": "^(\\$InputTCPServerRun)", "msg": "1 replacements made", "rc": 0}
+ok: [192.168.91.233] => (item=^(module\(load="imtcp"\))) => {"ansible_loop_var": "item", "changed": false, "item": "^(module\\(load=\"imtcp\"\\))", "msg": "", "rc": 0}
+ok: [192.168.91.233] => (item=^(input\(type="imtcp")) => {"ansible_loop_var": "item", "changed": false, "item": "^(input\\(type=\"imtcp\")", "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host] ***
+changed: [192.168.91.233] => (item=ModLoad imtcp) => {"ansible_loop_var": "item", "changed": true, "item": "ModLoad imtcp", "msg": "1 replacements made", "rc": 0}
+changed: [192.168.91.233] => (item=InputTCPServerRun) => {"ansible_loop_var": "item", "changed": true, "item": "InputTCPServerRun", "msg": "1 replacements made", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Backup of /etc/logrotate.conf file] *********
+changed: [192.168.91.233] => {"changed": true, "checksum": "5ab85c8a14e400d9fa645e672093709cf00cb047", "dest": "/etc/logrotate.conf.backup-20250719014025", "gid": 0, "group": "root", "md5sum": "018de12a6ecae90443ad87161efe2a76", "mode": "0640", "owner": "root", "secontext": "system_u:object_r:etc_t:s0", "size": 92, "src": "/etc/logrotate.conf", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Ensure logrotate package is installed] ******
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0, "results": ["logrotate-3.8.6-19.el7.x86_64 providing logrotate is already installed"]}
+
+TASK [mcx_hardening_5_role : 5.1.3.1 Ensure /etc/logrotate.conf exists] ********
+ok: [192.168.91.233] => {"changed": false, "checksum": "5ab85c8a14e400d9fa645e672093709cf00cb047", "dest": "/etc/logrotate.conf", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/logrotate.conf", "secontext": "system_u:object_r:etc_t:s0", "size": 92, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3.2 Ensure logrotate is scheduled via cron.daily] ***
+ok: [192.168.91.233] => {"changed": false, "stat": {"atime": 1752876121.87695, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "us-ascii", "checksum": "5f5cf40820da7f697d561d03ccb175e4b9f64eb4", "ctime": 1751060908.1, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 33691775, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "text/x-shellscript", "mode": "0700", "mtime": 1565177217.0, "nlink": 1, "path": "/etc/cron.daily/logrotate", "pw_name": "root", "readable": true, "rgrp": false, "roth": false, "rusr": true, "size": 219, "uid": 0, "version": "446014000", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": false, "xoth": false, "xusr": true}}
+
+TASK [mcx_hardening_5_role : 5.1.3.3 Warn if logrotate cron job is missing] ****
+skipping: [192.168.91.233] => {"false_condition": "not logrotate_cron.stat.exists"}
+
+TASK [mcx_hardening_5_role : Ensure AIDE package is installed] *****************
+ok: [192.168.91.233] => {"changed": false, "msg": "", "rc": 0, "results": ["aide-0.15.1-13.el7_9.2.x86_64 providing aide is already installed"]}
+
+TASK [mcx_hardening_5_role : Create systemd service unit for AIDE integrity check] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "884dccdde2cc05c565db587cf024789c832fe0ef", "dest": "/etc/systemd/system/aidecheck.service", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/systemd/system/aidecheck.service", "secontext": "system_u:object_r:systemd_unit_file_t:s0", "size": 97, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Create systemd timer unit for AIDE integrity check] ***
+ok: [192.168.91.233] => {"changed": false, "checksum": "79afd13040a733b311b37feeba4c6f9ca77d606f", "dest": "/etc/systemd/system/aidecheck.timer", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/systemd/system/aidecheck.timer", "secontext": "system_u:object_r:systemd_unit_file_t:s0", "size": 126, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Reload systemd daemon] ****************************
+ok: [192.168.91.233] => {"changed": false, "name": null, "status": {}}
+
+TASK [mcx_hardening_5_role : Enable and start aidecheck timer] *****************
+ok: [192.168.91.233] => {"changed": false, "enabled": true, "name": "aidecheck.timer", "state": "started", "status": {"AccuracyUSec": "1min", "ActiveEnterTimestamp": "Fri 2025-07-18 07:48:30 IST", "ActiveEnterTimestampMonotonic": "812897166949", "ActiveExitTimestampMonotonic": "0", "ActiveState": "active", "After": "-.mount sysinit.target time-sync.target", "AllowIsolate": "no", "AssertResult": "yes", "AssertTimestamp": "Fri 2025-07-18 07:48:30 IST", "AssertTimestampMonotonic": "812897166494", "Before": "timers.target shutdown.target aidecheck.service", "CanIsolate": "no", "CanReload": "no", "CanStart": "yes", "CanStop": "yes", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Fri 2025-07-18 07:48:30 IST", "ConditionTimestampMonotonic": "812897166494", "Conflicts": "shutdown.target", "DefaultDependencies": "yes", "Description": "Run AIDE integrity check daily", "FragmentPath": "/etc/systemd/system/aidecheck.timer", "Id": "aidecheck.timer", "IgnoreOnIsolate": "no", "IgnoreOnSnapshot": "no", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestamp": "Fri 2025-07-18 07:48:30 IST", "InactiveExitTimestampMonotonic": "812897166949", "JobTimeoutAction": "none", "JobTimeoutUSec": "0", "LastTriggerUSec": "55y 6month 2w 2d 9h 30min 848.888ms", "LastTriggerUSecMonotonic": "1w 3d 1h 59min 47.076750s", "LoadState": "loaded", "Names": "aidecheck.timer", "NeedDaemonReload": "no", "NextElapseUSecMonotonic": "0", "NextElapseUSecRealtime": "55y 6month 2w 3d 9h 30min", "OnFailureJobMode": "replace", "Persistent": "yes", "RandomizedDelayUSec": "0", "RefuseManualStart": "no", "RefuseManualStop": "no", "Requires": "-.mount sysinit.target", "RequiresMountsFor": "/var/lib/systemd/timers", "Result": "success", "StopWhenUnneeded": "no", "SubState": "waiting", "Transient": "no", "Triggers": "aidecheck.service", "Unit": "aidecheck.service", "UnitFilePreset": "disabled", "UnitFileState": "enabled", "WakeSystem": "no", "WantedBy": "timers.target"}}
+
+TASK [mcx_hardening_5_role : Configure AIDE cron job as additional check] ******
+ok: [192.168.91.233] => {"changed": false, "envs": [], "jobs": ["Run AIDE integrity check (cron)"]}
+
+TASK [mcx_hardening_5_role : 4.5.1.1 Ensure strong password hashing algorithm is configured] ***
+ok: [192.168.91.233] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "crypt_style = sha512", "path": "/etc/libuser.conf", "regexp": "^#?crypt_style"}, "msg": ""}
+ok: [192.168.91.233] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "ENCRYPT_METHOD SHA512", "path": "/etc/login.defs", "regexp": "^#?ENCRYPT_METHOD"}, "msg": ""}
+
+TASK [mcx_hardening_5_role : 4.5.1.1 Ensure password hashing algorithm is SHA-512 (Automated) | Configure pam_unix.so] ***
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: NoneType: None
+fatal: [192.168.91.233]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 192.168.91.233 closed.\r\n", "stderr_lines": ["Shared connection to 192.168.91.233 closed."], "stdout": "/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found\r\nhead: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory\r\ngrep: /etc/authselect//system-auth: No such file or directory\r\ngrep: /etc/authselect//system-auth: No such file or directory\r\nsed: can't read /etc/authselect//system-auth: No such file or directory\r\nhead: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory\r\ngrep: /etc/authselect//password-auth: No such file or directory\r\ngrep: /etc/authselect//password-auth: No such file or directory\r\nsed: can't read /etc/authselect//password-auth: No such file or directory\r\n/root/.ansible/tmp/ansible-tmp-1752869430.3198702-333766-98289262310383/script_5_5_4.sh: line 12: authselect: command not found\r\n", "stdout_lines": ["/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found", "head: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory", "grep: /etc/authselect//system-auth: No such file or directory", "grep: /etc/authselect//system-auth: No such file or directory", "sed: can't read /etc/authselect//system-auth: No such file or directory", "head: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory", "grep: /etc/authselect//password-auth: No such file or directory", "grep: /etc/authselect//password-auth: No such file or directory", "sed: can't read /etc/authselect//password-auth: No such file or directory", "/root/.ansible/tmp/ansible-tmp-1752869430.3198702-333766-98289262310383/script_5_5_4.sh: line 12: authselect: command not found"]}
+...ignoring
+
+TASK [mcx_hardening_6_role : 6.1.9  Ensure permissions on /etc/shells are configured] ***
+ok: [192.168.91.233] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/shells", "secontext": "system_u:object_r:etc_t:s0", "size": 44, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.3 | PATCH | Ensure permissions on /etc/security/opasswd are configured] ***
+ok: [192.168.91.233] => {"changed": false, "gid": 0, "group": "root", "mode": "0600", "owner": "root", "path": "/etc/security/opasswd", "secontext": "system_u:object_r:shadow_t:s0", "size": 0, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Get list of world-writable files] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002", "delta": "0:00:00.116466", "end": "2025-07-19 07:10:36.807345", "msg": "", "rc": 0, "start": "2025-07-19 07:10:36.690879", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)] ***
+skipping: [192.168.91.233] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Find] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser", "delta": "0:00:00.430160", "end": "2025-07-19 07:10:37.456771", "msg": "", "rc": 0, "start": "2025-07-19 07:10:37.026611", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix] ***
+skipping: [192.168.91.233] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup", "delta": "0:00:00.382397", "end": "2025-07-19 07:10:38.060399", "msg": "", "rc": 0, "start": "2025-07-19 07:10:37.678002", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix] ***
+skipping: [192.168.91.233] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID executables are reviewed | Find SUID executables] ***
+ok: [192.168.91.233] => (item=/boot) => {"ansible_loop_var": "item", "changed": false, "cmd": "find /boot -xdev -type f -perm -4000 -not -fstype nfs", "delta": "0:00:00.005348", "end": "2025-07-19 07:10:38.292914", "failed_when_result": false, "item": {"block_available": 221280, "block_size": 4096, "block_total": 259584, "block_used": 38304, "device": "/dev/sda1", "fstype": "xfs", "inode_available": 523963, "inode_total": 524288, "inode_used": 325, "mount": "/boot", "options": "rw,seclabel,relatime,attr2,inode64,noquota", "size_available": 906362880, "size_total": 1063256064, "uuid": "0850243b-5ee3-49d0-9bd4-b8850e02b036"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:38.287566", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=/) => {"ansible_loop_var": "item", "changed": false, "cmd": "find / -xdev -type f -perm -4000 -not -fstype nfs", "delta": "0:00:00.074695", "end": "2025-07-19 07:10:38.550543", "failed_when_result": false, "item": {"block_available": 11053300, "block_size": 4096, "block_total": 13100800, "block_used": 2047500, "device": "/dev/mapper/rhel_hardening--testing-root", "fstype": "xfs", "inode_available": 26177905, "inode_total": 26214400, "inode_used": 36495, "mount": "/", "options": "rw,seclabel,relatime,attr2,inode64,noquota", "size_available": 45274316800, "size_total": 53660876800, "uuid": "6c7f5d6a-e187-49b3-a08e-1d1f276f1561"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:38.475848", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=/home) => {"ansible_loop_var": "item", "changed": false, "cmd": "find /home -xdev -type f -perm -4000 -not -fstype nfs", "delta": "0:00:00.003607", "end": "2025-07-19 07:10:38.738105", "failed_when_result": false, "item": {"block_available": 10764971, "block_size": 4096, "block_total": 10773361, "block_used": 8390, "device": "/dev/mapper/rhel_hardening--testing-home", "fstype": "xfs", "inode_available": 21557157, "inode_total": 21557248, "inode_used": 91, "mount": "/home", "options": "rw,seclabel,nosuid,nodev,noexec,relatime,attr2,inode64,noquota", "size_available": 44093321216, "size_total": 44127686656, "uuid": "e7144e8f-e5bf-4f77-b6e9-f511de74f05b"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:38.734498", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables] ***
+ok: [192.168.91.233] => (item=/boot) => {"ansible_loop_var": "item", "changed": false, "cmd": "find /boot -xdev -type f -perm -2000 -not -fstype nfs", "delta": "0:00:00.003698", "end": "2025-07-19 07:10:38.953694", "failed_when_result": false, "item": {"block_available": 221280, "block_size": 4096, "block_total": 259584, "block_used": 38304, "device": "/dev/sda1", "fstype": "xfs", "inode_available": 523963, "inode_total": 524288, "inode_used": 325, "mount": "/boot", "options": "rw,seclabel,relatime,attr2,inode64,noquota", "size_available": 906362880, "size_total": 1063256064, "uuid": "0850243b-5ee3-49d0-9bd4-b8850e02b036"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:38.949996", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=/) => {"ansible_loop_var": "item", "changed": false, "cmd": "find / -xdev -type f -perm -2000 -not -fstype nfs", "delta": "0:00:00.073625", "end": "2025-07-19 07:10:39.211073", "failed_when_result": false, "item": {"block_available": 11053300, "block_size": 4096, "block_total": 13100800, "block_used": 2047500, "device": "/dev/mapper/rhel_hardening--testing-root", "fstype": "xfs", "inode_available": 26177905, "inode_total": 26214400, "inode_used": 36495, "mount": "/", "options": "rw,seclabel,relatime,attr2,inode64,noquota", "size_available": 45274316800, "size_total": 53660876800, "uuid": "6c7f5d6a-e187-49b3-a08e-1d1f276f1561"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:39.137448", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.233] => (item=/home) => {"ansible_loop_var": "item", "changed": false, "cmd": "find /home -xdev -type f -perm -2000 -not -fstype nfs", "delta": "0:00:00.003576", "end": "2025-07-19 07:10:39.410663", "failed_when_result": false, "item": {"block_available": 10764971, "block_size": 4096, "block_total": 10773361, "block_used": 8390, "device": "/dev/mapper/rhel_hardening--testing-home", "fstype": "xfs", "inode_available": 21557157, "inode_total": 21557248, "inode_used": 91, "mount": "/home", "options": "rw,seclabel,nosuid,nodev,noexec,relatime,attr2,inode64,noquota", "size_available": 44093321216, "size_total": 44127686656, "uuid": "e7144e8f-e5bf-4f77-b6e9-f511de74f05b"}, "msg": "", "rc": 0, "start": "2025-07-19 07:10:39.407087", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Flatten suid_executables results for easier use] ***
+ok: [192.168.91.233] => {"ansible_facts": {"rhel7cis_6_1_13_suid_executables_flatten": []}, "changed": false}
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Set fact SGID executables] ***
+ok: [192.168.91.233] => {"ansible_facts": {"rhel7cis_6_1_13_sgid_executables_flatten": []}, "changed": false}
+
+TASK [mcx_hardening_6_role : 6.1.13 | PATCH | Ensure SUID and SGID files are reviewed | Remove SUID bit] ***
+skipping: [192.168.91.233] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.1.13 | PATCH | Audit SGID executables | Remove SGID bit] ***
+skipping: [192.168.91.233] => {"changed": false, "skipped_reason": "No items in the list"}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SUID executables exist] ***
+ok: [192.168.91.233] => {
+    "msg": [
+        "Warning!! You have SUID executables",
+        "The files are listed below, please confirm the integrity of these binaries",
+        []
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SGID executables exist] ***
+ok: [192.168.91.233] => {
+    "msg": [
+        "Warning!! You have SGID executables",
+        "The files listed below, please review the integrity of these binaries",
+        []
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.233] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1] [4.5.1.5] [6.1.13]", "warn_count": "4"}, "changed": false}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.233] => {"changed": false, "cmd": "awk -F':' '($2 != \"x\" ) { print $1}' /etc/passwd", "delta": "0:00:00.003243", "end": "2025-07-19 07:10:39.851938", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-19 07:10:39.848695", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.233] => {"false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.233] => {"changed": false, "false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.233] => {"changed": true, "cmd": ["pwconv"], "delta": "0:00:00.002588", "end": "2025-07-19 07:10:40.126774", "msg": "", "rc": 0, "start": "2025-07-19 07:10:40.124186", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Get root PATH variable] ***********
+ok: [192.168.91.233] => {"changed": false, "cmd": "sudo -Hiu root env | grep '^PATH' | cut -d= -f2", "delta": "0:00:00.025040", "end": "2025-07-19 07:10:40.350345", "msg": "", "rc": 0, "start": "2025-07-19 07:10:40.325305", "stderr": "/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found", "stderr_lines": ["/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found"], "stdout": "/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin", "stdout_lines": ["/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"]}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Split root PATH entries] **********
+ok: [192.168.91.233] => {"ansible_facts": {"root_path_list": ["/usr/local/sbin", "/sbin", "/bin", "/usr/sbin", "/usr/bin", "/root/bin"]}, "changed": false}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Check for empty directory (::) in PATH] ***
+ok: [192.168.91.233] => {"changed": false, "cmd": "echo '/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin' | grep -q '::'", "delta": "0:00:00.003483", "end": "2025-07-19 07:10:40.579066", "failed_when_result": false, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:10:40.575583", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Check for trailing colon in PATH] ***
+ok: [192.168.91.233] => {"changed": false, "cmd": "echo '/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin' | grep -q ':$'", "delta": "0:00:00.003283", "end": "2025-07-19 07:10:40.783841", "failed_when_result": false, "msg": "non-zero return code", "rc": 1, "start": "2025-07-19 07:10:40.780558", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.8 | DEBUG | Report empty or trailing colon warnings] ***
+ok: [192.168.91.233] => {
+    "msg": "PATH format looks OK.\n"
+}
+
+TASK [mcx_hardening_6_role : 6.2.8 | AUDIT | Get stat for all PATH directories] ***
+ok: [192.168.91.233] => (item=/usr/local/sbin) => {"ansible_loop_var": "item", "changed": false, "item": "/usr/local/sbin", "stat": {"atime": 1752868125.0069501, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.3, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1138, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1513272182.0, "nlink": 2, "path": "/usr/local/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 6, "uid": 0, "version": "18446744072513741750", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+ok: [192.168.91.233] => (item=/sbin) => {"ansible_loop_var": "item", "changed": false, "item": "/sbin", "stat": {"atime": 1752855923.11395, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.298, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1131, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": true, "isreg": false, "issock": false, "isuid": false, "lnk_source": "/usr/sbin", "lnk_target": "usr/sbin", "mimetype": "inode/symlink", "mode": "0777", "mtime": 1751060867.298, "nlink": 1, "path": "/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 8, "uid": 0, "version": null, "wgrp": true, "woth": true, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+ok: [192.168.91.233] => (item=/bin) => {"ansible_loop_var": "item", "changed": false, "item": "/bin", "stat": {"atime": 1752855923.1119502, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.296, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1127, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": true, "isreg": false, "issock": false, "isuid": false, "lnk_source": "/usr/bin", "lnk_target": "usr/bin", "mimetype": "inode/symlink", "mode": "0777", "mtime": 1751060867.296, "nlink": 1, "path": "/bin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 7, "uid": 0, "version": null, "wgrp": true, "woth": true, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+ok: [192.168.91.233] => (item=/usr/sbin) => {"ansible_loop_var": "item", "changed": false, "item": "/usr/sbin", "stat": {"atime": 1752888387.63695, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 40, "charset": "binary", "ctime": 1752888153.96895, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 33554537, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1752805107.9999502, "nlink": 2, "path": "/usr/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 16384, "uid": 0, "version": "1763882594", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+ok: [192.168.91.233] => (item=/usr/bin) => {"ansible_loop_var": "item", "changed": false, "item": "/usr/bin", "stat": {"atime": 1752888387.63295, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 80, "charset": "binary", "ctime": 1752888154.17195, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 110, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1752242414.9479501, "nlink": 2, "path": "/usr/bin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 24576, "uid": 0, "version": "1806874640", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+ok: [192.168.91.233] => (item=/root/bin) => {"ansible_loop_var": "item", "changed": false, "item": "/root/bin", "stat": {"exists": false}}
+
+TASK [mcx_hardening_6_role : 6.2.8 | PATCH | Correct ownership and permissions on PATH directories] ***
+ok: [192.168.91.233] => (item=/usr/local/sbin) => {"ansible_loop_var": "item", "changed": false, "gid": 0, "group": "root", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/usr/local/sbin"}}, "item": "/usr/local/sbin", "stat": {"atime": 1752868125.0069501, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.3, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1138, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1513272182.0, "nlink": 2, "path": "/usr/local/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 6, "uid": 0, "version": "18446744072513741750", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}, "mode": "0755", "owner": "root", "path": "/usr/local/sbin", "secontext": "system_u:object_r:bin_t:s0", "size": 6, "state": "directory", "uid": 0}
+skipping: [192.168.91.233] => (item=/sbin)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.stat.isdir", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/sbin"}}, "item": "/sbin", "stat": {"atime": 1752855923.11395, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.298, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1131, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": true, "isreg": false, "issock": false, "isuid": false, "lnk_source": "/usr/sbin", "lnk_target": "usr/sbin", "mimetype": "inode/symlink", "mode": "0777", "mtime": 1751060867.298, "nlink": 1, "path": "/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 8, "uid": 0, "version": null, "wgrp": true, "woth": true, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.233] => (item=/bin)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.stat.isdir", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/bin"}}, "item": "/bin", "stat": {"atime": 1752855923.1119502, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 0, "charset": "binary", "ctime": 1751060867.296, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 1127, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": true, "isreg": false, "issock": false, "isuid": false, "lnk_source": "/usr/bin", "lnk_target": "usr/bin", "mimetype": "inode/symlink", "mode": "0777", "mtime": 1751060867.296, "nlink": 1, "path": "/bin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 7, "uid": 0, "version": null, "wgrp": true, "woth": true, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}, "skip_reason": "Conditional result was False"}
+ok: [192.168.91.233] => (item=/usr/sbin) => {"ansible_loop_var": "item", "changed": false, "gid": 0, "group": "root", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/usr/sbin"}}, "item": "/usr/sbin", "stat": {"atime": 1752888387.63695, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 40, "charset": "binary", "ctime": 1752888153.96895, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 33554537, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1752805107.9999502, "nlink": 2, "path": "/usr/sbin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 16384, "uid": 0, "version": "1763882594", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}, "mode": "0755", "owner": "root", "path": "/usr/sbin", "secontext": "system_u:object_r:bin_t:s0", "size": 16384, "state": "directory", "uid": 0}
+ok: [192.168.91.233] => (item=/usr/bin) => {"ansible_loop_var": "item", "changed": false, "gid": 0, "group": "root", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/usr/bin"}}, "item": "/usr/bin", "stat": {"atime": 1752888387.63295, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 80, "charset": "binary", "ctime": 1752888154.17195, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 110, "isblk": false, "ischr": false, "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false, "mimetype": "inode/directory", "mode": "0755", "mtime": 1752242414.9479501, "nlink": 2, "path": "/usr/bin", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 24576, "uid": 0, "version": "1806874640", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}, "mode": "0755", "owner": "root", "path": "/usr/bin", "secontext": "system_u:object_r:bin_t:s0", "size": 24576, "state": "directory", "uid": 0}
+skipping: [192.168.91.233] => (item=/root/bin)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.stat.exists", "item": {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/root/bin"}}, "item": "/root/bin", "stat": {"exists": false}}, "skip_reason": "Conditional result was False"}
+
+RUNNING HANDLER [mcx_hardening_5_role : Restart_rsyslog] ***********************
+changed: [192.168.91.233] => {"changed": true, "name": "rsyslog", "state": "started", "status": {"ActiveEnterTimestamp": "Sat 2025-07-19 06:37:06 IST", "ActiveEnterTimestampMonotonic": "895012445332", "ActiveExitTimestamp": "Sat 2025-07-19 06:36:56 IST", "ActiveExitTimestampMonotonic": "895002431320", "ActiveState": "active", "After": "basic.target system.slice network.target network-online.target", "AllowIsolate": "no", "AmbientCapabilities": "0", "AssertResult": "yes", "AssertTimestamp": "Sat 2025-07-19 06:36:56 IST", "AssertTimestampMonotonic": "895002434825", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "18446744073709551615", "CPUAccounting": "no", "CPUQuotaPerSecUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "18446744073709551615", "CanIsolate": "no", "CanReload": "no", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "18446744073709551615", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Sat 2025-07-19 06:36:56 IST", "ConditionTimestampMonotonic": "895002434825", "Conflicts": "shutdown.target", "ControlGroup": "/system.slice/rsyslog.service", "ControlPID": "0", "DefaultDependencies": "yes", "Delegate": "no", "Description": "System Logging Service", "DevicePolicy": "auto", "Documentation": "man:rsyslogd(8) http://www.rsyslog.com/doc/", "EnvironmentFile": "/etc/sysconfig/rsyslog (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "186728", "ExecMainStartTimestamp": "Sat 2025-07-19 06:36:56 IST", "ExecMainStartTimestampMonotonic": "895002435576", "ExecMainStatus": "0", "ExecStart": "{ path=/usr/sbin/rsyslogd ; argv[]=/usr/sbin/rsyslogd -n $SYSLOGD_OPTIONS ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/rsyslog.service", "GuessMainPID": "yes", "IOScheduling": "0", "Id": "rsyslog.service", "IgnoreOnIsolate": "no", "IgnoreOnSnapshot": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Sat 2025-07-19 06:36:56 IST", "InactiveEnterTimestampMonotonic": "895002434160", "InactiveExitTimestamp": "Sat 2025-07-19 06:36:56 IST", "InactiveExitTimestampMonotonic": "895002435599", "JobTimeoutAction": "none", "JobTimeoutUSec": "0", "KillMode": "control-group", "KillSignal": "15", "LimitAS": "18446744073709551615", "LimitCORE": "18446744073709551615", "LimitCPU": "18446744073709551615", "LimitDATA": "18446744073709551615", "LimitFSIZE": "18446744073709551615", "LimitLOCKS": "18446744073709551615", "LimitMEMLOCK": "65536", "LimitMSGQUEUE": "819200", "LimitNICE": "0", "LimitNOFILE": "4096", "LimitNPROC": "31050", "LimitRSS": "18446744073709551615", "LimitRTPRIO": "0", "LimitRTTIME": "18446744073709551615", "LimitSIGPENDING": "31050", "LimitSTACK": "18446744073709551615", "LoadState": "loaded", "MainPID": "186728", "MemoryAccounting": "no", "MemoryCurrent": "18446744073709551615", "MemoryLimit": "18446744073709551615", "MountFlags": "0", "Names": "rsyslog.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "PrivateDevices": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "ProtectHome": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "Requires": "system.slice basic.target", "Restart": "on-failure", "RestartUSec": "100ms", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardOutput": "null", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitInterval": "10000000", "StartupBlockIOWeight": "18446744073709551615", "StartupCPUShares": "18446744073709551615", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "no", "TasksCurrent": "18446744073709551615", "TasksMax": "18446744073709551615", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UMask": "0066", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "WantedBy": "multi-user.target", "Wants": "network.target network-online.target", "WatchdogTimestamp": "Sat 2025-07-19 06:37:06 IST", "WatchdogTimestampMonotonic": "895012445299", "WatchdogUSec": "0"}}
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=139  changed=29   unreachable=0    failed=0    skipped=14   rescued=0    ignored=2   
+

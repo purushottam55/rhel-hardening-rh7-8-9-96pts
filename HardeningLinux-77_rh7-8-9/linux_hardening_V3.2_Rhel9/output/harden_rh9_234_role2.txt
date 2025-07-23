@@ -1,0 +1,59 @@
+ansible-playbook [core 2.16.3]
+  config file = /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.12/site-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.12.11 (main, Jun 19 2025, 11:41:33) [GCC 8.5.0 20210514 (Red Hat 8.5.0-27)] (/usr/bin/python3.12)
+  jinja version = 3.1.2
+  libyaml = True
+Using /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/ansible.cfg as config file
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: linux_hardening.yml **************************************************
+1 plays in linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/linux_hardening.yml:2
+ok: [192.168.91.234]
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_2_role/tasks/main.yml:21
+ok: [192.168.91.234] => (item=ypbind) => {"ansible_loop_var": "item", "changed": false, "item": "ypbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=dnsmasq) => {"ansible_loop_var": "item", "changed": false, "item": "dnsmasq", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=cups) => {"ansible_loop_var": "item", "changed": false, "item": "cups", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=bluetooth) => {"ansible_loop_var": "item", "changed": false, "item": "bluetooth", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=rsh) => {"ansible_loop_var": "item", "changed": false, "item": "rsh", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=tftp) => {"ansible_loop_var": "item", "changed": false, "item": "tftp", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=rpc-statd) => {"ansible_loop_var": "item", "changed": false, "item": "rpc-statd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=ypserv) => {"ansible_loop_var": "item", "changed": false, "item": "ypserv", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=snmpd) => {"ansible_loop_var": "item", "changed": false, "item": "snmpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=squid) => {"ansible_loop_var": "item", "changed": false, "item": "squid", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=dovecot) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=dovecot.socket) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot.socket", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=cyrus-imapd.service) => {"ansible_loop_var": "item", "changed": false, "item": "cyrus-imapd.service", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.234] => (item=bluez) => {"ansible_loop_var": "item", "changed": false, "item": "bluez", "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_2_role : 2.2.22 Ensure only approved services are listening on a network interface] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_2_role/tasks/main.yml:48
+ok: [192.168.91.234] => {
+    "msg": "We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra"
+}
+
+TASK [mcx_hardening_2_role : 2.2.21 | Ensure mail transfer agents are configured for local-only mode] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_2_role/tasks/main.yml:52
+Notification for handler Restart_postfix has been saved.
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+NOTIFIED HANDLER mcx_hardening_2_role : Restart_postfix for 192.168.91.234
+
+RUNNING HANDLER [mcx_hardening_2_role : Restart_postfix] ***********************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_2_role/handlers/main.yml:3
+fatal: [192.168.91.234]: FAILED! => {"changed": false, "msg": "Unable to start service postfix: Job for postfix.service failed because the control process exited with error code.\nSee \"systemctl status postfix.service\" and \"journalctl -xeu postfix.service\" for details.\n"}
+
+PLAY RECAP *********************************************************************
+192.168.91.234             : ok=4    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

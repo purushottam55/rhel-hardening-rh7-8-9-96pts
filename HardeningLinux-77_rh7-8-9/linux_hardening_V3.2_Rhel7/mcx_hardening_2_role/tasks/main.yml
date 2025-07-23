@@ -1,0 +1,59 @@
+---
+# tasks file for ./mcx_hardening_2_role
+
+#- name: (2.2.5) (2.1.5)Ensure dnsmasq services are not in use 
+#- name: (2.2.8) (2.1.8)Ensure message access server services are not in use 
+#- name:(2.2.9) (2.1.9)	Ensure network file system services are not in use 
+#- name: (2.2.10) (2.1.10)Ensure nis server services are not in use 
+#- name: (2.2.13) (2.1.13)Ensure rsync services are not in use
+#- name: (2.2.14) (2.1.14)Ensure snmp services are not in use 
+#- name: (2.2.17) (2.1.17)Ensure web proxy server services are not in use 
+#- name:(2.2.18) (2.1.18)Ensure web server services are not in use 
+#- name: (2.2.21) (2.1.21)Ensure mail transfer agents are configured for local-only mode
+
+
+#- name:(2.2.22) (2.1.22)Ensure only approved services are listening on a network interface
+#- name: (2.3.3) (2.2.3)Ensure nis client is not installed ***ypbind is mentioned below***
+
+- name: 2.2.4 to 2.2.16 Ensure servers are not installed
+  yum:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - ypbind
+    - dnsmasq
+    - cups
+    - avahi-daemon
+    - bluetooth
+    - rpcbind
+#    - slapd
+    - xinetd
+    - telnet
+    - rsh
+    - vsftpd
+    - tftp
+    - nfs
+    - nfs-server
+    - rpc-statd
+    - ypserv
+    - snmpd
+    - bind
+    - squid
+    - dovecot
+    - samba
+  ignore_errors: true
+
+
+#---
+
+- name: "2.2.22 Ensure only approved services are listening on a network interface"
+  debug:
+    msg: 'We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra'
+
+- name: "2.2.21 | Ensure mail transfer agents are configured for local-only mode"
+  ansible.builtin.lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: "^(#)?inet_interfaces"
+    line: "inet_interfaces = loopback-only"
+  notify: Restart_postfix
+

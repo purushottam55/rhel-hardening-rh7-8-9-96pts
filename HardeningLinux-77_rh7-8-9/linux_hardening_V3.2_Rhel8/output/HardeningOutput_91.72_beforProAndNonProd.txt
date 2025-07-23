@@ -1,0 +1,502 @@
+Using /root/Linux_Hardening_FINAL_NFR/Hardening_Playbook_3.2_77pts/linux_hardening_V3.2_Rhel8/ansible.cfg as config file
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.72]
+
+TASK [mcx_hardening_1_role :  1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk] ***
+ok: [192.168.91.72] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.72] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.72] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.72] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.72] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}
+
+TASK [mcx_hardening_1_role : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+skipping: [192.168.91.72] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "freevxfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/freevxfs.ko"}}, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfs.ko"}}, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfsplus", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfsplus.ko"}}, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "jffs2", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/jffs2.ko"}}, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "usb_storage", "type": "drivers"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_md5": false, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/drivers/usb_storage.ko"}}, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Get list of loaded kernel modules] ****************
+ok: [192.168.91.72] => {"changed": false, "cmd": "lsmod | awk '{print $1}' | tail -n +2", "delta": "0:00:00.008245", "end": "2025-07-22 15:49:39.889206", "msg": "", "rc": 0, "start": "2025-07-22 15:49:39.880961", "stderr": "", "stderr_lines": [], "stdout": "sunrpc\next4\nmbcache\njbd2\ncrct10dif_pclmul\ncrc32_pclmul\nghash_clmulni_intel\ni2c_piix4\npcspkr\njoydev\nvirtio_balloon\nbinfmt_misc\nxfs\nlibcrc32c\nsr_mod\nsd_mod\ncdrom\nt10_pi\nsg\nata_generic\nbochs\ndrm_vram_helper\ndrm_kms_helper\nsyscopyarea\nsysfillrect\nsysimgblt\ndrm_ttm_helper\nttm\ndrm\nata_piix\nlibata\ncrc32c_intel\nvirtio_net\nnet_failover\nserio_raw\nvirtio_scsi\nfailover\ndm_mirror\ndm_region_hash\ndm_log\ndm_mod\nsoftdog", "stdout_lines": ["sunrpc", "ext4", "mbcache", "jbd2", "crct10dif_pclmul", "crc32_pclmul", "ghash_clmulni_intel", "i2c_piix4", "pcspkr", "joydev", "virtio_balloon", "binfmt_misc", "xfs", "libcrc32c", "sr_mod", "sd_mod", "cdrom", "t10_pi", "sg", "ata_generic", "bochs", "drm_vram_helper", "drm_kms_helper", "syscopyarea", "sysfillrect", "sysimgblt", "drm_ttm_helper", "ttm", "drm", "ata_piix", "libata", "crc32c_intel", "virtio_net", "net_failover", "serio_raw", "virtio_scsi", "failover", "dm_mirror", "dm_region_hash", "dm_log", "dm_mod", "softdog"]}
+
+TASK [mcx_hardening_1_role : Unload module '{{ item.name }}' if loaded] ********
+skipping: [192.168.91.72] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "freevxfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfsplus", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "jffs2", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "usb_storage", "type": "drivers"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.72] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Verify module '{{ item.name }}' is not loaded] ****
+ok: [192.168.91.72] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q freevxfs", "delta": "0:00:00.006928", "end": "2025-07-22 15:49:40.433305", "failed_when_result": false, "item": {"name": "freevxfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 15:49:40.426377", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.72] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfs", "delta": "0:00:00.007982", "end": "2025-07-22 15:49:40.875744", "failed_when_result": false, "item": {"name": "hfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 15:49:40.867762", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.72] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfsplus", "delta": "0:00:00.007661", "end": "2025-07-22 15:49:41.319686", "failed_when_result": false, "item": {"name": "hfsplus", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 15:49:41.312025", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.72] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q jffs2", "delta": "0:00:00.007062", "end": "2025-07-22 15:49:41.765018", "failed_when_result": false, "item": {"name": "jffs2", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 15:49:41.757956", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.72] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q usb_storage", "delta": "0:00:00.007022", "end": "2025-07-22 15:49:42.201944", "failed_when_result": false, "item": {"name": "usb_storage", "type": "drivers"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 15:49:42.194922", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent] ***
+ok: [192.168.91.72] => {
+    "msg": "Warning!! /tmp doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.72] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent] ***
+ok: [192.168.91.72] => {
+    "msg": "Warning!! /dev/shm doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.72] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1]", "warn_count": "2"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.2.2 Ensure GPG keys are configured] *************
+changed: [192.168.91.72] => {"changed": true, "cmd": "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\\n'", "delta": "0:00:00.013323", "end": "2025-07-22 15:49:42.790006", "msg": "", "rc": 0, "start": "2025-07-22 15:49:42.776683", "stderr": "", "stderr_lines": [], "stdout": "gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)\ngpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)\ngpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)\ngpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)\ngpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)", "stdout_lines": ["gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)", "gpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)", "gpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)", "gpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)", "gpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)"]}
+
+TASK [mcx_hardening_1_role : 1.2.3 Ensure gpgcheck is globally activated] ******
+changed: [192.168.91.72] => {"changed": true, "cmd": "sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/yum.conf", "delta": "0:00:00.006296", "end": "2025-07-22 15:49:43.247375", "msg": "", "rc": 0, "start": "2025-07-22 15:49:43.241079", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : shell] ********************************************
+changed: [192.168.91.72] => {"changed": true, "cmd": "find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\;", "delta": "0:00:00.053327", "end": "2025-07-22 15:49:43.755903", "msg": "", "rc": 0, "start": "2025-07-22 15:49:43.702576", "stderr": "", "stderr_lines": [], "stdout": "Checking: /etc/yum.repos.d/old/epel-modular.repo\nChecking: /etc/yum.repos.d/old/epel-playground.repo\nChecking: /etc/yum.repos.d/old/epel.repo\nChecking: /etc/yum.repos.d/old/epel-testing-modular.repo\nChecking: /etc/yum.repos.d/old/epel-testing.repo\nChecking: /etc/yum.repos.d/old/redhat.repo\nChecking: /etc/yum.repos.d/old/sbalinux.repo\nChecking: /etc/yum.repos.d/old/server-dc.repo\nChecking: /etc/yum.repos.d/old/rhel87.repo\nChecking: /etc/yum.repos.d/120523/redhat.repo\nChecking: /etc/yum.repos.d/120523/server-dc.repo\nChecking: /etc/yum.repos.d/test/redhat.repo\nChecking: /etc/yum.repos.d/test/rhel86.repo\nChecking: /etc/yum.repos.d/test/server-dc.repo\nChecking: /etc/yum.repos.d/redhat.repo\nChecking: /etc/yum.repos.d/server-dc.repo", "stdout_lines": ["Checking: /etc/yum.repos.d/old/epel-modular.repo", "Checking: /etc/yum.repos.d/old/epel-playground.repo", "Checking: /etc/yum.repos.d/old/epel.repo", "Checking: /etc/yum.repos.d/old/epel-testing-modular.repo", "Checking: /etc/yum.repos.d/old/epel-testing.repo", "Checking: /etc/yum.repos.d/old/redhat.repo", "Checking: /etc/yum.repos.d/old/sbalinux.repo", "Checking: /etc/yum.repos.d/old/server-dc.repo", "Checking: /etc/yum.repos.d/old/rhel87.repo", "Checking: /etc/yum.repos.d/120523/redhat.repo", "Checking: /etc/yum.repos.d/120523/server-dc.repo", "Checking: /etc/yum.repos.d/test/redhat.repo", "Checking: /etc/yum.repos.d/test/rhel86.repo", "Checking: /etc/yum.repos.d/test/server-dc.repo", "Checking: /etc/yum.repos.d/redhat.repo", "Checking: /etc/yum.repos.d/server-dc.repo"]}
+
+TASK [mcx_hardening_1_role : 1.2.4 Ensure package manager repositories are configured] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": "yum repolist", "delta": "0:00:00.642410", "end": "2025-07-22 15:49:44.842060", "msg": "", "rc": 0, "start": "2025-07-22 15:49:44.199650", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nrepo id                          repo name\nrhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\nrhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)", "stdout_lines": ["Updating Subscription Management repositories.", "repo id                          repo name", "rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)", "rhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"]}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": ["yum", "check-update"], "delta": "0:00:05.228663", "end": "2025-07-22 15:49:56.459623", "msg": "", "rc": 0, "start": "2025-07-22 15:49:51.230960", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nRed Hat Enterprise Linux 8 for x86_64 - AppStre 127 kB/s | 4.5 kB     00:00    \nRed Hat Enterprise Linux 8 for x86_64 - BaseOS  112 kB/s | 4.1 kB     00:00    ", "stdout_lines": ["Updating Subscription Management repositories.", "Red Hat Enterprise Linux 8 for x86_64 - AppStre 127 kB/s | 4.5 kB     00:00    ", "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  112 kB/s | 4.1 kB     00:00    "]}
+
+TASK [mcx_hardening_1_role : 1.2.5.1 Show available updates] *******************
+ok: [192.168.91.72] => {
+    "yum_updates.stdout_lines": [
+        "Updating Subscription Management repositories.",
+        "Red Hat Enterprise Linux 8 for x86_64 - AppStre 127 kB/s | 4.5 kB     00:00    ",
+        "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  112 kB/s | 4.1 kB     00:00    "
+    ]
+}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | Set file] *****
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | comment out other entry] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : (1.6.1 Ensure message of the day is configured properly] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.6.3  Ensure remote login warning banner is configured properly] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure SSHD config uses /etc/issue.net as Banner] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+ok: [192.168.91.72] => (item=ypbind) => {"ansible_loop_var": "item", "changed": false, "item": "ypbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=dnsmasq) => {"ansible_loop_var": "item", "changed": false, "item": "dnsmasq", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=cups) => {"ansible_loop_var": "item", "changed": false, "item": "cups", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=avahi-daemon) => {"ansible_loop_var": "item", "changed": false, "item": "avahi-daemon", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=bluetooth) => {"ansible_loop_var": "item", "changed": false, "item": "bluetooth", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=rpcbind) => {"ansible_loop_var": "item", "changed": false, "item": "rpcbind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=xinetd) => {"ansible_loop_var": "item", "changed": false, "item": "xinetd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=telnet) => {"ansible_loop_var": "item", "changed": false, "item": "telnet", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=rsh) => {"ansible_loop_var": "item", "changed": false, "item": "rsh", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=vsftpd) => {"ansible_loop_var": "item", "changed": false, "item": "vsftpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=tftp) => {"ansible_loop_var": "item", "changed": false, "item": "tftp", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=nfs) => {"ansible_loop_var": "item", "changed": false, "item": "nfs", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=nfs-server) => {"ansible_loop_var": "item", "changed": false, "item": "nfs-server", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=rpc-statd) => {"ansible_loop_var": "item", "changed": false, "item": "rpc-statd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=ypserv) => {"ansible_loop_var": "item", "changed": false, "item": "ypserv", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=snmpd) => {"ansible_loop_var": "item", "changed": false, "item": "snmpd", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=bind) => {"ansible_loop_var": "item", "changed": false, "item": "bind", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=squid) => {"ansible_loop_var": "item", "changed": false, "item": "squid", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=dovecot) => {"ansible_loop_var": "item", "changed": false, "item": "dovecot", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=samba) => {"ansible_loop_var": "item", "changed": false, "item": "samba", "msg": "Nothing to do", "rc": 0, "results": []}
+ok: [192.168.91.72] => (item=blez) => {"ansible_loop_var": "item", "changed": false, "item": "blez", "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_2_role : 2.2.22 Ensure only approved services are listening on a network interface] ***
+ok: [192.168.91.72] => {
+    "msg": "We have already implemented disabling services in Script prev_hardening_script@Mcx - Discussed with infra"
+}
+
+TASK [mcx_hardening_3_role : 3.3.9  Ensure suspicious packets are logged] ******
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_3_role :  3.3.9.1 Ensure net.ipv4.conf.default.log_martians is set to 1 in sysctl.conf] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_3_role :  3.3.9.2 Reload sysctl settings to apply changes] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": ["sysctl", "-p", "/etc/sysctl.conf"], "delta": "0:00:00.005194", "end": "2025-07-22 15:52:09.083269", "msg": "", "rc": 0, "start": "2025-07-22 15:52:09.078075", "stderr": "", "stderr_lines": [], "stdout": "fs.file-max = 16384\nfs.aio-max-nr = 1048576\nkernel.msgmax = 65536\nkernel.msgmnb = 65536\nkernel.msgmni = 153600\nkernel.shmall = 78643200\nkernel.shmmax = 161061273600\nkernel.shmmni = 38400\nkernel.sem = 250 256000 32 4096\nvm.max_map_count = 39321600\nvm.overcommit_memory = 0\nvm.swappiness = 5\nkernel.randomize_va_space = 0\nnet.ipv4.conf.all.log_martians = 1\nnet.ipv4.conf.default.log_martians = 1", "stdout_lines": ["fs.file-max = 16384", "fs.aio-max-nr = 1048576", "kernel.msgmax = 65536", "kernel.msgmnb = 65536", "kernel.msgmni = 153600", "kernel.shmall = 78643200", "kernel.shmmax = 161061273600", "kernel.shmmni = 38400", "kernel.sem = 250 256000 32 4096", "vm.max_map_count = 39321600", "vm.overcommit_memory = 0", "vm.swappiness = 5", "kernel.randomize_va_space = 0", "net.ipv4.conf.all.log_martians = 1", "net.ipv4.conf.default.log_martians = 1"]}
+
+TASK [mcx_hardening_4_role : 4.2.4.1 Add line to sshd_config for allowusers] ***
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.2 Add line to sshd_config for allowgroups] ***
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.3 Add line to sshd_config for denyusers] ****
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.4.4 Add line to sshd_config for denygroups] ***
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "not skip_after_hardening", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_4_role : 4.2.6  Ensure only strong Ciphers are used] *******
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.72] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Tue 2025-07-22 15:33:33 IST", "ActiveEnterTimestampMonotonic": "265227285550", "ActiveExitTimestamp": "Tue 2025-07-22 15:33:33 IST", "ActiveExitTimestampMonotonic": "265227272506", "ActiveState": "active", "After": "sysinit.target sshd-keygen.target system.slice basic.target network.target systemd-journald.socket", "AllowIsolate": "no", "AllowedCPUs": "", "AllowedMemoryNodes": "", "AmbientCapabilities": "", "AssertResult": "yes", "AssertTimestamp": "Tue 2025-07-22 15:33:33 IST", "AssertTimestampMonotonic": "265227274907", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "no", "CPUAffinity": "", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "[not set]", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Tue 2025-07-22 15:33:33 IST", "ConditionTimestampMonotonic": "265227274906", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlPID": "0", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "man:sshd(8) man:sshd_config(5)", "DynamicUser": "no", "EffectiveCPUs": "", "EffectiveMemoryNodes": "", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "226476", "ExecMainStartTimestamp": "Tue 2025-07-22 15:33:33 IST", "ExecMainStartTimestampMonotonic": "265227276926", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS $CRYPTO_POLICY ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOSchedulingClass": "0", "IOSchedulingPriority": "0", "IOWeight": "[not set]", "IPAccounting": "no", "IPEgressBytes": "18446744073709551615", "IPEgressPackets": "18446744073709551615", "IPIngressBytes": "18446744073709551615", "IPIngressPackets": "18446744073709551615", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Tue 2025-07-22 15:33:33 IST", "InactiveEnterTimestampMonotonic": "265227273904", "InactiveExitTimestamp": "Tue 2025-07-22 15:33:33 IST", "InactiveExitTimestampMonotonic": "265227276973", "InvocationID": "f19d9359f17b4c1b81fa7578009521e2", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "0", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "65536", "LimitMEMLOCKSoft": "65536", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "262144", "LimitNOFILESoft": "1024", "LimitNPROC": "603980", "LimitNPROCSoft": "603980", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "603980", "LimitSIGPENDINGSoft": "603980", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "226476", "MemoryAccounting": "yes", "MemoryCurrent": "4755456", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "MountFlags": "", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAMask": "", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "Perpetual": "no", "PrivateDevices": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "sysinit.target system.slice", "Restart": "on-failure", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardInputData": "", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Tue 2025-07-22 15:33:33 IST", "StateChangeTimestampMonotonic": "265227285550", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "966368", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogTimestamp": "Tue 2025-07-22 15:33:33 IST", "WatchdogTimestampMonotonic": "265227285549", "WatchdogUSec": "0"}}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.2.7 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Restart sshd after changes] ***********************
+changed: [192.168.91.72] => {"changed": true, "cmd": ["systemctl", "restart", "sshd.service"], "delta": "0:00:00.023135", "end": "2025-07-22 15:52:11.866304", "msg": "", "rc": 0, "start": "2025-07-22 15:52:11.843169", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.2.11 | PATCH | Ensure only strong Key Exchange algorithms are used] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.2.14 | PATCH | Ensure sshd MACs are configured] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.1.1 Ensure pam is installed and up to date] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_4_role :  4.4.2.2.2 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock authfail line is present before pam_succeed_if.so] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.1.1 Ensure pam_faillock is configured in account section] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : Backup system-auth and password-auth before changes] ***
+changed: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "f7d87865025bf571c44fc58a36acd8667c5a94b5", "dest": "/etc/pam.d/system-auth.bak_2025-07-22T10:19:36Z", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "43a1543c198eae3ab5a596af52764715", "mode": "0640", "owner": "root", "size": 2503, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753179741.4658809-604208-100868484616670/source", "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "b4f2801440cde53042fe63d0e38b5c47342a3f62", "dest": "/etc/pam.d/password-auth.bak_2025-07-22T10:19:36Z", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "3a231e7b3eaa920efd3f9a2091c77903", "mode": "0640", "owner": "root", "size": 2491, "src": "/home/skyline/.ansible/tmp/ansible-tmp-1753179742.4228332-604208-69217774077448/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : Ensure pam_faillock's authfail line with proper params after last password validation module] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role :  4.4.2.3 Ensure backup of PAM files before modification] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwquality module is enabled] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced] ***
+changed: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_unix.so is present with use_authtok] ***
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.2.1 Ensure pam_deny.so is present] **********
+ok: [192.168.91.72] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.72] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4 Backup system-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.72] => {"changed": true, "checksum": "636f066e14a58107e86215799a9c0721539d25e8", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "88934a552912ce1da950361fb6b617cc", "mode": "0600", "owner": "root", "size": 3009, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in system-auth] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup password-auth before enabling pam_pwhistory] ***
+changed: [192.168.91.72] => {"changed": true, "checksum": "56765aeac50c442c02bf3caf33ea1b3fc46e1544", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "d08568381630bf910a623b9e31776a84", "mode": "0600", "owner": "root", "size": 2958, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_4_role : Backup system-auth before configuring password history remember] ***
+changed: [192.168.91.72] => {"changed": true, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in system-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before configuring password history remember] ***
+changed: [192.168.91.72] => {"changed": true, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.1 | Ensure password history remember is configured in password-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.2 Backup system-auth before enforcing password history for root] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.3.3 | Ensure password history is enforced for the root user in system-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role :  4.4.2.3.3 Backup password-auth before enforcing password history for root] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.3 | Ensure password history is enforced for the root user in password-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 Backup system-auth before ensuring use_authtok] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in system-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4.1 Backup password-auth before ensuring use_authtok] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.3.4 | Ensure pam_pwhistory includes use_authtok in password-auth] ***
+ok: [192.168.91.72] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.1 Backup system-auth before any changes] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.2 to 4.4 Backup password-auth before any changes] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.3 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.3.4.4 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : Backup system-auth before any changes] ************
+ok: [192.168.91.72] => {"changed": false, "checksum": "2c6f66b02c7a1f377b23dff63468b5b5dce4c135", "dest": "/etc/pam.d/system-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "333838fa3ce5b9429c78524723e1e267", "mode": "0600", "owner": "root", "size": 2992, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : Backup password-auth before any changes] **********
+ok: [192.168.91.72] => {"changed": false, "checksum": "9eeff430098dbdd4a5945e2c7f1cbb2c1d78b27c", "dest": "/etc/pam.d/password-auth.bak.20250722T154936329080", "gid": 0, "group": "root", "md5sum": "dbd4305d9ec4bb8a0dba60b1a4cfc882", "mode": "0600", "owner": "root", "size": 2941, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.5.1.5  Ensure inactive password lock is 30 days or less | set fact days since_epoch] ***
+ok: [192.168.91.72] => {"ansible_facts": {"days_since_epoch": "20291.430277777778"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | capture users date in future] ***
+ok: [192.168.91.72] => {"changed": false, "cmd": "awk -F: '{ if ($3 > \"20291.430277777778\") { print $1 }  }' /etc/shadow\n", "delta": "0:00:00.006692", "end": "2025-07-22 15:52:46.298289", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 15:52:46.291597", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 Ensure inactive password lock is 30 days or less | Warn Users in future] ***
+ok: [192.168.91.72] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+TASK [mcx_hardening_4_role : 4.5.1.5 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.72] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1] [4.5.1.5]", "warn_count": "3"}, "changed": false}
+
+TASK [mcx_hardening_4_role : 4.5.2.2 | Ensure root user umask is configured] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | set system account to non login shell] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": "awk -F: '($1!~/^(root|halt|sync|shutdown|nfsnobody)$/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"' && $7!~/^(\\/usr)?\\/sbin\\/nologin(\\/)?$/ && $7!~/(\\/usr)?\\/bin\\/false(\\/)?$/) { print $1 }' /etc/passwd | while read user; do\n  usermod -s $(which nologin) $user\ndone\n", "delta": "0:00:00.009705", "end": "2025-07-22 15:52:47.272483", "msg": "", "rc": 0, "start": "2025-07-22 15:52:47.262778", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.3 Ensure system accounts are secured (Automated) | lock not root system accounts] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": "awk -F ':' '($1!=\"root\" && $1!~/^\\+/ && $3<'\"$(awk '/^\\s*UID_MIN/{print $2}' /etc/login.defs)\"') {print $1}' /etc/passwd | xargs -I '{}' passwd -S '{}' | awk '($2!=\"L\" && $2!=\"LK\") {print $1}' | while read user; do\n  usermod -L $user\ndone\n", "delta": "0:00:00.198237", "end": "2025-07-22 15:52:47.906502", "msg": "", "rc": 0, "start": "2025-07-22 15:52:47.708265", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set] *************
+changed: [192.168.91.72] => {"changed": true, "cmd": "grep -i '^root:' /etc/shadow", "delta": "0:00:00.004917", "end": "2025-07-22 15:52:48.377638", "msg": "", "rc": 0, "start": "2025-07-22 15:52:48.372721", "stderr": "", "stderr_lines": [], "stdout": "root:$6$gGt9LbPyvpIsOtlO$i0vV5Y31l36HBAUugZ4u7y14nvMq2cF8BzDjC5ZeA1wVhow4xH4Ulx94RlJM1x9o4OlUkP6fSAR.Br.Cpka/J0:19927:0:99999:7:::", "stdout_lines": ["root:$6$gGt9LbPyvpIsOtlO$i0vV5Y31l36HBAUugZ4u7y14nvMq2cF8BzDjC5ZeA1wVhow4xH4Ulx94RlJM1x9o4OlUkP6fSAR.Br.Cpka/J0:19927:0:99999:7:::"]}
+
+TASK [mcx_hardening_4_role : 4.5.2.4  Ensure root password is set MSG] *********
+ok: [192.168.91.72] => {
+    "msg": "MCXSRVDWH 192.168.91.72 Root password status {'changed': True, 'stdout': 'root:$6$gGt9LbPyvpIsOtlO$i0vV5Y31l36HBAUugZ4u7y14nvMq2cF8BzDjC5ZeA1wVhow4xH4Ulx94RlJM1x9o4OlUkP6fSAR.Br.Cpka/J0:19927:0:99999:7:::', 'stderr': '', 'rc': 0, 'cmd': \"grep -i '^root:' /etc/shadow\", 'start': '2025-07-22 15:52:48.372721', 'end': '2025-07-22 15:52:48.377638', 'delta': '0:00:00.004917', 'msg': '', 'stdout_lines': ['root:$6$gGt9LbPyvpIsOtlO$i0vV5Y31l36HBAUugZ4u7y14nvMq2cF8BzDjC5ZeA1wVhow4xH4Ulx94RlJM1x9o4OlUkP6fSAR.Br.Cpka/J0:19927:0:99999:7:::'], 'stderr_lines': [], 'failed': False}"
+}
+
+TASK [mcx_hardening_4_role : 4.5.3.3 | PATCH | Ensure default user umask is configured] ***
+ok: [192.168.91.72] => (item={'path': '/etc/bashrc', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/bashrc"}, "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item={'path': '/etc/profile', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/profile"}, "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item={'path': '/etc/login.defs', 'line': 'UMASK'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "UMASK", "path": "/etc/login.defs"}, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote client. | When not log host] ***
+ok: [192.168.91.72] => (item=^(\$ModLoad imtcp)) => {"ansible_loop_var": "item", "changed": false, "item": "^(\\$ModLoad imtcp)", "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item=^(\$InputTCPServerRun)) => {"ansible_loop_var": "item", "changed": false, "item": "^(\\$InputTCPServerRun)", "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item=^(module\(load="imtcp"\))) => {"ansible_loop_var": "item", "changed": false, "item": "^(module\\(load=\"imtcp\"\\))", "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item=^(input\(type="imtcp")) => {"ansible_loop_var": "item", "changed": false, "item": "^(input\\(type=\"imtcp\")", "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.1.7 | PATCH | Ensure rsyslog is not configured to recieve logs from a remote clients. | When log host] ***
+ok: [192.168.91.72] => (item=ModLoad imtcp) => {"ansible_loop_var": "item", "changed": false, "item": "ModLoad imtcp", "msg": "", "rc": 0}
+ok: [192.168.91.72] => (item=InputTCPServerRun) => {"ansible_loop_var": "item", "changed": false, "item": "InputTCPServerRun", "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Backup of /etc/logrotate.conf file] *********
+changed: [192.168.91.72] => {"changed": true, "checksum": "5ab85c8a14e400d9fa645e672093709cf00cb047", "dest": "/etc/logrotate.conf.backup-20250722155252", "gid": 0, "group": "root", "md5sum": "018de12a6ecae90443ad87161efe2a76", "mode": "0640", "owner": "root", "size": 92, "src": "/etc/logrotate.conf", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3 Ensure logrotate package is installed] ******
+ok: [192.168.91.72] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_5_role : 5.1.3.1 Ensure /etc/logrotate.conf exists] ********
+ok: [192.168.91.72] => {"changed": false, "checksum": "5ab85c8a14e400d9fa645e672093709cf00cb047", "dest": "/etc/logrotate.conf", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/logrotate.conf", "size": 92, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.1.3.2 Ensure logrotate is scheduled via cron.daily] ***
+ok: [192.168.91.72] => {"changed": false, "stat": {"atime": 1753167467.669028, "attr_flags": "", "attributes": [], "block_size": 4096, "blocks": 8, "charset": "us-ascii", "checksum": "e6ebba94d8b62b1d7d2e4fdacc74a129b24fe208", "ctime": 1739476211.268258, "dev": 64768, "device_type": 0, "executable": true, "exists": true, "gid": 0, "gr_name": "root", "inode": 207181, "isblk": false, "ischr": false, "isdir": false, "isfifo": false, "isgid": false, "islnk": false, "isreg": true, "issock": false, "isuid": false, "mimetype": "text/x-shellscript", "mode": "0755", "mtime": 1515067126.0, "nlink": 1, "path": "/etc/cron.daily/logrotate", "pw_name": "root", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 189, "uid": 0, "version": "1337346938", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}
+
+TASK [mcx_hardening_5_role : 5.1.3.3 Warn if logrotate cron job is missing] ****
+skipping: [192.168.91.72] => {"false_condition": "not logrotate_cron.stat.exists"}
+
+TASK [mcx_hardening_5_role : Ensure AIDE package is installed] *****************
+ok: [192.168.91.72] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_5_role : Create systemd service unit for AIDE integrity check] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "884dccdde2cc05c565db587cf024789c832fe0ef", "dest": "/etc/systemd/system/aidecheck.service", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/systemd/system/aidecheck.service", "size": 97, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Create systemd timer unit for AIDE integrity check] ***
+ok: [192.168.91.72] => {"changed": false, "checksum": "79afd13040a733b311b37feeba4c6f9ca77d606f", "dest": "/etc/systemd/system/aidecheck.timer", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/systemd/system/aidecheck.timer", "size": 126, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Reload systemd daemon] ****************************
+ok: [192.168.91.72] => {"changed": false, "name": null, "status": {}}
+
+TASK [mcx_hardening_5_role : Enable and start aidecheck timer] *****************
+ok: [192.168.91.72] => {"changed": false, "enabled": true, "name": "aidecheck.timer", "state": "started", "status": {"AccuracyUSec": "1min", "ActiveEnterTimestamp": "Tue 2025-07-22 12:28:04 IST", "ActiveEnterTimestampMonotonic": "254097949861", "ActiveExitTimestampMonotonic": "0", "ActiveState": "active", "After": "time-sync.target sysinit.target var.mount -.mount", "AllowIsolate": "no", "AssertResult": "yes", "AssertTimestamp": "Tue 2025-07-22 12:28:04 IST", "AssertTimestampMonotonic": "254097949740", "Before": "timers.target shutdown.target aidecheck.service", "CanFreeze": "no", "CanIsolate": "no", "CanReload": "no", "CanStart": "yes", "CanStop": "yes", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Tue 2025-07-22 12:28:04 IST", "ConditionTimestampMonotonic": "254097949739", "Conflicts": "shutdown.target", "DefaultDependencies": "yes", "Description": "Run AIDE integrity check daily", "FailureAction": "none", "FragmentPath": "/etc/systemd/system/aidecheck.timer", "FreezerState": "running", "Id": "aidecheck.timer", "IgnoreOnIsolate": "no", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestamp": "Tue 2025-07-22 12:28:04 IST", "InactiveExitTimestampMonotonic": "254097949861", "InvocationID": "9a617a6f75074300bc131f85d1e93109", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "LastTriggerUSecMonotonic": "0", "LoadState": "loaded", "Names": "aidecheck.timer", "NeedDaemonReload": "no", "NextElapseUSecMonotonic": "0", "NextElapseUSecRealtime": "Wed 2025-07-23 00:00:00 IST", "OnFailureJobMode": "replace", "Perpetual": "no", "Persistent": "yes", "RandomizedDelayUSec": "0", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterElapse": "yes", "Requires": "var.mount -.mount sysinit.target", "RequiresMountsFor": "/var/lib/systemd/timers", "Result": "success", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StateChangeTimestamp": "Tue 2025-07-22 12:28:04 IST", "StateChangeTimestampMonotonic": "254097949861", "StopWhenUnneeded": "no", "SubState": "waiting", "SuccessAction": "none", "TimersCalendar": "{ OnCalendar=*-*-* 00:00:00 ; next_elapse=Wed 2025-07-23 00:00:00 IST }", "Transient": "no", "Triggers": "aidecheck.service", "Unit": "aidecheck.service", "UnitFilePreset": "disabled", "UnitFileState": "enabled", "WakeSystem": "no", "WantedBy": "timers.target"}}
+
+TASK [mcx_hardening_5_role : Configure AIDE cron job as additional check] ******
+ok: [192.168.91.72] => {"changed": false, "envs": [], "jobs": ["Run AIDE integrity check (cron)"]}
+
+TASK [mcx_hardening_6_role : 6.1.10  Ensure permissions on /etc/shells are configured] ***
+ok: [192.168.91.72] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/shells", "size": 136, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Find] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser", "delta": "0:00:24.035330", "end": "2025-07-22 15:53:34.219431", "msg": "", "rc": 0, "start": "2025-07-22 15:53:10.184101", "stderr": "", "stderr_lines": [], "stdout": "/var/lib/private/systemd/journal-upload\n/var/spool/mail/UAT_TEST1\n/home/UAT_TEST1\n/home/UAT_TEST1/.bash_logout\n/home/UAT_TEST1/.bash_profile\n/home/UAT_TEST1/.bashrc\n/home/UAT_TEST1/.zshrc\n/home/UAT_TEST1/.kshrc\n/home/UAT_TEST1/.bash_history", "stdout_lines": ["/var/lib/private/systemd/journal-upload", "/var/spool/mail/UAT_TEST1", "/home/UAT_TEST1", "/home/UAT_TEST1/.bash_logout", "/home/UAT_TEST1/.bash_profile", "/home/UAT_TEST1/.bashrc", "/home/UAT_TEST1/.zshrc", "/home/UAT_TEST1/.kshrc", "/home/UAT_TEST1/.bash_history"]}
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix] ***
+changed: [192.168.91.72] => (item=/var/lib/private/systemd/journal-upload) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/var/lib/private/systemd/journal-upload", "mode": "0755", "owner": "root", "path": "/var/lib/private/systemd/journal-upload", "size": 6, "state": "directory", "uid": 0}
+changed: [192.168.91.72] => (item=/var/spool/mail/UAT_TEST1) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/var/spool/mail/UAT_TEST1", "mode": "0660", "owner": "root", "path": "/var/spool/mail/UAT_TEST1", "size": 0, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1", "mode": "0700", "owner": "root", "path": "/home/UAT_TEST1", "size": 111, "state": "directory", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.bash_logout) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.bash_logout", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST1/.bash_logout", "size": 18, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.bash_profile) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.bash_profile", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST1/.bash_profile", "size": 141, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.bashrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.bashrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST1/.bashrc", "size": 376, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.zshrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.zshrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST1/.zshrc", "size": 658, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.kshrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.kshrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST1/.kshrc", "size": 172, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST1/.bash_history) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST1/.bash_history", "mode": "0600", "owner": "root", "path": "/home/UAT_TEST1/.bash_history", "size": 50, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup", "delta": "0:00:26.836206", "end": "2025-07-22 15:54:05.581032", "msg": "", "rc": 0, "start": "2025-07-22 15:53:38.744826", "stderr": "", "stderr_lines": [], "stdout": "/home/sunily\n/home/sunily/.bash_logout\n/home/sunily/.bash_profile\n/home/sunily/.zshrc\n/home/sunily/.bashrc\n/home/sunily/.viminfo\n/home/sunily/.bash_history\n/home/UAT_TEST2\n/home/UAT_TEST2/.bash_logout\n/home/UAT_TEST2/.bash_profile\n/home/UAT_TEST2/.bashrc\n/home/UAT_TEST2/.zshrc\n/home/UAT_TEST2/.kshrc", "stdout_lines": ["/home/sunily", "/home/sunily/.bash_logout", "/home/sunily/.bash_profile", "/home/sunily/.zshrc", "/home/sunily/.bashrc", "/home/sunily/.viminfo", "/home/sunily/.bash_history", "/home/UAT_TEST2", "/home/UAT_TEST2/.bash_logout", "/home/UAT_TEST2/.bash_profile", "/home/UAT_TEST2/.bashrc", "/home/UAT_TEST2/.zshrc", "/home/UAT_TEST2/.kshrc"]}
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix] ***
+changed: [192.168.91.72] => (item=/home/sunily) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily", "mode": "0700", "owner": "root", "path": "/home/sunily", "size": 113, "state": "directory", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.bash_logout) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.bash_logout", "mode": "0644", "owner": "root", "path": "/home/sunily/.bash_logout", "size": 18, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.bash_profile) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.bash_profile", "mode": "0644", "owner": "root", "path": "/home/sunily/.bash_profile", "size": 141, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.zshrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.zshrc", "mode": "0644", "owner": "root", "path": "/home/sunily/.zshrc", "size": 658, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.bashrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.bashrc", "mode": "0644", "owner": "root", "path": "/home/sunily/.bashrc", "size": 473, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.viminfo) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.viminfo", "mode": "0600", "owner": "root", "path": "/home/sunily/.viminfo", "size": 1047, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/sunily/.bash_history) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/sunily/.bash_history", "mode": "0600", "owner": "root", "path": "/home/sunily/.bash_history", "size": 93, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2", "mode": "0700", "owner": "root", "path": "/home/UAT_TEST2", "size": 90, "state": "directory", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2/.bash_logout) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2/.bash_logout", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST2/.bash_logout", "size": 18, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2/.bash_profile) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2/.bash_profile", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST2/.bash_profile", "size": 141, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2/.bashrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2/.bashrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST2/.bashrc", "size": 376, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2/.zshrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2/.zshrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST2/.zshrc", "size": 658, "state": "file", "uid": 0}
+changed: [192.168.91.72] => (item=/home/UAT_TEST2/.kshrc) => {"ansible_loop_var": "item", "changed": true, "gid": 0, "group": "root", "item": "/home/UAT_TEST2/.kshrc", "mode": "0644", "owner": "root", "path": "/home/UAT_TEST2/.kshrc", "size": 172, "state": "file", "uid": 0}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.72] => {"changed": false, "cmd": "awk -F':' '($2 != \"x\" ) { print $1}' /etc/passwd", "delta": "0:00:00.005620", "end": "2025-07-22 15:54:11.997990", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 15:54:11.992370", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.72] => {"false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": ["pwconv"], "delta": "0:00:00.023545", "end": "2025-07-22 15:54:12.531542", "msg": "", "rc": 0, "start": "2025-07-22 15:54:12.507997", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.72] => {"changed": false, "cmd": "awk -F':' '($2 != \"x\" ) { print $1}' /etc/passwd", "delta": "0:00:00.006488", "end": "2025-07-22 15:54:12.987715", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-22 15:54:12.981227", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.72] => {"false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.72] => {"changed": false, "false_condition": "rhel7cis_6_2_1_nonshadowed_users.stdout | length > 0", "skip_reason": "Conditional result was False"}
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.72] => {"changed": true, "cmd": ["pwconv"], "delta": "0:00:00.014139", "end": "2025-07-22 15:54:13.532850", "msg": "", "rc": 0, "start": "2025-07-22 15:54:13.518711", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3 | Ensure ENCRYPT_METHOD and crypt_style are set] ***
+ok: [192.168.91.72] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "ENCRYPT_METHOD SHA512", "path": "/etc/login.defs", "regexp": "^#?ENCRYPT_METHOD"}, "msg": ""}
+ok: [192.168.91.72] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'}) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": {"line": "crypt_style = sha512", "path": "/etc/libuser.conf", "regexp": "^#?crypt_style"}, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.4.3.1 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth] ***
+changed: [192.168.91.72] => (item=password) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "password", "msg": "line replaced"}
+changed: [192.168.91.72] => (item=system) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": "system", "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.1 | Set password changed characters (difok)] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.2 | Set minimum password length (minlen)] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.3 | Set password complexity minimum character classes (minclass)] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.4 | Patch pwquality.conf for separated options (looped values)] ***
+changed: [192.168.91.72] => (item={'key': 'lcredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "lcredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.72] => (item={'key': 'ucredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ucredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.72] => (item={'key': 'dcredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "dcredit", "value": -1}, "msg": "line replaced"}
+changed: [192.168.91.72] => (item={'key': 'ocredit', 'value': -1}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ocredit", "value": -1}, "msg": "line replaced"}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.5 | Set maximum repeating characters allowed] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.6 | Set maximum sequential characters allowed] ***
+ok: [192.168.91.72] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_pam_role : 4.4.3.2.7 | Enforce password quality for root] ***
+changed: [192.168.91.72] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+PLAY RECAP *********************************************************************
+192.168.91.72              : ok=121  changed=32   unreachable=0    failed=0    skipped=11   rescued=0    ignored=0   
+

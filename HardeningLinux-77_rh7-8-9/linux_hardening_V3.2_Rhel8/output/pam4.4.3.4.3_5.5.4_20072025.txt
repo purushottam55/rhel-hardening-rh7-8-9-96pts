@@ -1,0 +1,20 @@
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_Rhel8]# ansible-playbook  linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] *********************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_pam_role : 5.5.4 | Ensure ENCRYPT_METHOD and crypt_style are set] ***************************************************************
+ok: [192.168.91.199] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'})
+ok: [192.168.91.199] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'})
+
+TASK [mcx_hardening_pam_role : 5.5.4 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth] *************************************
+ok: [192.168.91.199] => (item=password)
+ok: [192.168.91.199] => (item=system)
+
+PLAY RECAP ******************************************************************************************************************************************
+192.168.91.199             : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[root@NFR-ANCIBLETEST linux_hardening_V3.2_Rhel8]#
+

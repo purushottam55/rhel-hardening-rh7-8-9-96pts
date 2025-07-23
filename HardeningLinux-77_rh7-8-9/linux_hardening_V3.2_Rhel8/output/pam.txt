@@ -1,0 +1,12 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.2.2 | PATCH | Ensure password number of changed characters is configured] ***
+ok: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

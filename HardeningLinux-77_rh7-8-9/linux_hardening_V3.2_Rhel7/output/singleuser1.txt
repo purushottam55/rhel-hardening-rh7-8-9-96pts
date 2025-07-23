@@ -1,0 +1,12 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.3.3 | PATCH | Ensure authentication required for single user mode | Emergency service] ***
+fatal: [192.168.91.233]: FAILED! => {"msg": "The conditional check 'rhel7cis_rule_1_3_3' failed. The error was: error while evaluating conditional (rhel7cis_rule_1_3_3): 'rhel7cis_rule_1_3_3' is undefined. 'rhel7cis_rule_1_3_3' is undefined\n\nThe error appears to be in '/root/HardeningDevelopement96/linux_hardening_V3.2_testing/TestingRole/tasks/main.yml': line 5, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  block:\n    - name: \"1.3.3 | PATCH | Ensure authentication required for single user mode | Emergency service\"\n      ^ here\n"}
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

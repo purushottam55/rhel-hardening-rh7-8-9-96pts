@@ -1,0 +1,12 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.234]
+
+TASK [mcx_hardening_5_role : 5.1.7 Add line to sshd_config for allowusers] *****
+fatal: [192.168.91.234]: FAILED! => {"msg": "The conditional check 'rhel9cis_sshd_allowusers | length > 0' failed. The error was: error while evaluating conditional (rhel9cis_sshd_allowusers | length > 0): 'rhel9cis_sshd_allowusers' is undefined. 'rhel9cis_sshd_allowusers' is undefined\n\nThe error appears to be in '/root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml': line 10, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  block:\n    - name: \"5.1.7 Add line to sshd_config for allowusers\"\n      ^ here\n"}
+
+PLAY RECAP *********************************************************************
+192.168.91.234             : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

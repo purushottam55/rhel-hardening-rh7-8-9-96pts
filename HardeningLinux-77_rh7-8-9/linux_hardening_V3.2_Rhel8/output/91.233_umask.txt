@@ -1,0 +1,23 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure umask 027 is set in /root/.bashrc] ******************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Apply updated umask by sourcing .bashrc] *******************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Verify effective umask] ************************************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Show result] ***********************************************
+ok: [192.168.91.233] => {
+    "msg": "Effective umask is 0027"
+}
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=5    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

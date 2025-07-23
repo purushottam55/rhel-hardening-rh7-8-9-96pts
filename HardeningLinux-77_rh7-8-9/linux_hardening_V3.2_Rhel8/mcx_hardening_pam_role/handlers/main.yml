@@ -1,0 +1,7 @@
+---
+# handlers file for mcx_hardening_pam_role
+
+- name: restart_sshd
+  service:
+    name: sshd
+    state: restarted

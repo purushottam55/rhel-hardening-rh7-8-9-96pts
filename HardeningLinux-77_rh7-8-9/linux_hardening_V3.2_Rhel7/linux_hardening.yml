@@ -1,0 +1,12 @@
+---
+- name: CIS Linux Hardening V3.2
+  hosts: all
+  become: true
+  roles:
+#    - TestingRole
+    - mcx_hardening_1_role
+    - mcx_hardening_2_role
+    - mcx_hardening_3_role
+    - mcx_hardening_4_role
+    - mcx_hardening_5_role
+    - mcx_hardening_6_role

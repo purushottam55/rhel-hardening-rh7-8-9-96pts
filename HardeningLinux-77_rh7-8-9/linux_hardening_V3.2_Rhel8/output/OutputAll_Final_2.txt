@@ -1,0 +1,146 @@
+ansible-playbook [core 2.16.3]
+  config file = /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.12/site-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.12.11 (main, Jun 19 2025, 11:41:33) [GCC 8.5.0 20210514 (Red Hat 8.5.0-27)] (/usr/bin/python3.12)
+  jinja version = 3.1.2
+  libyaml = True
+Using /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/ansible.cfg as config file
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: linux_hardening.yml **************************************************
+1 plays in linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/linux_hardening.yml:2
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_1_role :  1.1.1.2 to 1.1.1.8 Check if module '{{ item.name }}' exists on disk] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:11
+ok: [192.168.91.199] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.199] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.199] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.199] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}
+ok: [192.168.91.199] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}
+
+TASK [mcx_hardening_1_role : Create modprobe.d config to disable module '{{ item.0.name }}'] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:19
+skipping: [192.168.91.199] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "freevxfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/freevxfs.ko"}}, "item": {"name": "freevxfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfs", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfs.ko"}}, "item": {"name": "hfs", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "hfsplus", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/hfsplus.ko"}}, "item": {"name": "hfsplus", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "jffs2", "type": "fs"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/fs/jffs2.ko"}}, "item": {"name": "jffs2", "type": "fs"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "item.1.stat.exists", "item": [{"name": "usb_storage", "type": "drivers"}, {"ansible_loop_var": "item", "changed": false, "failed": false, "invocation": {"module_args": {"checksum_algorithm": "sha1", "follow": false, "get_attributes": true, "get_checksum": true, "get_mime": true, "path": "/lib/modules/4.18.0-553.60.1.el8_10.x86_64/kernel/drivers/usb_storage.ko"}}, "item": {"name": "usb_storage", "type": "drivers"}, "stat": {"exists": false}}], "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Get list of loaded kernel modules] ****************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:33
+ok: [192.168.91.199] => {"changed": false, "cmd": "lsmod | awk '{print $1}' | tail -n +2", "delta": "0:00:00.007342", "end": "2025-07-20 20:29:34.805263", "msg": "", "rc": 0, "start": "2025-07-20 20:29:34.797921", "stderr": "", "stderr_lines": [], "stdout": "crct10dif_pclmul\ncrc32_pclmul\nghash_clmulni_intel\njoydev\nvirtio_balloon\npcspkr\ni2c_piix4\nxfs\nlibcrc32c\nsr_mod\nsd_mod\ncdrom\nt10_pi\nsg\nata_generic\nbochs\ndrm_vram_helper\ndrm_kms_helper\nsyscopyarea\nsysfillrect\nsysimgblt\ndrm_ttm_helper\nttm\ndrm\ncrc32c_intel\nata_piix\nvirtio_net\nlibata\nnet_failover\nserio_raw\nfailover\nvirtio_scsi\ndm_mirror\ndm_region_hash\ndm_log\ndm_mod", "stdout_lines": ["crct10dif_pclmul", "crc32_pclmul", "ghash_clmulni_intel", "joydev", "virtio_balloon", "pcspkr", "i2c_piix4", "xfs", "libcrc32c", "sr_mod", "sd_mod", "cdrom", "t10_pi", "sg", "ata_generic", "bochs", "drm_vram_helper", "drm_kms_helper", "syscopyarea", "sysfillrect", "sysimgblt", "drm_ttm_helper", "ttm", "drm", "crc32c_intel", "ata_piix", "virtio_net", "libata", "net_failover", "serio_raw", "failover", "virtio_scsi", "dm_mirror", "dm_region_hash", "dm_log", "dm_mod"]}
+
+TASK [mcx_hardening_1_role : Unload module '{{ item.name }}' if loaded] ********
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:38
+skipping: [192.168.91.199] => (item=freevxfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "freevxfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=hfs)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfs", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=hfsplus)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "hfsplus", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=jffs2)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "jffs2", "type": "fs"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => (item=usb_storage)  => {"ansible_loop_var": "item", "changed": false, "false_condition": "(item.name | replace('-', '_')) in loaded_modules.stdout_lines", "item": {"name": "usb_storage", "type": "drivers"}, "skip_reason": "Conditional result was False"}
+skipping: [192.168.91.199] => {"changed": false, "msg": "All items skipped"}
+
+TASK [mcx_hardening_1_role : Verify module '{{ item.name }}' is not loaded] ****
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:46
+ok: [192.168.91.199] => (item=freevxfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q freevxfs", "delta": "0:00:00.007677", "end": "2025-07-20 20:29:35.296924", "failed_when_result": false, "item": {"name": "freevxfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-20 20:29:35.289247", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.199] => (item=hfs) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfs", "delta": "0:00:00.007630", "end": "2025-07-20 20:29:35.691133", "failed_when_result": false, "item": {"name": "hfs", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-20 20:29:35.683503", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.199] => (item=hfsplus) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q hfsplus", "delta": "0:00:00.007077", "end": "2025-07-20 20:29:36.077883", "failed_when_result": false, "item": {"name": "hfsplus", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-20 20:29:36.070806", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.199] => (item=jffs2) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q jffs2", "delta": "0:00:00.007331", "end": "2025-07-20 20:29:36.479159", "failed_when_result": false, "item": {"name": "jffs2", "type": "fs"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-20 20:29:36.471828", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+ok: [192.168.91.199] => (item=usb_storage) => {"ansible_loop_var": "item", "changed": false, "cmd": "lsmod | grep -q usb_storage", "delta": "0:00:00.006887", "end": "2025-07-20 20:29:36.885035", "failed_when_result": false, "item": {"name": "usb_storage", "type": "drivers"}, "msg": "non-zero return code", "rc": 1, "start": "2025-07-20 20:29:36.878148", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | AUDIT | Ensure /tmp is a separate partition | Absent] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:63
+ok: [192.168.91.199] => {
+    "msg": "Warning!! /tmp doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.1.1 | WARNING | Set fact for manual task warning.] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml:17
+ok: [192.168.91.199] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | AUDIT | Ensure /dev/shm is a separate partition | Absent] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:79
+ok: [192.168.91.199] => {
+    "msg": "Warning!! /dev/shm doesn't exist. This is a manual task"
+}
+
+TASK [mcx_hardening_1_role : 1.1.2.2.1 | WARNING | Set fact for manual task warning.] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/warning_facts.yml:17
+ok: [192.168.91.199] => {"ansible_facts": {"warn_control_list": " [1.1.2.1.1] [1.1.2.2.1]", "warn_count": "2"}, "changed": false}
+
+TASK [mcx_hardening_1_role : 1.2.2 Ensure GPG keys are configured] *************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:90
+changed: [192.168.91.199] => {"changed": true, "cmd": "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\\n'", "delta": "0:00:00.012652", "end": "2025-07-20 20:29:37.392589", "msg": "", "rc": 0, "start": "2025-07-20 20:29:37.379937", "stderr": "", "stderr_lines": [], "stdout": "gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)\ngpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)\ngpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)\ngpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)\ngpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)\ngpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)\ngpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))", "stdout_lines": ["gpg-pubkey-fd431d51-4ae0493b --> gpg(Red Hat, Inc. (release key 2) <security@redhat.com>)", "gpg-pubkey-d4082792-5b32db75 --> gpg(Red Hat, Inc. (auxiliary key) <security@redhat.com>)", "gpg-pubkey-ec51e8c4-6363a77e --> gpg(Draios Inc. <support@draios.com>)", "gpg-pubkey-9cff20b7-5ec376af --> gpg(rpm-signer <rpm-signer@checkpoint.com>)", "gpg-pubkey-2f86d6a1-5cf7cefb --> gpg(Fedora EPEL (8) <epel@fedoraproject.org>)", "gpg-pubkey-f21541eb-4a5233e7 --> gpg(Red Hat, Inc. (beta key 2) <security@redhat.com>)", "gpg-pubkey-16055553-5b11e9d8 --> gpg(BigFix (9))"]}
+
+TASK [mcx_hardening_1_role : 1.2.3 Ensure gpgcheck is globally activated] ******
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:93
+changed: [192.168.91.199] => {"changed": true, "cmd": "sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' /etc/yum.conf", "delta": "0:00:00.005594", "end": "2025-07-20 20:29:37.787031", "msg": "", "rc": 0, "start": "2025-07-20 20:29:37.781437", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_1_role : shell] ********************************************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:96
+changed: [192.168.91.199] => {"changed": true, "cmd": "find /etc/yum.repos.d/ -name \"*.repo\" -exec echo \"Checking:\" {} \\; -exec sed -i 's/^gpgcheck\\s*=\\s*.*/gpgcheck=1/' {} \\;", "delta": "0:00:00.034628", "end": "2025-07-20 20:29:38.209102", "msg": "", "rc": 0, "start": "2025-07-20 20:29:38.174474", "stderr": "", "stderr_lines": [], "stdout": "Checking: /etc/yum.repos.d/rep_backup/epel-testing.repo\nChecking: /etc/yum.repos.d/rep_backup/epel-testing-modular.repo\nChecking: /etc/yum.repos.d/rep_backup/epel.repo\nChecking: /etc/yum.repos.d/rep_backup/epel-modular.repo\nChecking: /etc/yum.repos.d/rep_backup/sbalinux.repo\nChecking: /etc/yum.repos.d/rep_backup/server-dc.repo\nChecking: /etc/yum.repos.d/rep_backup/rh-yum-cache.repo\nChecking: /etc/yum.repos.d/old/rh-yum-cache.repo\nChecking: /etc/yum.repos.d/redhat.repo\nChecking: /etc/yum.repos.d/server-dc.repo", "stdout_lines": ["Checking: /etc/yum.repos.d/rep_backup/epel-testing.repo", "Checking: /etc/yum.repos.d/rep_backup/epel-testing-modular.repo", "Checking: /etc/yum.repos.d/rep_backup/epel.repo", "Checking: /etc/yum.repos.d/rep_backup/epel-modular.repo", "Checking: /etc/yum.repos.d/rep_backup/sbalinux.repo", "Checking: /etc/yum.repos.d/rep_backup/server-dc.repo", "Checking: /etc/yum.repos.d/rep_backup/rh-yum-cache.repo", "Checking: /etc/yum.repos.d/old/rh-yum-cache.repo", "Checking: /etc/yum.repos.d/redhat.repo", "Checking: /etc/yum.repos.d/server-dc.repo"]}
+
+TASK [mcx_hardening_1_role : 1.2.4 Ensure package manager repositories are configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:100
+changed: [192.168.91.199] => {"changed": true, "cmd": "yum repolist", "delta": "0:00:00.677299", "end": "2025-07-20 20:29:39.300987", "msg": "", "rc": 0, "start": "2025-07-20 20:29:38.623688", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nrepo id                          repo name\nrhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\nrhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)", "stdout_lines": ["Updating Subscription Management repositories.", "repo id                          repo name", "rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)", "rhel-8-for-x86_64-baseos-rpms    Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"]}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:104
+ok: [192.168.91.199] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : 1.2.5 Ensure updates, patches, and additional security software are installed (Check Only)] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:114
+changed: [192.168.91.199] => {"changed": true, "cmd": ["yum", "check-update"], "delta": "0:00:05.219330", "end": "2025-07-20 20:29:51.350110", "msg": "", "rc": 0, "start": "2025-07-20 20:29:46.130780", "stderr": "", "stderr_lines": [], "stdout": "Updating Subscription Management repositories.\nRed Hat Enterprise Linux 8 for x86_64 - BaseOS  115 kB/s | 4.1 kB     00:00    \nRed Hat Enterprise Linux 8 for x86_64 - AppStre 131 kB/s | 4.5 kB     00:00    ", "stdout_lines": ["Updating Subscription Management repositories.", "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  115 kB/s | 4.1 kB     00:00    ", "Red Hat Enterprise Linux 8 for x86_64 - AppStre 131 kB/s | 4.5 kB     00:00    "]}
+
+TASK [mcx_hardening_1_role : 1.2.5.1 Show available updates] *******************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:119
+ok: [192.168.91.199] => {
+    "yum_updates.stdout_lines": [
+        "Updating Subscription Management repositories.",
+        "Red Hat Enterprise Linux 8 for x86_64 - BaseOS  115 kB/s | 4.1 kB     00:00    ",
+        "Red Hat Enterprise Linux 8 for x86_64 - AppStre 131 kB/s | 4.5 kB     00:00    "
+    ]
+}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | Set file] *****
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:130
+ok: [192.168.91.199] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure ptrace_scope is restricted | comment out other entry] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:138
+ok: [192.168.91.199] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.5.1.7 | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:149
+ok: [192.168.91.199] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_1_role : (1.6.1 Ensure message of the day is configured properly] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:155
+ok: [192.168.91.199] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : 1.6.3  Ensure remote login warning banner is configured properly] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:161
+ok: [192.168.91.199] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_1_role : Ensure SSHD config uses /etc/issue.net as Banner] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_1_role/tasks/main.yml:167
+ok: [192.168.91.199] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_2_role : 2.2.4 to 2.2.16 Ensure servers are not installed] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel8/mcx_hardening_2_role/tasks/main.yml:18

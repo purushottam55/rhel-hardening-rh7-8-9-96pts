@@ -1,0 +1,303 @@
+ansible-playbook [core 2.16.3]
+  config file = /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.12/site-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.12.11 (main, Jun 19 2025, 11:41:33) [GCC 8.5.0 20210514 (Red Hat 8.5.0-27)] (/usr/bin/python3.12)
+  jinja version = 3.1.2
+  libyaml = True
+Using /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/ansible.cfg as config file
+statically imported: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/warning_facts.yml
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: linux_hardening.yml **************************************************
+1 plays in linux_hardening.yml
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/linux_hardening.yml:2
+ok: [192.168.91.234]
+
+TASK [mcx_hardening_5_role : 4.2.6  Ensure only strong Ciphers are used] *******
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:46
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.1.9 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Add line in sshd_config for ClientAliveInterval] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:59
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.1.9 | PATCH | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | Ensure SSH ClientAliveCountMax set] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:66
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : Restart sshd after changes] ***********************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:74
+changed: [192.168.91.234] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Sun 2025-07-20 20:55:22 IST", "ActiveEnterTimestampMonotonic": "92332998903", "ActiveExitTimestamp": "Sun 2025-07-20 20:55:22 IST", "ActiveExitTimestampMonotonic": "92332987767", "ActiveState": "active", "After": "sysinit.target basic.target sshd-keygen.target system.slice network.target systemd-journald.socket", "AllowIsolate": "no", "AssertResult": "yes", "AssertTimestamp": "Sun 2025-07-20 20:55:22 IST", "AssertTimestampMonotonic": "92332989662", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "yes", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "27711000", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf cap_checkpoint_restore", "CleanResult": "success", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Sun 2025-07-20 20:55:22 IST", "ConditionTimestampMonotonic": "92332989661", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlGroupId": "12661", "ControlPID": "0", "CoredumpFilter": "0x33", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "\"man:sshd(8)\" \"man:sshd_config(5)\"", "DynamicUser": "no", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "455480", "ExecMainStartTimestamp": "Sun 2025-07-20 20:55:22 IST", "ExecMainStartTimestampMonotonic": "92332991165", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecReloadEx": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; flags= ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStartEx": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS ; flags= ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExitType": "main", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FinalKillSignal": "9", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOReadBytes": "18446744073709551615", "IOReadOperations": "18446744073709551615", "IOSchedulingClass": "2", "IOSchedulingPriority": "4", "IOWeight": "[not set]", "IOWriteBytes": "18446744073709551615", "IOWriteOperations": "18446744073709551615", "IPAccounting": "no", "IPEgressBytes": "[no data]", "IPEgressPackets": "[no data]", "IPIngressBytes": "[no data]", "IPIngressPackets": "[no data]", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Sun 2025-07-20 20:55:22 IST", "InactiveEnterTimestampMonotonic": "92332988903", "InactiveExitTimestamp": "Sun 2025-07-20 20:55:22 IST", "InactiveExitTimestampMonotonic": "92332991372", "InvocationID": "0486802043a04b82b9af192df1f9fe8e", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "infinity", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "8388608", "LimitMEMLOCKSoft": "8388608", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "524288", "LimitNOFILESoft": "1024", "LimitNPROC": "30345", "LimitNPROCSoft": "30345", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "30345", "LimitSIGPENDINGSoft": "30345", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "455480", "ManagedOOMMemoryPressure": "auto", "ManagedOOMMemoryPressureLimit": "0", "ManagedOOMPreference": "none", "ManagedOOMSwap": "auto", "MemoryAccounting": "yes", "MemoryAvailable": "infinity", "MemoryCurrent": "3604480", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMPolicy": "stop", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "OnSuccessJobMode": "fail", "Perpetual": "no", "PrivateDevices": "no", "PrivateIPC": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProcSubset": "all", "ProtectClock": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectHostname": "no", "ProtectKernelLogs": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectProc": "default", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "ReloadResult": "success", "ReloadSignal": "1", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "sysinit.target system.slice", "Restart": "on-failure", "RestartKillSignal": "15", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "RuntimeRandomizedExtraUSec": "0", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Sun 2025-07-20 20:55:22 IST", "StateChangeTimestampMonotonic": "92332998903", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "2147483646", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "48552", "TimeoutAbortUSec": "1min 30s", "TimeoutCleanUSec": "infinity", "TimeoutStartFailureMode": "terminate", "TimeoutStartUSec": "1min 30s", "TimeoutStopFailureMode": "terminate", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogSignal": "6", "WatchdogTimestampMonotonic": "0", "WatchdogUSec": "0"}}
+
+TASK [mcx_hardening_5_role : 5.1.11 | PATCH | Ensure sshd GSSAPIAuthentication is disabled] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:82
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.1.5 | PATCH | Ensure only strong Key Exchange algorithms are used | Remove old settings] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:91
+changed: [192.168.91.234] => {"backup": "", "changed": true, "found": 1, "msg": "1 line(s) removed"}
+
+TASK [mcx_hardening_5_role : 5.1.5 | PATCH | Ensure only strong Key Exchange algorithms are used | Set strong algorithms] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:97
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.1.6 | PATCH | Ensure only strong SSH MACs are configured | Remove old settings] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:108
+changed: [192.168.91.234] => {"backup": "", "changed": true, "found": 1, "msg": "1 line(s) removed"}
+
+TASK [mcx_hardening_5_role : 5.1.6 | PATCH | Ensure only strong SSH MACs are configured | Apply strong MACs] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:114
+Notification for handler Restart_sshd has been saved.
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.3.1.1 Ensure pam is installed and up to date] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:126
+ok: [192.168.91.234] => {"changed": false, "msg": "Nothing to do", "rc": 0, "results": []}
+
+TASK [mcx_hardening_5_role : Ensure backup of PAM files before modification] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:132
+changed: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup_file": "/etc/pam.d/system-auth.pre_ansible.bak.459811.2025-07-20@21:06:17~", "changed": true, "checksum": "aac389083f561ed72f189b94c582cc00f79d6b35", "dest": "/etc/pam.d/system-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "f0858c7edc4ad4968e7defe38f3f8f66", "mode": "0600", "owner": "root", "size": 1542, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+changed: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup_file": "/etc/pam.d/password-auth.pre_ansible.bak.459903.2025-07-20@21:06:17~", "changed": true, "checksum": "aac389083f561ed72f189b94c582cc00f79d6b35", "dest": "/etc/pam.d/password-auth.pre_ansible.bak", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "f0858c7edc4ad4968e7defe38f3f8f66", "mode": "0600", "owner": "root", "size": 1542, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role :  5.3.2.2 Ensure pam_faillock module is enabled  | Ensure pam_faillock preauth line is present after pam_env.so] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:145
+changed: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "item": "system-auth", "msg": "Block inserted"}
+changed: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "item": "password-auth", "msg": "Block inserted"}
+
+TASK [mcx_hardening_5_role : 5.3.2.2 Ensure pam_faillock authfail line is present before pam_succeed_if.so] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:158
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.2.2 Ensure pam_faillock is configured in account section] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:169
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : Backup system-auth and password-auth before changes] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:187
+changed: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "ada884c911ea568997c971ebba2a30689240793b", "dest": "/etc/pam.d/system-auth.bak_2025-07-20T15:35:41Z", "gid": 0, "group": "root", "item": "system-auth", "md5sum": "27f900354c3668a327bca4a8c4325bb2", "mode": "0644", "owner": "root", "size": 2995, "src": "/root/.ansible/tmp/ansible-tmp-1753005979.8439767-187009-99373039053627/source", "state": "file", "uid": 0}
+changed: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "changed": true, "checksum": "e370b3f94b89db3300a3e33ff53af7c625e4700a", "dest": "/etc/pam.d/password-auth.bak_2025-07-20T15:35:41Z", "gid": 0, "group": "root", "item": "password-auth", "md5sum": "db1097486966d2badfd353a40efe76a0", "mode": "0644", "owner": "root", "size": 3042, "src": "/root/.ansible/tmp/ansible-tmp-1753005980.4073439-187009-16195669244556/source", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Ensure pam_faillock's preauth line with proper params just after auth required pam_env.so] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:196
+changed: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "/etc/pam.d/system-auth.460857.2025-07-20@21:06:20~", "changed": true, "item": "system-auth", "msg": "line replaced"}
+changed: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "/etc/pam.d/password-auth.460949.2025-07-20@21:06:20~", "changed": true, "item": "password-auth", "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : Ensure pam_faillock's authfail line with proper params after last password validation module] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:208
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.2.3 Ensure pam_pwquality module is enabled] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:224
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.2.3 Ensure pam_pwhistory.so is present with correct options, use_authtok enforced] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:235
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.2.3 Ensure pam_unix.so is present with use_authtok] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:246
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.2.3 Ensure pam_deny.so is present] ************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:257
+ok: [192.168.91.234] => (item=system-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "system-auth", "msg": ""}
+ok: [192.168.91.234] => (item=password-auth) => {"ansible_loop_var": "item", "backup": "", "changed": false, "item": "password-auth", "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.2 Ensure password number of changed characters is configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:271
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.1 Ensure password length is configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:279
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.3 Ensure password complexity is configured | minclass] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:287
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.3 Ensure password complexity is configured | separated values] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:295
+changed: [192.168.91.234] => (item={'key': '#minclass', 'value': 4}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "#minclass", "value": 4}, "msg": "line added"}
+changed: [192.168.91.234] => (item={'key': 'dcredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "dcredit", "value": "-1"}, "msg": "line added"}
+changed: [192.168.91.234] => (item={'key': 'ucredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ucredit", "value": "-1"}, "msg": "line added"}
+changed: [192.168.91.234] => (item={'key': 'ocredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "ocredit", "value": "-1"}, "msg": "line added"}
+changed: [192.168.91.234] => (item={'key': 'lcredit', 'value': '-1'}) => {"ansible_loop_var": "item", "backup": "", "changed": true, "item": {"key": "lcredit", "value": "-1"}, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.4 Ensure password same consecutive characters is configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:304
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.5  Ensure password maximum sequential characters is configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:312
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.3.3.2.6 Ensure password dictionary check is enabled] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:320
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : Backup system-auth before enabling pam_pwhistory before make changes] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:328
+changed: [192.168.91.234] => {"changed": true, "checksum": "aac389083f561ed72f189b94c582cc00f79d6b35", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "f0858c7edc4ad4968e7defe38f3f8f66", "mode": "0600", "owner": "root", "size": 1542, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.2.4 | Ensure pam_pwhistory module is enabled in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:338
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : Backup password-auth before enabling pam_pwhistory] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:346
+changed: [192.168.91.234] => {"changed": true, "checksum": "aac389083f561ed72f189b94c582cc00f79d6b35", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "f0858c7edc4ad4968e7defe38f3f8f66", "mode": "0600", "owner": "root", "size": 1542, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 4.4.2.3.1 | Ensure pam_pwhistory module is enabled in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:353
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : Backup system-auth before configuring password history remember] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:365
+changed: [192.168.91.234] => {"changed": true, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.3.1 Ensure password history remember is configured in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:372
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : Backup password-auth before configuring password history remember] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:378
+changed: [192.168.91.234] => {"changed": true, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Ensure password history remember is configured in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:385
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : Backup system-auth before enforcing password history for root] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:394
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.3.2 Ensure password history is enforced for the root user in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:401
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role :  Backup password-auth before enforcing password history for root] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:407
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.3.2 Ensure password history is enforced for the root user in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:414
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.4 Backup system-auth before ensuring use_authtok] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:423
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.4 Ensure pam_pwhistory includes use_authtok in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:430
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role :  Backup password-auth before ensuring use_authtok] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:436
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.3.3 Ensure pam_pwhistory includes use_authtok in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:443
+ok: [192.168.91.234] => {"changed": false, "msg": "", "rc": 0}
+
+TASK [mcx_hardening_5_role : Backup system-auth before any changes] ************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:451
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Backup password-auth before any changes] **********
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:458
+ok: [192.168.91.234] => {"changed": false, "checksum": "630feb1f3239e00f415a27c0e32142858197e528", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "5eac0f0149391f9b81bf6245b9bd7293", "mode": "0600", "owner": "root", "size": 1525, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.1 Ensure pam_unix does not include nullok in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:465
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.1 Ensure pam_unix does not include nullok in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:472
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line replaced"}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:483
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.3.3.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:490
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.4.1.4 Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:499
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.4.1.4 Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:506
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.4.4.4 Ensure pam_unix includes use_authtok in system-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:517
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : 5.4.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:524
+ok: [192.168.91.234] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [mcx_hardening_5_role : Backup system-auth before any changes] ************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:531
+changed: [192.168.91.234] => {"changed": true, "checksum": "3276b79f878beddc57c1be6fd5addac26d9338f4", "dest": "/etc/pam.d/system-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "9d88cd0c51d529b9fac9716422cae79d", "mode": "0600", "owner": "root", "size": 1519, "src": "/etc/pam.d/system-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : Backup password-auth before any changes] **********
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:538
+changed: [192.168.91.234] => {"changed": true, "checksum": "3276b79f878beddc57c1be6fd5addac26d9338f4", "dest": "/etc/pam.d/password-auth.bak.20250720T210541200762", "gid": 0, "group": "root", "md5sum": "9d88cd0c51d529b9fac9716422cae79d", "mode": "0600", "owner": "root", "size": 1519, "src": "/etc/pam.d/password-auth", "state": "file", "uid": 0}
+
+TASK [mcx_hardening_5_role : 5.4.1.6 Ensure inactive password lock is 30 days or less | set fact days since_epoch] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:551
+ok: [192.168.91.234] => {"ansible_facts": {"days_since_epoch": "20289.649780092594"}, "changed": false}
+
+TASK [mcx_hardening_5_role : 5.4.1.6 Ensure inactive password lock is 30 days or less | capture users date in future] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:555
+ok: [192.168.91.234] => {"changed": false, "cmd": "awk -F: '{ if ($3 > \"20289.649780092594\") { print $1 }  }' /etc/shadow\n", "delta": "0:00:00.003454", "end": "2025-07-20 21:06:34.020129", "failed_when_result": false, "msg": "", "rc": 0, "start": "2025-07-20 21:06:34.016675", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [mcx_hardening_5_role : 5.4.1.6 Ensure inactive password lock is 30 days or less | Warn Users in future] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:562
+ok: [192.168.91.234] => {
+    "msg": [
+        "Warning!! - The following users have passwords set in the future please investigate",
+        []
+    ]
+}
+
+TASK [mcx_hardening_5_role : 4.5.1.5 | WARNING | Set fact for manual task warning.] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/warning_facts.yml:17
+ok: [192.168.91.234] => {"ansible_facts": {"warn_control_list": " [4.5.1.5]", "warn_count": "1"}, "changed": false}
+
+TASK [mcx_hardening_5_role : 5.4.2.6 Ensure root user umask is configured] *****
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:574
+changed: [192.168.91.234] => {"backup": "", "changed": true, "msg": "line added"}
+
+TASK [mcx_hardening_5_role : 5.4.3.3 | PATCH | Ensure default user umask is configured] ***
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/tasks/main.yml:582
+changed: [192.168.91.234] => (item={'path': '/etc/bashrc', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": true, "item": {"line": "umask", "path": "/etc/bashrc"}, "msg": "1 replacements made", "rc": 0}
+ok: [192.168.91.234] => (item={'path': '/etc/profile', 'line': 'umask'}) => {"ansible_loop_var": "item", "changed": false, "item": {"line": "umask", "path": "/etc/profile"}, "msg": "", "rc": 0}
+changed: [192.168.91.234] => (item={'path': '/etc/login.defs', 'line': 'UMASK'}) => {"ansible_loop_var": "item", "changed": true, "item": {"line": "UMASK", "path": "/etc/login.defs"}, "msg": "1 replacements made", "rc": 0}
+NOTIFIED HANDLER mcx_hardening_5_role : Restart_sshd for 192.168.91.234
+
+RUNNING HANDLER [mcx_hardening_5_role : Restart_sshd] **************************
+task path: /root/HardeningDevelopement96/linux_hardening_V3.2_Rhel9/mcx_hardening_5_role/handlers/main.yml:17
+changed: [192.168.91.234] => {"changed": true, "name": "sshd", "state": "started", "status": {"ActiveEnterTimestamp": "Sun 2025-07-20 21:06:13 IST", "ActiveEnterTimestampMonotonic": "92983305202", "ActiveExitTimestamp": "Sun 2025-07-20 21:06:13 IST", "ActiveExitTimestampMonotonic": "92983294776", "ActiveState": "active", "After": "sysinit.target basic.target sshd-keygen.target system.slice network.target systemd-journald.socket", "AllowIsolate": "no", "AssertResult": "yes", "AssertTimestamp": "Sun 2025-07-20 21:06:13 IST", "AssertTimestampMonotonic": "92983296652", "Before": "shutdown.target multi-user.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "CPUAccounting": "yes", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "7320000", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf cap_checkpoint_restore", "CleanResult": "success", "CollectMode": "inactive", "ConditionResult": "yes", "ConditionTimestamp": "Sun 2025-07-20 21:06:13 IST", "ConditionTimestampMonotonic": "92983296652", "ConfigurationDirectoryMode": "0755", "Conflicts": "shutdown.target", "ConsistsOf": "sshd-keygen.target", "ControlGroup": "/system.slice/sshd.service", "ControlGroupId": "13210", "ControlPID": "0", "CoredumpFilter": "0x33", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "OpenSSH server daemon", "DevicePolicy": "auto", "Documentation": "\"man:sshd(8)\" \"man:sshd_config(5)\"", "DynamicUser": "no", "EnvironmentFiles": "/etc/sysconfig/sshd (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "459171", "ExecMainStartTimestamp": "Sun 2025-07-20 21:06:13 IST", "ExecMainStartTimestampMonotonic": "92983297934", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecReloadEx": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; flags= ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS ; ignore_errors=no ; start_time=[Sun 2025-07-20 21:06:13 IST] ; stop_time=[n/a] ; pid=459171 ; code=(null) ; status=0/0 }", "ExecStartEx": "{ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D $OPTIONS ; flags= ; start_time=[Sun 2025-07-20 21:06:13 IST] ; stop_time=[n/a] ; pid=459171 ; code=(null) ; status=0/0 }", "ExitType": "main", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FinalKillSignal": "9", "FragmentPath": "/usr/lib/systemd/system/sshd.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOReadBytes": "18446744073709551615", "IOReadOperations": "18446744073709551615", "IOSchedulingClass": "2", "IOSchedulingPriority": "4", "IOWeight": "[not set]", "IOWriteBytes": "18446744073709551615", "IOWriteOperations": "18446744073709551615", "IPAccounting": "no", "IPEgressBytes": "[no data]", "IPEgressPackets": "[no data]", "IPIngressBytes": "[no data]", "IPIngressPackets": "[no data]", "Id": "sshd.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestamp": "Sun 2025-07-20 21:06:13 IST", "InactiveEnterTimestampMonotonic": "92983295924", "InactiveExitTimestamp": "Sun 2025-07-20 21:06:13 IST", "InactiveExitTimestampMonotonic": "92983298158", "InvocationID": "918a8b7b861047668dfbd26dda5822a8", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "process", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "infinity", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "8388608", "LimitMEMLOCKSoft": "8388608", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "524288", "LimitNOFILESoft": "1024", "LimitNPROC": "30345", "LimitNPROCSoft": "30345", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "30345", "LimitSIGPENDINGSoft": "30345", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "459171", "ManagedOOMMemoryPressure": "auto", "ManagedOOMMemoryPressureLimit": "0", "ManagedOOMPreference": "none", "ManagedOOMSwap": "auto", "MemoryAccounting": "yes", "MemoryAvailable": "infinity", "MemoryCurrent": "1486848", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAPolicy": "n/a", "Names": "sshd.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "main", "OOMPolicy": "stop", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "OnSuccessJobMode": "fail", "Perpetual": "no", "PrivateDevices": "no", "PrivateIPC": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProcSubset": "all", "ProtectClock": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectHostname": "no", "ProtectKernelLogs": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectProc": "default", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "ReloadResult": "success", "ReloadSignal": "1", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "sysinit.target system.slice", "Restart": "on-failure", "RestartKillSignal": "15", "RestartUSec": "42s", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "RuntimeRandomizedExtraUSec": "0", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "inherit", "StandardInput": "null", "StandardOutput": "journal", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestamp": "Sun 2025-07-20 21:06:13 IST", "StateChangeTimestampMonotonic": "92983305202", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "running", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "2147483646", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "1", "TasksMax": "48552", "TimeoutAbortUSec": "1min 30s", "TimeoutCleanUSec": "infinity", "TimeoutStartFailureMode": "terminate", "TimeoutStartUSec": "1min 30s", "TimeoutStopFailureMode": "terminate", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "notify", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "enabled", "UtmpMode": "init", "WantedBy": "multi-user.target", "Wants": "sshd-keygen.target", "WatchdogSignal": "6", "WatchdogTimestampMonotonic": "0", "WatchdogUSec": "0"}}
+
+PLAY RECAP *********************************************************************
+192.168.91.234             : ok=64   changed=29   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

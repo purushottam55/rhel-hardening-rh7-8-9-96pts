@@ -1,0 +1,93 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.10  Ensure permissions on /etc/shells are configured] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Get list of world-writable files] ***
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.11 Ensure no world writable files exist | Adjust world-writable files if they exist (Configurable)] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Find] ***
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.12 Ensure no unowned files or directories exist (Automated) | Fix] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Find] ***
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 Ensure no ungrouped files or directories exist (Automated) | Fix] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID executables are reviewed | Find SUID executables] ***
+ok: [192.168.91.199] => (item=/)
+ok: [192.168.91.199] => (item=/boot)
+ok: [192.168.91.199] => (item=/home)
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Find all SGID executables] ***
+ok: [192.168.91.199] => (item=/)
+ok: [192.168.91.199] => (item=/boot)
+ok: [192.168.91.199] => (item=/home)
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Flatten suid_executables results for easier use] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | AUDIT | Ensure SUID and SGID files are reviewed | Set fact SGID executables] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SUID executables exist] ***
+ok: [192.168.91.199] => {
+    "msg": [
+        "Warning!! You have SUID executables",
+        "The files are listed below, please confirm the integrity of these binaries",
+        [
+            "/usr/bin/sudo"
+        ]
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARN | Ensure SUID and SGID files are reviewed | Alert SGID executables exist] ***
+ok: [192.168.91.199] => {
+    "msg": [
+        "Warning!! You have SGID executables",
+        "The files listed below, please review the integrity of these binaries",
+        []
+    ]
+}
+
+TASK [mcx_hardening_6_role : 6.1.13 | WARNING | Set fact for manual task warning.] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Get users not using shadowed passwords] ***
+ok: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | AUDIT | Ensure accounts in /etc/passwd use shadowed passwords | Warn on findings] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | WARNING | Set fact for manual task warning.] ***
+skipping: [192.168.91.199]
+
+TASK [mcx_hardening_6_role : 6.2.1 | Remediate | Run pwconv to convert passwords to shadow] ***
+changed: [192.168.91.199]
+
+PLAY RECAP *********************************************************************
+192.168.91.199             : ok=16   changed=5    unreachable=0    failed=0    skipped=7    rescued=0    ignored=0   
+

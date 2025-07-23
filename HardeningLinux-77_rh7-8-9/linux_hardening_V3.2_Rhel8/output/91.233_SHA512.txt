@@ -1,0 +1,18 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.5.1.1 Ensure strong password hashing algorithm is configured] ***
+ok: [192.168.91.233] => (item={'path': '/etc/libuser.conf', 'regexp': '^#?crypt_style', 'line': 'crypt_style = sha512'})
+changed: [192.168.91.233] => (item={'path': '/etc/login.defs', 'regexp': '^#?ENCRYPT_METHOD', 'line': 'ENCRYPT_METHOD SHA512'})
+
+TASK [TestingRole : 4.5.1.1 Ensure password hashing algorithm is SHA-512 (Automated) | Configure pam_unix.so] ***
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: NoneType: None
+fatal: [192.168.91.233]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 192.168.91.233 closed.\r\n", "stderr_lines": ["Shared connection to 192.168.91.233 closed."], "stdout": "/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found\r\nhead: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory\r\ngrep: /etc/authselect//system-auth: No such file or directory\r\ngrep: /etc/authselect//system-auth: No such file or directory\r\nsed: can't read /etc/authselect//system-auth: No such file or directory\r\nhead: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory\r\ngrep: /etc/authselect//password-auth: No such file or directory\r\ngrep: /etc/authselect//password-auth: No such file or directory\r\nsed: can't read /etc/authselect//password-auth: No such file or directory\r\n/root/.ansible/tmp/ansible-tmp-1751905532.1207345-36945-69171408298694/script_5_5_4.sh: line 12: authselect: command not found\r\n", "stdout_lines": ["/etc/profile.d/50-system_umask.sh: line 1: umask:027: command not found", "head: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory", "grep: /etc/authselect//system-auth: No such file or directory", "grep: /etc/authselect//system-auth: No such file or directory", "sed: can't read /etc/authselect//system-auth: No such file or directory", "head: cannot open ‘/etc/authselect/authselect.conf’ for reading: No such file or directory", "grep: /etc/authselect//password-auth: No such file or directory", "grep: /etc/authselect//password-auth: No such file or directory", "sed: can't read /etc/authselect//password-auth: No such file or directory", "/root/.ansible/tmp/ansible-tmp-1751905532.1207345-36945-69171408298694/script_5_5_4.sh: line 12: authselect: command not found"]}
+...ignoring
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+

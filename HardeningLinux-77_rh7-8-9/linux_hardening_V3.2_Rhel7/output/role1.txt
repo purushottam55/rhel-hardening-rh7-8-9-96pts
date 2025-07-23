@@ -1,0 +1,42 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure ptrace_scope is restricted | Set file] **************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure ptrace_scope is restricted | comment out other entry] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.1.1.5 | PATCH | Ensure jffs2 kernel module is not available | Disable jffs2] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available | Edit modprobe config] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available | blacklist] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.1.1.8 | PATCH | Ensure usb-storage kernel module is not available | Disable usb-storage] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 1.2.2 Ensure GPG keys are configured] **********************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 1.2.3 Ensure gpgcheck is globally activated] ***************
+changed: [192.168.91.233]
+
+TASK [TestingRole : shell] *****************************************************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 1.2.4 Ensure package manager repositories are configured] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : 1.5.1.7 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed] ***
+ok: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=12   changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

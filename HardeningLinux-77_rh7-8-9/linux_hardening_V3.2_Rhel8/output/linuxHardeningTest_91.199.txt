@@ -1,0 +1,10 @@
+Using /root/Linux_Hardening_FINAL_NFR/Hardening_Playbook_3.2_77pts/linux_hardening_V3.2_Rhel8/ansible.cfg as config file
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+fatal: [192.168.91.199]: FAILED! => {"ansible_facts": {}, "changed": false, "failed_modules": {"ansible.legacy.setup": {"failed": true, "module_stderr": "Shared connection to 192.168.91.199 closed.\r\n", "module_stdout": "sudo: /usr/bin/sudo must be owned by uid 0 and have the setuid bit set\r\r\n", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error", "rc": 1}}, "msg": "The following modules failed to execute: ansible.legacy.setup\n"}
+
+PLAY RECAP *********************************************************************
+192.168.91.199             : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

@@ -1,0 +1,13 @@
+---
+# defaults file for ../linux_hardening_V3.2_testing/TestingRole
+kernel_modules_to_disable:
+  - name: freevxfs
+    type: fs
+  - name: hfs
+    type: fs
+  - name: hfsplus
+    type: fs
+  - name: jffs2
+    type: fs
+  - name: usb_storage
+    type: drivers

@@ -1,0 +1,21 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Ensure net.ipv4.conf.all.log_martians is set in sysctl.conf] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Ensure net.ipv4.conf.default.log_martians is set in sysctl.conf] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Apply net.ipv4.conf.all.log_martians immediately] **********
+changed: [192.168.91.233]
+
+TASK [TestingRole : Apply net.ipv4.conf.default.log_martians immediately] ******
+changed: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

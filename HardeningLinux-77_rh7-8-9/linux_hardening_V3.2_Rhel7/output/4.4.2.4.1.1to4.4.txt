@@ -1,0 +1,105 @@
+
+PLAY [CIS Linux Hardening V3.2] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before removing nullok] *****************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before removing nullok] ***************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before removing remember] ***************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before removing remember] *************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before enforcing strong password hashing] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before enforcing strong password hashing] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before ensuring use_authtok] ************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before ensuring use_authtok] **********
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before removing nullok] *****************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before removing nullok] ***************
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.1 | Ensure pam_unix does not include nullok in system-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.1 | Ensure pam_unix does not include nullok in password-auth] ***
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before removing remember] ***************
+changed: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before removing remember] *************
+changed: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.2 | Ensure pam_unix does not include remember in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.2 | Ensure pam_unix does not include remember in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before enforcing strong password hashing] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before enforcing strong password hashing] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.3 | Ensure pam_unix includes a strong password hashing algorithm in password-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup system-auth before ensuring use_authtok] ************
+ok: [192.168.91.233]
+
+TASK [TestingRole : Backup password-auth before ensuring use_authtok] **********
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in system-auth] ***
+ok: [192.168.91.233]
+
+TASK [TestingRole : 4.4.2.4.4 | Ensure pam_unix includes use_authtok in password-auth] ***
+ok: [192.168.91.233]
+
+PLAY RECAP *********************************************************************
+192.168.91.233             : ok=33   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

@@ -1,0 +1,89 @@
+---
+# tasks file for mcx_hardening_pam_role
+
+- name: "4.4.3.4.3(latest) or 5.5.4(in role 5) | PATCH | Ensure password hashing algorithm is configured (sha512)"
+  block:
+    - name: "4.4.3.4.3 | Ensure ENCRYPT_METHOD and crypt_style are set"
+      ansible.builtin.lineinfile:
+        path: "{{ item.path }}"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+        create: yes
+      loop:
+        - { path: "/etc/login.defs", regexp: "^#?ENCRYPT_METHOD", line: "ENCRYPT_METHOD SHA512" }
+        - { path: "/etc/libuser.conf", regexp: "^#?crypt_style", line: "crypt_style = sha512" }
+
+    - name: "4.4.3.4.3.1 | PATCH | Ensure pam_unix.so uses sha512 in system-auth and password-auth"
+      ansible.builtin.lineinfile:
+        path: "/etc/pam.d/{{ item }}-auth"
+        regexp: '^password\s+sufficient\s+pam_unix\.so.*$'
+        line: 'password sufficient pam_unix.so sha512 shadow use_authtok'
+        state: present
+      loop:
+        - password
+        - system
+
+
+#########################
+
+- name: "CIS 4.4.3.2.x | Patch pwquality.conf values (CIS password policy)"
+  become: true
+  block:
+
+    - name: 4.4.3.2.1 | Set password changed characters (difok)
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[dD]ifok\s*='
+        line: "difok = {{ rhel8cis_pwquality_difok }}"
+        create: yes
+        state: present
+
+    - name: 4.4.3.2.2 | Set minimum password length (minlen)
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[mM]inlen\s*='
+        line: "minlen = {{ rhel8cis_pwquality_minlen }}"
+        create: yes
+        state: present
+
+    - name: 4.4.3.2.3 | Set password complexity minimum character classes (minclass)
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[mM]inclass\s*='
+        line: "minclass = {{ rhel8cis_pwquality_minclass_value }}"
+        create: yes
+        state: present
+
+    - name: 4.4.3.2.4 | Patch pwquality.conf for separated options (looped values)
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*{{ item.key }}\s*='
+        line: "{{ item.key }} = {{ item.value }}"
+        create: yes
+        state: present
+      loop: "{{ rhel8cis_pwquality }}"
+
+    - name: 4.4.3.2.5 | Set maximum repeating characters allowed
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[mM]axrepeat\s*='
+        line: "maxrepeat = {{ rhel8cis_pwquality_maxrepeat }}"
+        create: yes
+        state: present
+
+    - name: 4.4.3.2.6 | Set maximum sequential characters allowed
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[mM]axsequence\s*='
+        line: "maxsequence = {{ rhel8cis_pwquality_maxsequence }}"
+        create: yes
+        state: present
+
+    - name: 4.4.3.2.7 | Enforce password quality for root
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: '^#?\s*[eE]nforce_for_root\s*=?\s*\d?'
+        line: "enforce_for_root = 1"
+        create: yes
+        state: present
